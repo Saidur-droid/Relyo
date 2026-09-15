@@ -14,14 +14,15 @@ Before making product, architecture, roadmap, positioning, partnership, fundrais
 
 1. `README.md`
 2. `V2_MASTER_PLAN.md`
-3. `docs/V2_HYPERGROWTH_CATEGORY_PLAN.md`
-4. `docs/AI_MOAT.md`
-5. `V2_EXECUTION_PLAN.md`
-6. `docs/V2_WHY_NOW_FUNDRAISING.md`
-7. `RED_TEAM.md`
-8. `STRATEGY_V2.md`
-9. `docs/PITCH_DECK_BN.md` when working on investor materials
-10. this file
+3. `docs/V2_MARKETING_TOP_PRIORITY.md`
+4. `docs/V2_HYPERGROWTH_CATEGORY_PLAN.md`
+5. `docs/AI_MOAT.md`
+6. `V2_EXECUTION_PLAN.md`
+7. `docs/V2_WHY_NOW_FUNDRAISING.md`
+8. `RED_TEAM.md`
+9. `STRATEGY_V2.md`
+10. `docs/PITCH_DECK_BN.md` when working on investor materials
+11. this file
 
 `PRODUCT_PLAN.md` is deprecated and exists only as a pointer. `archive/V1_PRODUCT_PLAN.md` is historical context only.
 
@@ -35,38 +36,52 @@ The long-term goal is not to beat Lovable, Replit, Cursor, Codex, Claude Code, m
 
 The strategic goal is to become neutral proof infrastructure those systems can consume.
 
-## Category-Creation Rule
+## P0 MARKET RULE — OWN THE LAUNCH MOMENT
 
-Most early users do not know the category name. They know symptoms.
+This is a founder-level directive and a top-priority V2 requirement.
 
-Relyo must therefore teach the category through visible product evidence rather than abstract education.
+Users do not initially purchase “software proof infrastructure.” They purchase confidence at high-intent moments when failure can cost money, credibility, customers, or a deal.
 
-The named enemy is:
+Relyo must prominently own these five user moments:
 
-> **False Done** — software appears complete because a builder, CI system, or agent reports success, but the real production outcome has not been independently proven.
+1. **Verify Before Launch**
+2. **Verify Before Charging Customers**
+3. **Verify Before Investor Demo**
+4. **Verify Client Delivery**
+5. **Verify Latest Release**
 
-Primary public mental model:
+Every product, UX, pricing, content, partnership, and growth decision should consider whether it strengthens one or more of these moments.
 
-> **Your AI says the app is done. Prove it.**
-
-Developer mental model:
-
-> **Stop shipping False Done.**
-
-Every major growth feature should help move users through:
+The default acquisition path is:
 
 ```text
-symptom
-→ hidden risk
-→ proof
-→ portable Passport
-→ repeated proof habit
-→ external proof consumption
+high-intent moment
+→ Check My App Free
+→ app-specific finding
+→ Verify My Launch / relevant proof mode
+→ Production Passport
+→ recurring proof / agency / API / partner expansion
 ```
+
+Do not hide these moments behind abstract assurance terminology on first contact.
+
+## Evidence-Led Category Education
+
+Most early users do not know the category name. They know symptoms and launch anxiety.
+
+Relyo must teach the need through credible evidence, practical checklists, and app-specific findings.
+
+Never use public messaging that attacks or reduces the credibility of Lovable, Replit, Cursor, Codex, Claude Code, or other builders/providers.
+
+Correct framing:
+
+> **AI builders make software creation dramatically faster. Production still has universal engineering risks. Relyo helps users verify the critical outcomes before customers depend on them.**
+
+Public statistics must be sourced, dated, caveated, and separated from Relyo’s own data.
 
 ## Hypergrowth Objective
 
-The company may pursue an extremely aggressive 6–12 month breakout, but **valuation is never an execution requirement and must never be represented as guaranteed**.
+The company may pursue an extremely aggressive 6–12 month breakout, but valuation is never an execution requirement and must never be represented as guaranteed.
 
 The six-month objective is:
 
@@ -74,39 +89,42 @@ The six-month objective is:
 
 Do not optimize for vanity valuation, press mentions, or raw scans without proof adoption.
 
-The hypergrowth strategy is defined in `docs/V2_HYPERGROWTH_CATEGORY_PLAN.md` and is mandatory context for growth/product prioritization.
+## Mandatory Marketing / Distribution Requirements
 
-## Growth Product Requirements
+Marketing is not a post-product phase. It is part of the product architecture.
 
-Move these distribution surfaces early:
+Mandatory early growth surfaces:
 
-- free Production Proof Scan;
+- free public URL/app check;
+- free repo readiness scan;
+- launch-moment modes;
 - shareable public/private Production Passport;
 - GitHub Check/badge;
+- selected open-source Proof Contract / CLI / GitHub Action layer;
+- founder-led live demos;
+- `100 Apps Verified` program;
+- monthly Proof Day;
+- VC/accelerator portfolio Proof Days;
+- agency / Relyo Verified Expert network;
+- stack-specific launch kits;
 - Proof API;
 - MCP server;
 - TypeScript/CLI surfaces;
 - partner/white-label components;
-- agency fleet mode;
-- privacy-safe Reliability Index / State of AI-Built Software research.
-
-Growth should be primarily product-led in the first six months.
+- privacy-safe reliability research;
+- builder/infrastructure co-marketing.
 
 Avoid early dependence on:
 
 - large paid-ad budgets;
-- expensive celebrity marketers;
+- celebrity marketers hired for prestige;
 - giant sales teams;
 - broad brand campaigns without product proof;
 - hundreds of shallow integrations.
 
-Founder-led demos, product artifacts, data/research, GitHub distribution, builder integrations, and agency fleets should carry the first breakout attempt.
-
 ## Ecosystem-Density Rule
 
-Borrow the marketplace lesson of density before breadth.
-
-For Relyo, the first “city” is a software stack, not a geography.
+The first “city” is a software stack, not a geography.
 
 Initial density target:
 
@@ -120,7 +138,7 @@ Next.js
 + Resend
 ```
 
-Relyo should understand this stack’s failure modes, Proof Contracts, safe remediations, recovery paths, and economics better than anyone before expanding broadly.
+Relyo should understand this stack’s failure modes, Proof Contracts, safe remediations, recovery paths, proof economics, and customer journeys extremely deeply before expanding broadly.
 
 **Contract density > integration count.**
 
@@ -139,7 +157,7 @@ software producer
 
 Software producers include builders, coding agents, human teams, and internal enterprise agents.
 
-Proof consumers include founders, enterprises, buyers, marketplaces, procurement systems, auditors, insurers, clouds, agencies, and future autonomous systems.
+Proof consumers include founders, enterprises, buyers, marketplaces, procurement systems, auditors, insurers, clouds, agencies, investors, and future autonomous systems.
 
 The strongest long-term network milestone is third parties consuming Production Passports they did not themselves create.
 
@@ -151,8 +169,7 @@ Do not silently turn Relyo into:
 - an app builder;
 - a frontier-model company;
 - a hosting platform;
-- a generic desktop agent;
-- a generic browser agent;
+- a generic desktop/browser agent;
 - only a repo scanner;
 - only a deployment service;
 - only an uptime/observability product;
@@ -161,6 +178,7 @@ Do not silently turn Relyo into:
 
 Prefer capabilities that strengthen:
 
+- launch-moment ownership;
 - Production Graph;
 - Proof Contracts;
 - Relyo Runner;
@@ -174,28 +192,18 @@ Prefer capabilities that strengthen:
 - enterprise release governance;
 - Verified Failure Graph intelligence;
 - builder/platform distribution;
-- third-party consumption of proof;
-- product-led growth loops;
-- category awareness through evidence.
+- third-party proof consumption;
+- product-led growth loops.
 
 ## Platform Relationship Rule
 
-Lovable, Replit, Cursor, Codex, Claude Code and future builders should be treated as potential:
-
-- customers;
-- upstream software producers;
-- distribution partners;
-- integration surfaces;
-- benchmark subjects;
-- remediation consumers.
-
-Do not create unnecessary strategic conflict by trying to own their primary IDE/app-building user relationship.
+Lovable, Replit, Cursor, Codex, Claude Code and future builders should be treated as potential customers, upstream software producers, distribution partners, integration surfaces, benchmark subjects, and remediation consumers.
 
 Never market Relyo as “builders make bad software.”
 
 Correct partner framing:
 
-> **AI builders make software creation abundant. Relyo gives their customers independent proof that the output is ready for the real world.**
+> **Your users build faster. Relyo helps them launch with independent production proof.**
 
 Design major Relyo capabilities so they can be consumed through APIs, SDKs, CI, GitHub checks, webhooks, MCP, or white-label surfaces.
 
@@ -217,14 +225,11 @@ Every major implementation decision must preserve:
 - privacy-preserving operational learning;
 - creator/fixer/verifier separation where practical;
 - API-first control and browser automation only when necessary;
-- interoperability with established provenance, telemetry, signing, and policy standards;
 - deterministic pass/fail logic outside free-form model judgment.
 
 ## AI Moat Doctrine
 
 The LLM is not the moat.
-
-Model reasoning can help discovery, planning, diagnosis, explanation, and remediation generation, but final VERIFIED state must come from contracts and evidence.
 
 The central AI/data moat is the **Verified Failure Graph**:
 
@@ -242,20 +247,6 @@ producer family
 ```
 
 Every proof run should improve privacy-safe structured intelligence where policy allows.
-
-The flywheel is:
-
-```text
-more apps
-→ more proof
-→ more verified failure patterns
-→ better contract selection
-→ faster diagnosis
-→ safer remediation
-→ higher proof accuracy
-→ more partner trust
-→ more apps
-```
 
 Core rule:
 
@@ -318,137 +309,79 @@ For production-facing capabilities, completion should include as applicable:
 10. documentation;
 11. API/headless surface when strategically relevant;
 12. a clear Proof Contract or contract impact;
-13. growth/distribution impact when strategically relevant;
-14. Verified Failure Graph telemetry impact when policy allows;
-15. continuity update for the next developer/agent.
+13. **launch-moment UX impact where relevant**;
+14. **growth/distribution path where relevant**;
+15. **shareable output where relevant**;
+16. Verified Failure Graph telemetry impact when policy allows;
+17. continuity update for the next developer/agent.
+
+A user-facing capability that cannot explain how users discover it, activate it, pay for it, share it, or return to it should be questioned.
 
 ## Execution Strategy
 
-Execute `V2_EXECUTION_PLAN.md` in sequence, modified by the growth-priority decisions in `docs/V2_HYPERGROWTH_CATEGORY_PLAN.md` when the documents explicitly move a distribution surface earlier.
-
-The first production-grade vertical slice remains intentionally narrow:
-
-- GitHub
-- Vercel
-- Supabase
-- Google OAuth
-- GitHub OAuth
-- Stripe test mode
-- Resend
-- Cloudflare
-
-Do not expand integrations merely to increase connector count. New providers should be added only when they materially increase proof coverage, distribution, customer value, or platform partnerships.
+Execute `V2_EXECUTION_PLAN.md` with `docs/V2_MARKETING_TOP_PRIORITY.md` as a mandatory parallel P0 plan.
 
 The first magical outcome is:
 
 ```text
-AI-built SaaS
-→ connect repo
+founder has a high-intent launch moment
+→ Check My App Free
+→ connect repo/providers
 → discover system
-→ find hidden production failures
+→ verify critical flows
 → safely repair a small supported set
-→ independently run a synthetic customer journey
+→ independently re-verify
 → issue signed Production Passport
+→ convert to recurring proof / partner distribution
 ```
 
 ## Architecture Guidance
 
-Business truth must live primarily in:
-
-- typed Proof Contracts;
-- provider adapters;
-- policy rules;
-- deterministic verification steps;
-- evidence envelopes;
-- release/environment identity;
-- signed Production Passports.
+Business truth must live primarily in typed Proof Contracts, provider adapters, policy rules, deterministic verification steps, evidence envelopes, release/environment identity, and signed Production Passports.
 
 Models may assist with discovery, planning, classification, explanation, remediation generation, and ambiguous diagnosis. Models must not unilaterally decide final VERIFIED status.
 
-Maintain logical separation between:
-
-- discovery;
-- planning;
-- remediation;
-- policy/approval;
-- execution;
-- verification;
-- recovery;
-- cost analysis;
-- evidence/audit;
-- passport issuance.
-
 ## Runner & Credential Security
 
-Relyo may influence privileged production systems. Security is part of the product itself.
-
-Prefer:
-
-- isolated runners;
-- outbound-only connectivity where feasible;
-- provider-native OAuth/app installations;
-- short-lived credentials;
-- scoped capability tokens;
-- customer KMS/private-runner options;
-- secrets referenced rather than injected into model context;
-- signed task/evidence envelopes;
-- immutable/tamper-evident audit events;
-- automatic rollback checkpoint before high-risk changes.
+Prefer isolated runners, outbound-only connectivity where feasible, provider-native OAuth/app installations, short-lived credentials, scoped capability tokens, customer KMS/private-runner options, secret isolation from model context, signed task/evidence envelopes, tamper-evident audit events, and rollback checkpoints before high-risk changes.
 
 Never commit real credentials, API keys, OAuth secrets, seed phrases, private keys, or customer production secrets to this repository.
 
 ## Open Standard Strategy
 
-Relyo should be willing to open interoperability layers when doing so increases adoption and trust.
-
-Potential open artifacts:
+Potential open artifacts include:
 
 - Proof Contract specification;
+- selected contract packs;
 - Production Passport schema;
 - adapter SDK;
 - local verifier;
+- CLI / GitHub Action;
 - evidence envelope format;
 - conformance tests.
 
-Commercial differentiation should come from:
-
-- hosted control plane;
-- trust network;
-- verifier infrastructure;
-- enterprise governance;
-- cross-provider orchestration;
-- Verified Failure Graph;
-- premium contract packs;
-- fleet analytics;
-- distribution and external passport acceptance.
-
-## Product Language
-
-Default user-facing copy to outcomes rather than infrastructure jargon.
-
-Prefer:
-
-> GitHub Login isn't connected yet.
-
-Over:
-
-> `GITHUB_CLIENT_SECRET` is missing from the production environment.
-
-Technical detail must remain available for advanced users and evidence/audit views.
+Commercial differentiation should come from hosted control plane, trust network, verifier infrastructure, enterprise governance, cross-provider orchestration, Verified Failure Graph, premium contract packs, fleet analytics, and distribution.
 
 ## Metrics Discipline
 
 Do not optimize primarily for scans, integrations, press coverage, or dashboard MAU.
 
-Important metrics include:
+Track:
 
-### Awareness
+### Launch-moment funnel
 
-- free scans/week;
-- organic acquisition share;
-- Passport-driven visits;
-- Reliability Index citations;
-- category-language adoption.
+- visitor → Check My App Free;
+- free check → app-specific finding;
+- finding → Verify My Launch/relevant mode;
+- proof start → paid;
+- one-time proof → recurring proof.
+
+### Virality
+
+- Passport share rate;
+- Passport visitor → new check;
+- agency/client propagation;
+- partner-sourced apps.
 
 ### Product / Trust
 
@@ -457,49 +390,37 @@ Important metrics include:
 - verified critical journeys;
 - time to R1/R2;
 - false VERIFIED rate;
-- auto-remediation success;
-- rollback success;
-- cost per verified contract/release;
-- apps under Continuous Proof.
+- remediation/rollback success;
+- cost per proof.
 
 ### Platform / Network
 
-- external builder/API/MCP-initiated proof percentage;
+- external API/MCP-initiated proof percentage;
 - builder integrations;
-- Production Passport consumers;
-- third-party Passport consumption;
-- percentage of releases gated by Relyo policy.
+- third-party Passport consumers;
+- releases gated by Relyo policy.
 
-### Growth / Economics
-
-- paid conversion;
-- proof runs per active app;
-- active app retention;
-- platform revenue;
-- enterprise ACV;
-- gross margin;
-- CAC payback.
-
-The sacred quality metric is the false VERIFIED rate. Drive it toward zero.
+The false VERIFIED rate is sacred. Drive it toward zero.
 
 ## Weekly Hypergrowth Cadence
 
 Every week answer:
 
-1. What hidden failure appeared most often?
-2. Can it become a deterministic Proof Contract?
-3. Can it be safely remediated?
-4. Can that contract create shareable proof?
-5. Which acquisition loop produced the most activated apps?
-6. What blocked users from R1/R2?
-7. Which proof created a partner conversation?
-8. What lowered false-pass probability?
-9. What product work created no verified outcome or distribution value?
-10. What did Relyo learn that a competitor cannot easily learn without comparable proof volume?
+1. Which launch moment produced the most qualified demand?
+2. What prevented users from reaching an app-specific finding?
+3. Which finding converted best to paid proof?
+4. Which Passport was shared and why?
+5. Which partner could distribute Relyo to many apps?
+6. Which new contract reduces time-to-value most?
+7. What did the Verified Failure Graph learn?
+8. Did proof cost/gross margin improve?
+9. What lowered false-pass probability?
+10. What feature created no proof or distribution value?
 
 Every week should improve at least one of:
 
 ```text
+launch-moment conversion
 proof depth
 activation speed
 shareability
@@ -512,34 +433,17 @@ trust/security
 
 Before creating a large feature, answer:
 
-1. Does this improve independent proof?
-2. Does this improve evidence portability?
-3. Does this make a builder/platform more likely to integrate Relyo?
-4. Does this increase trust/governance across producers/providers?
+1. Does this strengthen a launch moment?
+2. Does this improve independent proof?
+3. Does this improve evidence portability/shareability?
+4. Does this make a builder/platform/agency more likely to distribute Relyo?
 5. Does this create Verified Failure Graph intelligence?
 6. Does this improve proof economics?
-7. Does this strengthen a product-led growth loop?
-8. Could an existing specialist product supply this better than Relyo rebuilding it?
-
-Avoid generic capabilities better supplied by coding agents, browser tools, clouds, security vendors, observability platforms, testing tools, or infrastructure providers.
-
-## Red-Team Requirement
-
-Read `RED_TEAM.md` before any strategy that changes Relyo's category, privilege model, remediation autonomy, standards strategy, or platform relationship.
-
-The V1 founder-facing production-fixer thesis was rejected because builders can bundle it, production privilege is dangerous, connector breadth can destroy economics, and self-reported verification is weak. Do not accidentally recreate V1 under a new feature name.
+7. Could an existing specialist product supply this better than Relyo rebuilding it?
 
 ## Growth Integrity Rules
 
-Never:
-
-- fabricate users, traction, incidents, proof, or revenue;
-- shame builders based on weak samples;
-- leak private customer data;
-- make absolute safety claims;
-- sell a meaningless paid “Verified” badge;
-- sacrifice verification quality to hit viral metrics;
-- optimize only for top-of-funnel scans while proof adoption/retention is weak.
+Never fabricate users, traction, incidents, proof, or revenue; shame builders based on weak samples; leak private customer data; make absolute safety claims; sell an evidence-free Verified badge; or sacrifice verification quality to hit viral metrics.
 
 Trust is the product. Growth that weakens trust destroys the company.
 
@@ -550,6 +454,7 @@ At the end of meaningful work, update repository documentation, issues, roadmap 
 If strategy changes, update at minimum:
 
 - `V2_MASTER_PLAN.md`
+- `docs/V2_MARKETING_TOP_PRIORITY.md` when launch/growth priority changes
 - `docs/V2_HYPERGROWTH_CATEGORY_PLAN.md` when growth/category logic changes
 - `docs/AI_MOAT.md` when data/AI moat logic changes
 - `V2_EXECUTION_PLAN.md`
