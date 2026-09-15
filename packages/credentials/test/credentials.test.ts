@@ -38,10 +38,11 @@ describe("provider credential boundary", () => {
     expect(JSON.stringify(encrypted)).not.toContain("secret-access-token");
     expect(cipher.decrypt(encrypted).accessToken).toBe("secret-access-token");
 
+    const first = encrypted.ciphertextBase64Url[0];
     const tampered = {
       ...encrypted,
-      ciphertextBase64Url: encrypted.ciphertextBase64Url.slice(0, -1)
-        + (encrypted.ciphertextBase64Url.endsWith("A") ? "B" : "A"),
+      ciphertextBase64Url:
+        (first === "A" ? "B" : "A") + encrypted.ciphertextBase64Url.slice(1),
     };
     expect(() => cipher.decrypt(tampered)).toThrow();
   });
