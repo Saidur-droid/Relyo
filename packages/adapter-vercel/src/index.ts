@@ -7,6 +7,7 @@ export interface VercelDeploymentEvidence {
   target: string | null;
   createdAt: number | null;
   readyAt: number | null;
+  gitCommitSha: string | null;
 }
 
 export interface VercelDomainEvidence {
@@ -59,6 +60,7 @@ type VercelDeploymentResponse = {
   createdAt?: number;
   ready?: number;
   readyAt?: number;
+  meta?: Record<string, unknown>;
 };
 
 type VercelDeploymentsResponse = {
@@ -84,6 +86,15 @@ type VercelEnvsResponse = {
   envs?: VercelEnvResponse[];
 };
 
+function gitCommitSha(meta: Record<string, unknown> | undefined): string | null {
+  if (!meta) return null;
+  for (const key of ["githubCommitSha", "gitlabCommitSha", "bitbucketCommitSha"]) {
+    const value = meta[key];
+    if (typeof value === "string" && /^[0-9a-f]{7,64}$/i.test(value)) return value;
+  }
+  return null;
+}
+
 function deploymentFromApi(input: VercelDeploymentResponse): VercelDeploymentEvidence | null {
   const id = input.uid ?? input.id;
   const url = input.url;
@@ -96,6 +107,7 @@ function deploymentFromApi(input: VercelDeploymentResponse): VercelDeploymentEvi
     target: input.target ?? null,
     createdAt: input.createdAt ?? input.created ?? null,
     readyAt: input.readyAt ?? input.ready ?? null,
+    gitCommitSha: gitCommitSha(input.meta),
   };
 }
 
@@ -184,6 +196,7 @@ export class VercelReadClient {
         summary: {
           projectId: project.id,
           productionDeploymentReady: productionDeployment?.state === "READY",
+          releaseCommitObserved: Boolean(productionDeployment?.gitCommitSha),
           domainCount: domains.length,
           productionEnvironmentKeyCount: environmentKeys.length,
           rollbackReady: rollback.ready,
