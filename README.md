@@ -12,19 +12,20 @@ Relyo is designed so AI builders, coding agents, model providers, clouds, enterp
 
 **Relyo V2 is the only executable company/product plan. V1 is historical and must not be implemented.**
 
-If you are a developer or AI agent arriving here months or years later, read these files in this exact order before doing meaningful work:
+Read before meaningful work:
 
-1. [`AGENTS.md`](./AGENTS.md) — mandatory operating rules.
-2. [`V2_MASTER_PLAN.md`](./V2_MASTER_PLAN.md) — canonical company/product/market/moat/funding plan.
-3. [`docs/V2_HYPERGROWTH_CATEGORY_PLAN.md`](./docs/V2_HYPERGROWTH_CATEGORY_PLAN.md) — category creation, product-led distribution, 6–12 month moonshot growth plan, awareness strategy, and growth metrics.
-4. [`docs/AI_MOAT.md`](./docs/AI_MOAT.md) — AI/data moat, Verified Failure Graph, learning flywheel, and model-agnostic defensibility.
-5. [`V2_EXECUTION_PLAN.md`](./V2_EXECUTION_PLAN.md) — ordered implementation roadmap and definition of done.
-6. [`docs/V2_WHY_NOW_FUNDRAISING.md`](./docs/V2_WHY_NOW_FUNDRAISING.md) — why-now, billion-dollar path, fundraising triggers, and investor narrative.
-7. [`RED_TEAM.md`](./RED_TEAM.md) — ways the company can die and the defenses V2 must preserve.
-8. [`STRATEGY_V2.md`](./STRATEGY_V2.md) — strategic design detail supporting the master plan.
-9. [`docs/PITCH_DECK_BN.md`](./docs/PITCH_DECK_BN.md) — Bangla pitch-deck source for future fundraising materials.
+1. [`AGENTS.md`](./AGENTS.md)
+2. [`V2_MASTER_PLAN.md`](./V2_MASTER_PLAN.md)
+3. [`docs/V2_MARKETING_TOP_PRIORITY.md`](./docs/V2_MARKETING_TOP_PRIORITY.md) — **P0 launch-moment ownership and mandatory marketing/distribution plan**
+4. [`docs/V2_HYPERGROWTH_CATEGORY_PLAN.md`](./docs/V2_HYPERGROWTH_CATEGORY_PLAN.md)
+5. [`docs/AI_MOAT.md`](./docs/AI_MOAT.md)
+6. [`V2_EXECUTION_PLAN.md`](./V2_EXECUTION_PLAN.md)
+7. [`docs/V2_WHY_NOW_FUNDRAISING.md`](./docs/V2_WHY_NOW_FUNDRAISING.md)
+8. [`RED_TEAM.md`](./RED_TEAM.md)
+9. [`STRATEGY_V2.md`](./STRATEGY_V2.md)
+10. [`docs/PITCH_DECK_BN.md`](./docs/PITCH_DECK_BN.md)
 
-`PRODUCT_PLAN.md` is a deprecation pointer. The original V1 plan is preserved only for history in `archive/V1_PRODUCT_PLAN.md`.
+`PRODUCT_PLAN.md` is deprecated. `archive/V1_PRODUCT_PLAN.md` is historical only.
 
 ## Strategic position
 
@@ -34,31 +35,41 @@ Those systems are upstream producers, downstream providers, signal sources, dist
 
 > **Do not build a company that must beat every AI builder. Build infrastructure every AI builder is better off using.**
 
-## Category creation
+## MAIN MARKET EVENT — Own the launch moment
 
-Most users do not yet know they need “independent software proof infrastructure.” They feel symptoms instead.
+Users do not initially buy “software proof infrastructure.” They buy confidence at moments when failure suddenly becomes expensive.
 
-Relyo therefore teaches the market through the product itself:
+Relyo must own these five moments:
 
-```text
-AI says done
-→ Relyo finds hidden production risk
-→ user experiences the gap
-→ Relyo proves the fix
-→ Production Passport makes proof portable
-```
+- **Verify Before Launch** — default founder mode.
+- **Verify Before Charging Customers** — before the first real payment and subscription lifecycle.
+- **Verify Before Investor Demo** — before a high-stakes fundraising/product demo.
+- **Verify Client Delivery** — before an agency/studio hands a product to a client.
+- **Verify Latest Release** — after a meaningful production change.
 
-The enemy has a name:
+The first homepage/product story should therefore be understandable without category education:
 
-> **False Done** — software appears complete because an agent, CI system, or builder reports success, but the real production outcome has not been independently proven.
+> **About to launch? Verify the critical flows before customers depend on them.**
 
-Primary campaign language:
+Primary CTA:
 
-> **Your AI says the app is done. Prove it.**
+> **Verify My Launch**
 
-Developer language:
+Secondary CTA:
 
-> **Stop shipping False Done.**
+> **Check My App Free**
+
+The strategic category explanation comes after the user understands the moment.
+
+## Evidence-led category education
+
+Relyo must never grow by attacking Lovable, Replit, Cursor, Codex, Claude Code, or other builders/providers.
+
+Correct public framing:
+
+> **AI builders have made software creation dramatically faster. Production still has universal engineering risks: identity, data access, payments, configuration, security, recovery, cost, and real user journeys. Relyo helps check, fix, and independently verify those critical outcomes before customers discover the problem.**
+
+Marketing uses credible industry evidence + practical checklists + app-specific verification, not fear or platform-shaming.
 
 ## Core V2 primitives
 
@@ -72,23 +83,28 @@ Developer language:
 - **Continuous Proof** — degrades or restores assurance as production reality changes.
 - **Verified Failure Graph** — privacy-safe intelligence learned from verified failures and repairs.
 
-## Growth doctrine
+## Mandatory growth doctrine
 
-Relyo should not rely on a famous marketer or a large sales team to create the first breakout.
+Marketing/distribution is part of the product architecture from day one.
 
-The first growth engine must be built into the product:
+Mandatory early growth pillars:
 
-- free Production Proof Scan;
+- open Proof Contract / CLI / GitHub Action layer;
+- instant free URL/repo value;
+- launch-moment product modes;
 - shareable Production Passport;
-- GitHub Check/badge;
-- founder-led live demos;
-- MCP/CLI/SDK distribution;
-- agency fleet adoption;
-- builder partnerships;
+- focused-stack domination;
+- founder-led demos/content;
+- **100 Apps Verified**;
+- monthly **Proof Day**;
+- agency/Verified Expert network;
+- VC/accelerator portfolio Proof Days;
+- builder/infrastructure partnerships and co-marketing;
+- Proof API/MCP distribution;
 - privacy-safe reliability research;
 - external products initiating proof runs.
 
-The first six months target **valuation-forcing evidence**, not a guaranteed valuation. A $1B–$2B valuation is an outcome that can only follow extraordinary traction, growth, revenue, platform adoption, trust, and defensibility.
+The first six months target **valuation-forcing evidence**, never a guaranteed valuation.
 
 ## Initial wedge
 
@@ -105,16 +121,18 @@ The first production-grade vertical slice stays deliberately narrow:
 The goal is not connector count. The goal is a magical flow:
 
 ```text
-AI-built SaaS
-→ connect repo
+high-intent launch moment
+→ connect app
 → discover system
-→ find hidden production failures
+→ find material unknowns/failures
+→ verify critical flows
 → safely repair supported failures
-→ independently run a real synthetic customer journey
+→ independently re-verify
 → issue signed Production Passport
+→ convert to recurring proof / partner distribution
 ```
 
-We first dominate one stack/ecosystem before expanding. Contract density and verified outcome depth matter more than shallow integration breadth.
+We first dominate one stack/ecosystem before expanding. **Contract density > integration count.**
 
 ## North-star outcome
 
