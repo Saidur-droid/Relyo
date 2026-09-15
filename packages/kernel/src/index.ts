@@ -79,6 +79,17 @@ const STATUS_ORDER: Record<ContractStatus, number> = {
   PASS: 3,
 };
 
+const ASSURANCE_ORDER: AssuranceLevel[] = ["R0", "R1", "R2", "R3", "R4"];
+
+function minimumRequiredLevel(contract: ProofContract): AssuranceLevel | null {
+  const levels = contract.requiredFor
+    .map((level) => ASSURANCE_ORDER.indexOf(level))
+    .filter((index) => index > 0)
+    .sort((a, b) => a - b);
+
+  return levels.length === 0 ? null : ASSURANCE_ORDER[levels[0]!]!;
+}
+
 export function evaluateContract(contract: ProofContract): ContractResult {
   const statuses = contract.assertions.map((assertion) => assertion.status);
   const status = statuses.length === 0
@@ -118,10 +129,22 @@ export function computeAssurance(
   let achieved: AssuranceLevel = "R0";
 
   for (const level of orderedLevels) {
-    const required = contracts.filter((contract) => contract.requiredFor.includes(level));
-    if (required.length === 0) break;
+    const targetIndex = ASSURANCE_ORDER.indexOf(level);
+    const introducedAtLevel = contracts.filter(
+      (contract) => minimumRequiredLevel(contract) === level,
+    );
 
-    const allPass = required.every(
+    // A higher assurance level cannot be awarded unless this contract pack
+    // explicitly introduces proof requirements at that level.
+    if (introducedAtLevel.length === 0) break;
+
+    const requiredThroughLevel = contracts.filter((contract) => {
+      const minimum = minimumRequiredLevel(contract);
+      if (!minimum) return false;
+      return ASSURANCE_ORDER.indexOf(minimum) <= targetIndex;
+    });
+
+    const allPass = requiredThroughLevel.every(
       (contract) => resultMap.get(contract.id)?.status === "PASS",
     );
 
