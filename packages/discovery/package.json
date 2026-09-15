@@ -17,8 +17,5 @@
   "dependencies": {
     "@relyo/kernel": "workspace:*",
     "ipaddr.js": "^2.2.0"
-  },
-  "devDependencies": {
-    "@types/ipaddr.js": "^1.9.5"
   }
 }
