@@ -91,18 +91,13 @@ export function normalizeUserUrl(input: string): URL {
 }
 
 export function isPublicIpAddress(address: string): boolean {
-  let parsed: ipaddr.IPv4 | ipaddr.IPv6;
   try {
-    parsed = ipaddr.parse(address);
+    // process() normalizes IPv4-mapped IPv6 addresses before classification.
+    // Both IPv4 and IPv6 address objects expose range(), so no unsafe union cast is needed.
+    return ipaddr.process(address).range() === "unicast";
   } catch {
     return false;
   }
-
-  if (parsed.kind() === "ipv6" && parsed.isIPv4MappedAddress()) {
-    return isPublicIpAddress(parsed.toIPv4Address().toString());
-  }
-
-  return parsed.range() === "unicast";
 }
 
 export async function assertSafePublicUrl(url: URL): Promise<void> {
