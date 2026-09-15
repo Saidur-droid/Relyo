@@ -7,6 +7,10 @@
     ".": {
       "types": "./src/index.ts",
       "import": "./src/index.ts"
+    },
+    "./vercel-r1": {
+      "types": "./src/vercel-r1.ts",
+      "import": "./src/vercel-r1.ts"
     }
   },
   "scripts": {
@@ -15,6 +19,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
+    "@relyo/adapter-vercel": "workspace:*",
     "@relyo/discovery": "workspace:*",
     "@relyo/kernel": "workspace:*"
   }
