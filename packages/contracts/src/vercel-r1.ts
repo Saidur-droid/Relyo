@@ -9,7 +9,7 @@ import {
   type ProofContract,
   type Subject,
 } from "@relyo/kernel";
-import { buildR1LaunchContracts } from "./index.js";
+import { buildR1LaunchContracts } from "@relyo/contracts";
 
 export interface VercelR1Report {
   targetAssurance: "R1";
