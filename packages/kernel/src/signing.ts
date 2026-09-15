@@ -6,7 +6,7 @@ import {
   verify as cryptoVerify,
   type KeyObject,
 } from "node:crypto";
-import { sha256Json, type Passport } from "./index.js";
+import { sha256Json, type Passport } from "@relyo/kernel";
 
 export interface SignedPassport {
   envelopeVersion: "0.1";
