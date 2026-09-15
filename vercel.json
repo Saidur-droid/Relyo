@@ -1,5 +1,5 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "installCommand": "npx -y pnpm@10.15.1 install --frozen-lockfile=false",
-  "buildCommand": "npx -y pnpm@10.15.1 -r build"
+  "installCommand": "bun install --no-save",
+  "buildCommand": "pnpm -r build"
 }
