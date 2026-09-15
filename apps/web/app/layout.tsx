@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import "./verify.css";
 
 export const metadata: Metadata = {
   title: "Relyo — Verify before customers depend on it",
