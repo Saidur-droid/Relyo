@@ -1,3 +1,5 @@
+import { createHash, randomUUID } from "node:crypto";
+
 export type ContractStatus = "PASS" | "FAIL" | "PARTIAL" | "UNKNOWN";
 export type AssuranceLevel = "R0" | "R1" | "R2" | "R3" | "R4";
 export type ActionRiskClass =
@@ -7,17 +9,60 @@ export type ActionRiskClass =
   | "HUMAN_ONLY"
   | "FORBIDDEN";
 
-export interface ReleaseIdentity {
-  repository: string;
-  commitSha: string;
-  buildId?: string;
+export interface Subject {
+  id: string;
+  displayName: string;
+  kind: "application" | "repository" | "public-url";
 }
+
+export type ReleaseIdentity =
+  | {
+      kind: "git";
+      repository: string;
+      commitSha: string;
+      buildId?: string;
+    }
+  | {
+      kind: "url-observation";
+      url: string;
+      observedAt: string;
+    };
 
 export interface EnvironmentIdentity {
   provider: string;
   projectId: string;
   environment: string;
   url?: string;
+}
+
+export interface ProductionGraphNode {
+  id: string;
+  type:
+    | "repository"
+    | "framework"
+    | "deployment"
+    | "database"
+    | "auth"
+    | "payment"
+    | "email"
+    | "dns"
+    | "external-api"
+    | "unknown";
+  label: string;
+  provider?: string;
+  attributes?: Record<string, string | number | boolean>;
+}
+
+export interface ProductionGraphEdge {
+  from: string;
+  to: string;
+  relation: string;
+}
+
+export interface ProductionGraph {
+  nodes: ProductionGraphNode[];
+  edges: ProductionGraphEdge[];
+  unknowns: string[];
 }
 
 export interface Assertion {
@@ -44,6 +89,7 @@ export interface EvidenceEnvelope {
   collectedAt: string;
   source: string;
   redacted: boolean;
+  summary?: Record<string, string | number | boolean | null>;
 }
 
 export interface ContractResult {
@@ -55,14 +101,34 @@ export interface ContractResult {
   evidenceRefs: string[];
 }
 
+export type ProofRunState =
+  | "DISCOVERING"
+  | "VERIFYING"
+  | "VERIFIED"
+  | "FAILED"
+  | "PARTIAL";
+
+export interface ProofRun {
+  id: string;
+  subject: Subject;
+  state: ProofRunState;
+  targetAssurance: AssuranceLevel;
+  startedAt: string;
+  completedAt?: string;
+}
+
 export interface Passport {
-  passportVersion: "0.1";
+  passportVersion: "0.2";
+  id: string;
+  subject: Subject;
   release: ReleaseIdentity;
   environment: EnvironmentIdentity;
+  targetAssurance: AssuranceLevel;
   assurance: AssuranceLevel;
   issuedAt: string;
   expiresAt?: string;
   results: ContractResult[];
+  evidence: EvidenceEnvelope[];
   exclusions: string[];
   verifier: VerifierIdentity;
 }
@@ -134,8 +200,6 @@ export function computeAssurance(
       (contract) => minimumRequiredLevel(contract) === level,
     );
 
-    // A higher assurance level cannot be awarded unless this contract pack
-    // explicitly introduces proof requirements at that level.
     if (introducedAtLevel.length === 0) break;
 
     const requiredThroughLevel = contracts.filter((contract) => {
@@ -156,9 +220,12 @@ export function computeAssurance(
 }
 
 export function createPassport(input: {
+  subject: Subject;
   release: ReleaseIdentity;
   environment: EnvironmentIdentity;
+  targetAssurance: AssuranceLevel;
   contracts: ProofContract[];
+  evidence: EvidenceEnvelope[];
   verifier: VerifierIdentity;
   exclusions?: string[];
   issuedAt?: string;
@@ -168,13 +235,17 @@ export function createPassport(input: {
   const assurance = computeAssurance(input.contracts, results);
 
   return {
-    passportVersion: "0.1",
+    passportVersion: "0.2",
+    id: `pass_${randomUUID()}`,
+    subject: input.subject,
     release: input.release,
     environment: input.environment,
+    targetAssurance: input.targetAssurance,
     assurance,
     issuedAt: input.issuedAt ?? new Date().toISOString(),
     ...(input.expiresAt ? { expiresAt: input.expiresAt } : {}),
     results,
+    evidence: input.evidence,
     exclusions: input.exclusions ?? [],
     verifier: input.verifier,
   };
@@ -183,4 +254,36 @@ export function createPassport(input: {
 export function worstStatus(statuses: ContractStatus[]): ContractStatus {
   if (statuses.length === 0) return "UNKNOWN";
   return [...statuses].sort((a, b) => STATUS_ORDER[a] - STATUS_ORDER[b])[0]!;
+}
+
+function canonicalize(value: unknown): string {
+  if (value === null || typeof value !== "object") return JSON.stringify(value);
+  if (Array.isArray(value)) return `[${value.map(canonicalize).join(",")}]`;
+
+  const object = value as Record<string, unknown>;
+  const keys = Object.keys(object).sort();
+  return `{${keys.map((key) => `${JSON.stringify(key)}:${canonicalize(object[key])}`).join(",")}}`;
+}
+
+export function sha256Json(value: unknown): string {
+  return createHash("sha256").update(canonicalize(value)).digest("hex");
+}
+
+export function createEvidenceEnvelope(input: {
+  kind: string;
+  source: string;
+  payload: unknown;
+  collectedAt?: string;
+  redacted?: boolean;
+  summary?: Record<string, string | number | boolean | null>;
+}): EvidenceEnvelope {
+  return {
+    id: `ev_${randomUUID()}`,
+    kind: input.kind,
+    sha256: sha256Json(input.payload),
+    collectedAt: input.collectedAt ?? new Date().toISOString(),
+    source: input.source,
+    redacted: input.redacted ?? true,
+    ...(input.summary ? { summary: input.summary } : {}),
+  };
 }

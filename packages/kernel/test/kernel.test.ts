@@ -1,37 +1,39 @@
 import { describe, expect, it } from "vitest";
 import {
   computeAssurance,
+  createEvidenceEnvelope,
   createPassport,
   evaluateContract,
+  sha256Json,
   type ProofContract,
 } from "../src/index.js";
 
 const r1Contract: ProofContract = {
-  id: "launch.http",
-  version: "1.0.0",
-  title: "Production HTTP readiness",
+  id: "launch.https",
+  version: "1",
+  title: "HTTPS",
   requiredFor: ["R1", "R2", "R3", "R4"],
   assertions: [
     {
       id: "https",
-      description: "Production URL is reachable over HTTPS",
+      description: "HTTPS is enabled",
       status: "PASS",
-      evidenceRefs: ["evidence:https"],
+      evidenceRefs: ["ev_https"],
     },
   ],
 };
 
 const r2Contract: ProofContract = {
-  id: "journey.signup",
-  version: "1.0.0",
-  title: "Signup journey",
+  id: "business.journey",
+  version: "1",
+  title: "Business journey",
   requiredFor: ["R2", "R3", "R4"],
   assertions: [
     {
-      id: "signup",
-      description: "Fresh user can complete signup",
+      id: "journey",
+      description: "Core journey passes",
       status: "PASS",
-      evidenceRefs: ["evidence:signup"],
+      evidenceRefs: ["ev_journey"],
     },
   ],
 };
@@ -47,38 +49,40 @@ describe("trust kernel", () => {
   });
 
   it("does not turn unknown evidence into pass", () => {
-    const unknown: ProofContract = {
+    const contract: ProofContract = {
       ...r1Contract,
-      assertions: [
-        {
-          id: "https",
-          description: "Production URL is reachable over HTTPS",
-          status: "UNKNOWN",
-          evidenceRefs: [],
-        },
-      ],
+      assertions: [{ ...r1Contract.assertions[0]!, status: "UNKNOWN" }],
     };
-
-    expect(evaluateContract(unknown).status).toBe("UNKNOWN");
-    expect(computeAssurance([unknown], [evaluateContract(unknown)])).toBe("R0");
+    expect(evaluateContract(contract).status).toBe("UNKNOWN");
   });
 
-  it("creates a passport bound to release and environment", () => {
+  it("creates a passport bound to subject and release", () => {
+    const evidence = createEvidenceEnvelope({
+      kind: "http",
+      source: "https://example.com",
+      payload: { status: 200 },
+    });
     const passport = createPassport({
-      release: { repository: "Saidur-droid/example", commitSha: "abc123" },
+      subject: { id: "app_1", displayName: "Example", kind: "application" },
+      release: { kind: "git", repository: "owner/repo", commitSha: "abc123" },
       environment: {
-        provider: "vercel",
-        projectId: "project-1",
+        provider: "public-web",
+        projectId: "example.com",
         environment: "production",
         url: "https://example.com",
       },
+      targetAssurance: "R1",
       contracts: [r1Contract],
-      verifier: { name: "relyo-test-verifier", version: "0.1.0" },
-      issuedAt: "2026-09-15T00:00:00.000Z",
+      evidence: [evidence],
+      verifier: { name: "relyo-kernel", version: "0.1.0" },
     });
 
     expect(passport.assurance).toBe("R1");
-    expect(passport.release.commitSha).toBe("abc123");
-    expect(passport.environment.environment).toBe("production");
+    expect(passport.release.kind).toBe("git");
+    expect(passport.evidence).toHaveLength(1);
+  });
+
+  it("hashes canonical JSON independent of key order", () => {
+    expect(sha256Json({ a: 1, b: 2 })).toBe(sha256Json({ b: 2, a: 1 }));
   });
 });

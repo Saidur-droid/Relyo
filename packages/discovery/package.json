@@ -1,5 +1,5 @@
 {
-  "name": "@relyo/kernel",
+  "name": "@relyo/discovery",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -13,5 +13,12 @@
     "build": "tsc -p tsconfig.json",
     "test": "vitest run",
     "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@relyo/kernel": "workspace:*",
+    "ipaddr.js": "^2.2.0"
+  },
+  "devDependencies": {
+    "@types/ipaddr.js": "^1.9.5"
   }
 }
