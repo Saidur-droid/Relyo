@@ -1,1110 +1,1152 @@
-# Relyo V2 — Category Creation & Hypergrowth Operating Plan
+# Relyo V2 — Evidence-Led Hypergrowth & Market Capture Plan
 
 > **STATUS: ACTIVE V2 STRATEGY — EXECUTE WITH `V2_MASTER_PLAN.md`**
 >
-> Purpose: turn an invisible problem into an obvious category, make the product itself distribute Relyo, and create the strongest plausible 6–12 month growth path without depending on a famous marketer or a large early team.
+> This document replaces the earlier adversarial “False Done” framing. Relyo must never grow by attacking or reducing the credibility of Lovable, Replit, Cursor, Codex, Claude Code, Vercel, Supabase, or other builders/providers that can become customers, partners, and distribution channels.
 >
-> **Important:** a $1B–$2B valuation cannot be guaranteed or scheduled. Investors set valuation from traction, growth, defensibility, market, team, and capital conditions. This plan therefore targets **valuation-forcing evidence**, not vanity valuation targets.
+> **Core doctrine:** celebrate software creation platforms, educate the market with credible production-risk evidence, help users avoid known failure classes, and make Relyo the easiest way to verify the critical outcomes that matter.
+>
+> A $1B–$2B valuation cannot be guaranteed or scheduled. This plan targets **valuation-forcing evidence**: product magic, extreme organic growth, paid adoption, platform distribution, verified outcome data, and a credible trust-network trajectory.
 
 ---
 
-# 1. The Strategic Problem We Must Solve First
+# 1. The Real Marketing Problem
 
-Most target users do **not know the problem has a name**.
+Most target users do not wake up thinking:
 
-They know symptoms:
+> “I need independent software proof infrastructure.”
 
-- “My AI says it is done, but I am scared to launch.”
-- “It works locally but not in production.”
-- “Google login randomly fails.”
-- “Stripe says payment succeeded but the user is still free.”
-- “I do not know whether another user can see private data.”
-- “The deployment is green, but I do not trust it.”
-- “The AI fixed one thing and broke another.”
-- “I have backups, but I do not know whether they restore.”
-- “I do not know how much one customer actually costs me.”
+They think:
 
-They usually do **not** wake up searching for:
+- “My app works. What should I check before launching?”
+- “How do I know login/payment/data access is really correct?”
+- “What can break when I move from preview to production?”
+- “How do I know a backup actually restores?”
+- “How do I know one user cannot access another user’s data?”
+- “How do I know my SaaS will survive updates?”
+- “What should a nontechnical founder check before accepting paying users?”
 
-> independent software proof infrastructure
+Therefore we do **not invent a negative label for builders or their output**.
 
-Therefore Relyo cannot initially market the category name. It must market the pain and then teach the category.
-
-### The education ladder
+We educate with:
 
 ```text
-Symptom
-→ hidden risk
-→ name the enemy
-→ show proof
-→ create a new habit
-→ create a standard
+real software risk
++ credible statistics
++ practical checklist
++ free diagnosis
++ automatic proof
 ```
 
-Relyo's job is to make users feel:
-
-> **“A green build is not proof.”**
-
-Then:
-
-> **“AI said done” is not the same as “verified.”**
-
-Then:
-
-> **“Every serious release should have proof.”**
-
-That is category creation.
+The user learns the problem by seeing what can go wrong and what Relyo can verify.
 
 ---
 
-# 2. The Enemy We Name: FALSE DONE
+# 2. Public Narrative — Never Attack the Builder
 
-Categories spread faster when users can recognize a problem in one phrase.
+Wrong messaging:
 
-Relyo should name the enemy:
+> Lovable/Replit/Cursor apps are unreliable.
 
-# **False Done**
+> AI says done but it is not done.
 
-Definition:
+> Vibe-coded apps are bad.
 
-> A release appears finished because the builder, CI system, or agent reports success, but the real production business outcome has not been independently proven.
+This creates unnecessary enemies and is statistically indefensible.
+
+Correct messaging:
+
+> **AI builders have made software creation dramatically faster. Production still has universal engineering risks: identity, data access, payments, configuration, security, recovery, cost, and real user journeys. Relyo helps you check, fix, and independently verify those critical outcomes before customers discover the problem.**
+
+Partner-facing version:
+
+> **Your builder gets you from idea to software. Relyo helps prove the critical production outcomes that come next.**
+
+Enterprise version:
+
+> **Build with any agent. Verify with one independent proof layer.**
+
+---
+
+# 3. Evidence-Led Education: The Statistics We Can Responsibly Use
+
+Relyo marketing should use statistics to teach the *general production problem*, not to claim that every AI-built app fails.
+
+## 3.1 AI adoption is already mainstream
+
+Stack Overflow’s 2025 Developer Survey reported:
+
+- 84% of respondents use or plan to use AI tools in development.
+- 51% of professional developers use AI tools daily.
+
+Meaning:
+
+> AI-assisted software creation is not a niche behavior anymore.
+
+Source: https://survey.stackoverflow.co/2025/
+
+## 3.2 “Almost right” is a widespread pain
+
+The same Stack Overflow survey reported:
+
+- 66% cited AI solutions that are “almost right, but not quite” as a frustration.
+- 45% said debugging AI-generated code is more time-consuming.
+- 46% actively distrust AI-tool accuracy versus 33% who trust it.
+- 76% of respondents in that workflow question said they do not plan to use AI for deployment and monitoring.
+
+Meaning:
+
+> Users want AI speed, but verification remains a separate need.
+
+Source: https://survey.stackoverflow.co/2025/ai
+
+## 3.3 AI improves throughput while downstream stability still matters
+
+Google’s 2025 DORA report found AI adoption associated positively with delivery throughput and product performance, while continuing to show a negative relationship with software delivery stability.
+
+Meaning:
+
+> Faster creation increases the importance of testing, feedback loops, version control, and downstream control systems.
+
+Source: https://cloud.google.com/blog/products/ai-machine-learning/announcing-the-2025-dora-report
+
+## 3.4 Functional code is not the same as secure code
+
+Veracode’s 2025 GenAI Code Security work tested 100+ LLMs and reported roughly 45% of generated samples/tasks failed security testing and introduced known security weaknesses. Its Spring 2026 update said syntax correctness had improved dramatically while security pass rates remained around 55% in its benchmark.
+
+Meaning:
+
+> Code can look correct and run correctly while still failing important security requirements.
+
+Sources:
+- https://www.veracode.com/blog/genai-code-security-report/
+- https://www.veracode.com/blog/spring-2026-genai-code-security/
+
+## 3.5 Production incidents are often preventable
+
+Uptime Institute’s 2025 outage analysis reported that 87% of respondents who had experienced an impactful outage in the prior three years believed it could have been avoided with better management/processes or configuration. The same research notes growing complexity, change-management and misconfiguration risks.
+
+Meaning:
+
+> Process, configuration, testing, and verification are not optional operational details.
+
+Source: https://uptimeinstitute.com/resources/research-and-reports/annual-outage-analysis-2025
+
+## 3.6 Credentials and configuration remain real cloud attack surfaces
+
+Google Cloud’s H2 2025 Threat Horizons reporting on H1 2025 observed weak/absent credentials in 47.1% of the incidents it analyzed, misconfiguration in 29.4%, and API/UI compromise in 11.8%.
+
+Meaning:
+
+> Identity, secrets, configuration, and API exposure need direct verification.
+
+Source: https://cloud.google.com/blog/products/identity-security/cloud-ciso-perspectives-new-threat-horizons-details-evolving-risks-and-defenses
+
+## 3.7 AI-built app scanner data can be used only with strong caveats
+
+A 2026 Vibe App Scanner dataset reported critical/high findings in 31.1% of scans and RLS/data-exposure findings in 39.3% of Supabase-using apps. However, users self-selected into the scan, so the sample is **not representative of all AI-built apps**.
+
+Meaning:
+
+> Useful directional evidence exists, but Relyo must never present a self-selected scan sample as a universal failure rate.
+
+Source: https://vibeappscanner.com/blog/vibe-coded-app-security-report-2026
+
+---
+
+# 4. The Public Education Formula
+
+Every campaign follows:
+
+```text
+credible statistic
+→ explain the risk in plain language
+→ give a practical checklist
+→ offer free Relyo verification
+→ show evidence
+```
+
+Example:
+
+> **66% of developers say AI solutions are often almost right, but not quite. Before your SaaS takes payments, verify these 8 production flows. Relyo can check them automatically.**
+
+Then list:
+
+1. signup/login;
+2. authorization/data isolation;
+3. payment success + failure + cancellation;
+4. webhook state;
+5. email delivery;
+6. backup/restore;
+7. rollback;
+8. critical user journey.
+
+CTA:
+
+> **Check my app free**
+
+This educates without attacking the tool used to build the app.
+
+---
+
+# 5. Market Positioning
+
+## Founder
+
+> **You built fast. Now verify the critical things customers depend on.**
+
+## Vibe coder
+
+> **Before you launch, check the production risks AI speed does not remove.**
+
+## Developer
+
+> **Build with any tool. Get independent evidence for the release.**
+
+## Agency
+
+> **Give every client a verified launch, not just a handoff.**
+
+## AI builder
+
+> **Your users create faster. Relyo helps them launch with independent production proof.**
+
+## Enterprise
+
+> **One release-trust layer across every coding agent and software producer.**
+
+## Long-term
+
+> **Relyo is the independent proof layer for machine-built software.**
+
+---
+
+# 6. Lovable: What Actually Happened
+
+Relyo must study Lovable accurately, not mythologize it.
+
+### Important corrections
+
+Lovable was **not a solo-founder company**. Public records identify Anton Osika and Fabian Hedin as co-founders.
+
+At the July 2025 $1.8B valuation, public reporting described approximately:
+
+- 2.3M active users;
+- ~180,000 paying subscribers;
+- ~$75M ARR reached in seven months;
+- $100M ARR crossed around eight months after launch.
+
+It was **not 1.8M paid users**.
+
+By November 2025, Lovable said it was nearing 8M users and later reported $200M ARR. In June 2026 it said it had exceeded $500M annualized revenue and 50M projects, with about 1M new projects per week.
+
+Key sources:
+- https://techcrunch.com/2025/07/17/lovable-becomes-a-unicorn-with-200m-series-a-just-8-months-after-launch/
+- https://techcrunch.com/2025/07/23/eight-months-in-swedish-unicorn-lovable-crosses-the-100m-arr-milestone/
+- https://lovable.dev/blog/one-year-of-lovable
+- https://techcrunch.com/2026/06/09/lovable-says-it-has-hit-500m-in-annualized-revenue-with-1-million-new-projects-a-week/
+
+---
+
+# 7. Lovable Growth Teardown — The Pieces We Can Adapt
+
+Lovable itself documented much of its early growth playbook.
+
+## 7.1 Open-source seed
+
+Lovable grew out of GPT Engineer, an open-source project that already had online community traction.
+
+Lesson for Relyo:
+
+> Give developers something valuable before asking them to buy the platform.
+
+Relyo equivalent:
+
+- open Proof Contract specification;
+- free CLI/local verifier;
+- GitHub Action;
+- selected open contract packs;
+- public evidence schema.
+
+The open layer becomes distribution and trust, not the complete commercial product.
+
+## 7.2 Two failed launches taught them positioning
+
+Lovable has publicly written that early GPT Engineer launches generated attention but users saw it as more of a fun tool than a serious platform. They changed product positioning/branding and focused on what users truly needed.
+
+Lesson:
+
+> Do not confuse attention with product-market fit.
+
+For Relyo, free scans are acquisition; **repeat verification and paid continuous proof are PMF**.
+
+## 7.3 Solve the full job, not a demo
+
+Lovable learned users wanted to build full products, not only prototypes, and highlighted integrations such as Supabase.
+
+Relyo equivalent:
+
+Do not stop at “we found issues.”
+
+Complete the job:
+
+```text
+discover
+→ explain
+→ verify
+→ safely repair selected failures
+→ re-verify
+→ issue Passport
+→ continuously refresh proof
+```
+
+## 7.4 User sharing was a growth channel
+
+Lovable says it encouraged users to share projects across X, LinkedIn and YouTube, amplified hackathons and user showcases.
+
+Relyo equivalent:
+
+Users share outcomes, not dashboards:
+
+- Production Passport;
+- launch-readiness card;
+- “8/8 critical flows verified” share card;
+- public trust page;
+- agency client certificate with inspectable scope.
+
+## 7.5 Content across native channels
+
+Lovable invested in TikTok, YouTube, X and storytelling.
+
+Relyo equivalent:
+
+- short “before launch, verify this” videos;
+- 30-second proof demos;
+- founder build-in-public threads;
+- deep technical Proof Contract videos;
+- case studies showing a real issue and verified resolution;
+- Bangla + English founder education initially if useful, but global product content primarily English.
+
+## 7.6 Co-marketing with infrastructure partners
+
+Lovable says it co-marketed with companies such as Supabase, Replicate and Resend.
+
+Relyo equivalent:
+
+Potential co-marketing targets:
+
+- Supabase;
+- Vercel;
+- Resend;
+- Cloudflare;
+- Stripe ecosystem partners;
+- Neon;
+- Railway;
+- Render;
+- Clerk;
+- WorkOS;
+- smaller AI builders.
+
+Pitch:
+
+> “Here are the top integration failures founders face and a verified checklist to avoid them.”
+
+We make the provider look helpful, not broken.
+
+## 7.7 Product Hunt was a launch amplifier, not the whole strategy
+
+Lovable cited Product Hunt as one part of distribution.
+
+Relyo uses launch platforms only when the product has an immediately understandable free experience.
+
+## 7.8 Focused stack improved quality
+
+Lovable deliberately focused its stack rather than supporting everything.
+
+Relyo equivalent:
+
+Dominate one stack before adding dozens of providers.
+
+First ecosystem:
+
+```text
+Next.js
+GitHub
+Vercel
+Supabase
+Google/GitHub OAuth
+Stripe
+Resend
+Cloudflare
+```
+
+## 7.9 Error handling and self-improvement are product value
+
+Lovable described systems that identify common LLM errors and, by 2026, internal mechanisms that learn from production friction.
+
+Relyo equivalent is stronger because the product is explicitly about verified outcomes:
+
+> **Verified Failure Graph**
+
+Every real proof run can improve diagnosis and contract selection.
+
+## 7.10 Partnerships became a channel
+
+By 2026 Lovable publicly advertised a broad partner ecosystem including experts, solution partners, affiliates, creators, and community programs.
+
+Relyo should eventually have:
+
+- Relyo Verified Experts;
+- agency partners;
+- integration partners;
+- creator educators;
+- affiliates;
+- community Proof Days;
+- builder partner program.
+
+Reference: https://lovable.dev/partners
+
+---
+
+# 8. What Relyo Can Do Better Than Copying Lovable
+
+Relyo should not attempt to reproduce Lovable’s exact consumer funnel because the jobs are different.
+
+Lovable's emotional trigger:
+
+> “I can finally build my idea.”
+
+Relyo's trigger:
+
+> **“I can finally know whether the important parts are ready for real users.”**
+
+We need three activation events:
+
+### Activation A — Discovery surprise
+
+```text
+You connected one app.
+Relyo mapped 17 production dependencies you may need to care about.
+```
+
+### Activation B — Concrete risk
+
+```text
+Your app works, but cancellation does not revoke paid access.
+```
+
+### Activation C — Verified resolution
+
+```text
+Cancellation flow fixed and independently re-verified.
+```
+
+The user experiences value rather than learning abstract theory.
+
+---
+
+# 9. The Massive User-Acquisition Wedge
+
+A serious proof platform cannot begin with an enterprise sales form.
+
+Create three zero/low-friction entry products.
+
+## 9.1 Public URL Health Check
+
+No GitHub access required.
+
+User enters:
+
+```text
+https://myapp.com
+```
+
+Relyo performs cheap, external checks where safe and technically possible:
+
+- HTTPS/TLS;
+- redirects;
+- basic public headers/security posture;
+- obvious login/signup reachability;
+- public error behavior;
+- domain/certificate metadata;
+- selected page/journey checks;
+- technology inference with uncertainty labels.
+
+CTA:
+
+> Connect repository for deeper proof.
+
+This is the viral top of funnel.
+
+## 9.2 Free Repo Readiness Scan
+
+GitHub connect.
+
+Relyo maps:
+
+- stack;
+- dependencies;
+- environment assumptions;
+- auth/payment/email integrations;
+- likely critical journeys;
+- missing proof areas.
+
+CTA:
+
+> Run verified launch checks.
+
+## 9.3 Launch Proof
+
+First paid transaction can be low-friction.
+
+Potential packaging hypothesis:
+
+```text
+Free Discovery
+→ $29–$49 Launch Proof
+→ $29–$79/month Continuous Proof
+```
+
+Actual pricing must be tested against verification cost and willingness to pay.
+
+A one-time paid proof lowers resistance for founders who are not ready for a subscription. Successful users then upgrade to continuous proof.
+
+---
+
+# 10. Freemium Architecture for Huge Paid Adoption
+
+To build a very large paid user base, Relyo needs a consumer-like top funnel with infrastructure-like expansion.
+
+### Free
+
+- public URL check;
+- one repo;
+- Production Graph Lite;
+- limited deterministic checks;
+- checklist;
+- no expensive browser simulations;
+- no sensitive remediation.
+
+### Launch
+
+- one production verification run;
+- R1 Launch Verified Passport;
+- one critical journey;
+- evidence package;
+- limited re-check window.
+
+### Pro
+
+- continuous verification;
+- R2 business journeys;
+- top safe-remediation actions;
+- email/payment/auth checks;
+- alerts;
+- private/public Passport.
+
+### Agency
+
+- portfolios;
+- client reporting;
+- reusable policies;
+- seats;
+- volume economics.
+
+### Builder API
+
+- usage-based proof runs;
+- white-label;
+- SDK/MCP;
+- fleet analytics.
+
+### Enterprise
+
+- private runner;
+- SSO/RBAC;
+- policy gate;
+- R3/R4;
+- audit retention;
+- data residency;
+- SLA.
+
+The free product should be cheap enough that viral growth does not destroy gross margin.
+
+---
+
+# 11. Product-Led Growth Loops
+
+## Loop A — Checklist/Search Loop
+
+```text
+user searches “what should I check before launching SaaS?”
+→ evidence-backed checklist
+→ free scan
+→ app-specific findings
+→ proof purchase
+```
+
+## Loop B — Passport Loop
+
+```text
+verified app
+→ public/private Passport
+→ investor/customer/developer sees proof
+→ clicks “Verify my app”
+→ next app
+```
+
+## Loop C — Agency Loop
+
+```text
+agency verifies one client
+→ client values proof
+→ agency standardizes Relyo
+→ 20–100 apps enter at once
+```
+
+## Loop D — Builder Loop
+
+```text
+AI builder embeds Proof API
+→ each new app can invoke Relyo
+→ user sees independent proof
+→ proof volume grows with partner output
+```
+
+## Loop E — Research Loop
+
+```text
+more verified apps
+→ better aggregate reliability data
+→ evidence report
+→ media/search/community traffic
+→ more apps
+```
+
+## Loop F — Expert/Affiliate Loop
+
+```text
+consultant/creator teaches launch quality
+→ refers founder to Relyo
+→ earns commission
+→ more educational content
+→ more founders
+```
+
+## Loop G — Enterprise Requirement Loop
+
+```text
+buyer requires Relyo assurance
+→ supplier/vendor adopts
+→ more Passports
+→ more buyers recognize the standard
+```
+
+---
+
+# 12. Top-Notch Marketing Architecture
+
+No single “famous marketer” is required if the company builds a strong marketing system.
+
+## Engine 1 — Data marketing
+
+Publish data Relyo is uniquely positioned to know.
+
+Flagship:
+
+# **State of Production Readiness**
+
+Later, when sample quality is sufficient:
+
+# **State of AI-Built Software**
+
+Metrics:
+
+- % apps with unverified auth;
+- % with failed payment lifecycle contract;
+- % with untested restore;
+- % with risky authorization boundary;
+- median time from repo connect to R1/R2;
+- most common cross-provider configuration failures;
+- remediation success rates;
+- proof-expiry trends.
+
+Never publish weak rankings designed to embarrass builder platforms.
+
+## Engine 2 — Founder-led media
+
+Founder repeatedly explains:
+
+> Build fast. Verify before customers depend on it.
+
+Formats:
+
+- X/LinkedIn;
+- YouTube;
+- TikTok/Reels for short visual demos;
+- live weekly “Verify My SaaS” sessions;
+- podcasts;
+- founder communities;
+- Reddit/Hacker News when genuinely useful and non-spammy.
+
+## Engine 3 — Case-study storytelling
+
+Story structure:
+
+```text
+Founder built product quickly
+→ launch checklist looked green
+→ Relyo found one hidden business risk
+→ founder fixed it
+→ independent verification passed
+→ founder launched with evidence
+```
+
+The hero is the founder/builder. Relyo is the safety net.
+
+## Engine 4 — Co-marketing
 
 Examples:
 
+> “Vercel + Supabase launch checklist”
+
+> “Stripe subscription lifecycle: 10 things to verify before charging customers”
+
+> “Resend deliverability + application-flow proof”
+
+Co-market with partners where possible.
+
+## Engine 5 — Community
+
+Create:
+
+- Relyo Launch Club;
+- monthly Proof Day;
+- 100 Apps Verified sprint;
+- agency partner community;
+- builder integration office hours;
+- open-source contract contributor program.
+
+## Engine 6 — Affiliate/creator program
+
+Only after conversion economics are known.
+
+Potential structure:
+
+- first-paid-customer bounty;
+- recurring revenue share for a limited period;
+- volume tiers;
+- tracking dashboard;
+- creator asset kit.
+
+Avoid paying for empty signups.
+
+Reward verified paid activation.
+
+## Engine 7 — Product Hunt / launch events
+
+Use launch sites as accelerators after product magic is visible.
+
+Launch event must show:
+
 ```text
-Build passed                 ≠ customer can sign up
-Deploy ready                 ≠ OAuth works
-Stripe connected             ≠ subscription lifecycle works
-Backup exists                ≠ restore works
-Agent says fixed             ≠ regression absent
-Security scan clean          ≠ authorization correct
+URL/repo
+→ instant discovery
+→ critical checks
+→ verified result
 ```
 
-### Category language
+## Engine 8 — Programmatic SEO
 
-Founder language:
+Create high-intent pages around real failure/check patterns:
 
-> **Your app looks done. Is it actually live?**
+- Google OAuth works locally but fails in production;
+- Supabase RLS launch checklist;
+- Stripe subscription activated but DB not updated;
+- Vercel environment variable production mismatch;
+- Resend domain/email verification checklist;
+- SaaS backup restore checklist;
+- AI-built app production checklist.
 
-Developer language:
-
-> **Stop shipping False Done.**
-
-Builder/platform language:
-
-> **Your agent builds it. Relyo proves it.**
-
-Enterprise language:
-
-> **One independent proof gate for every coding agent.**
-
-Long-term category language:
-
-> **Independent Software Proof Infrastructure**
+Each page gives real value and ends with an app-specific free check.
 
 ---
 
-# 3. Why This Is a Category-Creation Opportunity
+# 13. Uber Lesson: Win Density, Then Repeat
 
-The user not knowing the problem is not automatically a weakness.
+Uber’s early expansion was operationally dense city by city. It researched local conditions, launched deliberately, and repeated a working playbook.
 
-It becomes an opportunity when three conditions exist:
+Relyo's “city” is the technology stack.
 
-1. The symptoms already happen frequently.
-2. Existing tools only solve fragments.
-3. The product can demonstrate the missing layer instantly.
-
-Relyo should avoid spending millions on abstract education.
-
-The product itself must teach the problem.
-
-User enters repo/app → Relyo finds hidden dependency/failure → user understands the category because they experienced it.
-
-The best education event is not a blog post.
-
-It is:
-
-```text
-“You thought this was production-ready.
-We found 7 real blockers.”
-```
-
----
-
-# 4. Lessons We Borrow — Without Copying the Companies
-
-## 4.1 Uber lesson: density before breadth
-
-Uber did not win by launching everywhere at once. Its early model proved one city, learned launch operations, then repeated city by city. Uber reported 34%+ month-over-month growth in 2011 while expanding roughly one city per month, then increasing the pace.
-
-### Relyo adaptation
-
-Our “city” is not geography.
-
-Our city is a **stack/ecosystem**.
-
-First density target:
+City #1:
 
 ```text
 Next.js
 + GitHub
 + Vercel
 + Supabase
-+ Google/GitHub OAuth
++ OAuth
 + Stripe
 + Resend
 ```
 
-We should know this stack better than anyone in the world:
+We must become astonishingly good at this stack before broadening.
 
-- common failures;
-- repair playbooks;
-- proof contracts;
-- average time to proof;
-- regressions;
-- economics;
-- recovery paths.
+Density metrics:
 
-Only after density do we launch the next “city”:
+- number of verified apps on the stack;
+- failure fingerprints known;
+- deterministic contracts available;
+- remediation success rate;
+- median proof time;
+- false-pass rate;
+- agency/builders using the stack.
 
-```text
-Firebase stack
-Railway stack
-AWS stack
-Shopify stack
-mobile stack
-etc.
-```
+Then repeat the launch playbook for the next ecosystem.
 
-**Rule:** contract density > integration count.
+Reference: https://www.uber.com/us/en/newsroom/you-are-now-free-to-move-about-seattle/
 
 ---
 
-## 4.2 American Express lesson: build a closed trust loop
+# 14. American Express Lesson: Closed-Loop Trust
 
-American Express benefits from direct relationships across its network and from an end-to-end view of transactions. Its 2026 strategy explicitly emphasizes trust, security, partnerships, and the value of its closed-loop network in agentic commerce.
+American Express describes its closed-loop network and direct relationships with customers/merchants as a strategic advantage that improves insight, service, trust and retention.
 
-### Relyo adaptation
-
-Relyo should create its own software trust loop:
+Relyo adaptation:
 
 ```text
 SOFTWARE PRODUCER
-Lovable / Replit / Cursor / Codex / Claude / Human
+builder / agent / engineer
         ↓
-RELYO PROOF NETWORK
-contracts + runner + evidence + passport
+RELYO PROOF LAYER
+contracts / runner / evidence / passport
         ↓
-PROOF CONSUMER
-founder / enterprise / buyer / marketplace / cloud / insurer
+SOFTWARE CONSUMER
+founder / buyer / enterprise / marketplace
         ↓
-real outcome & incident data
+observed outcomes
         ↓
-Verified Failure Graph
+VERIFIED FAILURE GRAPH
         ↓
-better proof for next release
+better future verification
 ```
 
-The producer gets lower failure/support burden.
+This closed proof loop is more important than a big feature list.
 
-The consumer gets independent evidence.
-
-Relyo gets verified outcome intelligence.
-
-The loop improves with every release.
+Sources:
+- https://www.americanexpress.com/en-us/newsroom/articles/financial-news/2026-chairman-s-letter-to-shareholders.html
+- https://www.americanexpress.com/en-us/newsroom/articles/innovation/what-sets-american-express-apart-in-the-age-of-agentic-commerce.html
 
 ---
 
-## 4.3 Lovable lesson: immediate magic and an enormous emotional promise
+# 15. Quick Market Capture: The First 30 Days
 
-Lovable's early promise was simple: people who cannot code can build software by talking to AI. That promise is emotionally obvious and immediately demonstrable.
+### Day 1–7
 
-Relyo needs an equally obvious activation moment.
+Ship or prototype:
 
-Not:
+- landing page;
+- public URL check;
+- waitlist;
+- first GitHub discovery flow;
+- 8-point production checklist;
+- founder video showing one real app.
 
-> Configure software assurance policies.
+Content:
 
-But:
+- 10 evidence-backed short posts;
+- “8 checks before your first paying customer”;
+- “Why deploy ready is only one part of launch readiness.”
 
-> **Connect your app. We will show you what is actually broken.**
+### Day 8–14
 
-Within the first session the user must see something surprising and useful.
+Founder manually onboards 25–50 real apps.
 
----
+Collect:
 
-## 4.4 Wiz lesson: remove installation friction and reveal unknown risk
+- common risks;
+- common stacks;
+- confusing language;
+- willingness to pay;
+- proof artifacts people want to share.
 
-Wiz grew rapidly by making cloud risk visible across environments with low deployment friction. The core emotional insight was that customers could not manage what they could not see.
+Create first case studies.
 
-### Relyo adaptation
+### Day 15–21
 
-The first experience should require as little setup as possible:
+Launch free scan publicly.
 
-```text
-GitHub connect
-+ optional cloud OAuth
-→ immediate Production Graph
-→ immediate hidden-risk discovery
-```
+Channels:
 
-Do not require users to model every dependency manually before receiving value.
+- Product Hunt prep;
+- X;
+- LinkedIn;
+- Reddit where relevant;
+- Indie Hackers;
+- AI builder communities;
+- founder groups;
+- agency outreach;
+- Supabase/Vercel ecosystem communities.
 
----
-
-# 5. The Growth Product — Not Just the Core Product
-
-Relyo must contain a **free distribution surface** that is useful before users understand the category.
-
-## Product 1 — Free Production Proof Scan
-
-CTA:
-
-> **Is your AI-built app actually production-ready? Prove it free.**
-
-Input:
-
-```text
-GitHub repository
-or deployed URL
-```
-
-Output:
-
-```text
-R0 — DISCOVERED
-
-We found:
-19 dependencies
-4 identity flows
-2 payment flows
-7 webhooks
-12 critical journeys
-
-Critical unknowns: 6
-Launch blockers: 4
-```
-
-The scan does not make an absolute “safe” claim.
-
-It creates awareness and leads to deeper proof.
-
----
-
-# 6. The Viral Artifact: Production Passport
-
-Reports die in dashboards.
-
-Passports travel.
-
-Every verified release should create a public/private shareable artifact.
-
-Example:
-
-```text
-Relyo Production Passport
-R2 — Business Verified
-Release: 7ab124
-Updated: 4 minutes ago
-
-Authentication       VERIFIED
-Payment lifecycle    VERIFIED
-Data isolation        VERIFIED
-Critical journeys     VERIFIED
-
-[Inspect Evidence]
-```
-
-Distribution surfaces:
-
-- GitHub README badge;
-- GitHub Check;
-- deployment page;
-- public app footer;
-- launch page;
-- investor/data room;
-- agency report;
-- marketplace listing;
-- vendor review;
-- builder UI.
-
-### Viral loop
-
-```text
-App gets verified
-→ Passport is shared
-→ Another founder clicks Passport
-→ “Prove my app”
-→ another app verified
-→ another Passport
-```
-
-The artifact must make the product visible without becoming spam.
-
----
-
-# 7. The Six Growth Loops
-
-## Loop A — Free Scan Loop
-
-```text
-repo/url
-→ free discovery
-→ surprising hidden risk
-→ deeper verification CTA
-→ user shares result
-→ new scan
-```
-
-## Loop B — Passport Loop
-
-```text
-verified release
-→ passport/badge
-→ customer/investor/dev sees it
-→ asks how their app scores
-→ new customer
-```
-
-## Loop C — Builder Loop
-
-```text
-builder generates apps
-→ Relyo API verifies
-→ builder shows “independently verified”
-→ more builder users experience Relyo
-→ more proof runs
-```
-
-This is the highest-leverage long-term loop.
-
-## Loop D — Agency Loop
-
-```text
-agency verifies client app
-→ client receives passport
-→ agency looks more trustworthy
-→ agency standardizes Relyo across all clients
-→ dozens of apps per customer
-```
-
-## Loop E — Research / Media Loop
-
-```text
-anonymized aggregate proof data
-→ State of AI-Built Software report
-→ media/developer discussion
-→ free scans
-→ more proof data
-→ better report
-```
-
-## Loop F — Enterprise Policy Loop
-
-```text
-enterprise requires R3
-→ internal teams/vendors adopt Relyo
-→ more passports
-→ more vendors become familiar with Relyo
-→ other enterprises can require the same standard
-```
-
----
-
-# 8. Category-Creation Content Engine
-
-We should not primarily publish generic SEO content.
-
-We publish proprietary evidence no one else has.
-
-## Monthly flagship
-
-# **State of AI-Built Software**
-
-Possible findings:
-
-```text
-% of AI-built apps with broken auth
-% with unverified restore
-% with exposed production secrets
-% where payment lifecycle failed
-% with negative variable economics
-average time from “deploy ready” to “business verified”
-most common failure combination by stack
-```
-
-Only publish privacy-safe aggregate data with strong methodology and minimum sample thresholds.
-
-Never publish platform-shaming rankings based on weak samples.
-
-### Weekly content
-
-- “False Done of the Week” — anonymized failure pattern.
-- “Proof Friday” — one real proof contract explained.
-- “What green CI missed.”
-- “AI said done; Relyo found X.”
-- short videos of repair → fresh verification.
-- technical contract writeups for developers.
-- founder-friendly launch reliability stories.
-
-### Category campaign
-
-**AI Said Done. Prove It.**
-
-This can become the memorable marketing line.
-
----
-
-# 9. The Public Reliability Index
-
-Create a neutral, evidence-based **Relyo AI Software Reliability Index**.
-
-Do not score companies as “good/bad” from weak data.
-
-Score measurable conditions:
-
-- proof coverage;
-- percentage of critical contracts passing;
-- recovery readiness;
-- evidence freshness;
-- common classes of failure;
-- stack-level trends.
-
-The index can become recurring industry data used by:
-
-- journalists;
-- VCs;
-- developers;
-- builders;
-- enterprise teams;
-- researchers.
-
-If Relyo becomes the source quoted whenever people discuss AI-built software reliability, category awareness grows without buying attention.
-
----
-
-# 10. No Famous Marketer Required — Early Team Doctrine
-
-Do **not** hire a high-cost CMO in the first six months.
-
-The founder, product, and data should perform most marketing.
-
-Suggested first six-month team shape:
-
-```text
-Founder / CEO — product, category story, partnerships, fundraising
-2–4 exceptional product/infra engineers
-1 security/reliability engineer
-1 design/product generalist
-1 developer relations/content engineer (later, after product signal)
-```
-
-Approximately 5–8 core people can be enough for the first breakout attempt if execution quality is very high.
-
-### What replaces the celebrity marketer
-
-- magical free diagnostic;
-- shareable Passport;
-- public data/research;
-- GitHub distribution;
-- MCP/CLI/API distribution;
-- founder-led videos/demos;
-- design-partner stories;
-- builder integrations;
-- agency network;
-- technical community credibility.
-
-Hire growth leadership only after a repeatable loop is already visible.
-
-A marketer cannot manufacture product-market fit.
-
----
-
-# 11. The Six-Month Moonshot Plan
-
-This is deliberately aggressive.
-
-The objective is not to force a valuation. The objective is to create enough product, usage, revenue, and strategic evidence that a very large valuation becomes defensible.
-
-## Month 0–1 — Invent the category through the product
-
-Ship:
-
-- Trust Kernel;
-- Proof Contract v0;
-- GitHub integration;
-- Vercel + Supabase discovery;
-- Production Graph;
-- Free Proof Scan;
-- evidence model;
-- basic Passport;
-- one end-to-end auth/business proof;
-- public waitlist and launch site.
-
-Founder activity:
-
-- personally onboard first 30–50 apps;
-- record every hidden failure;
-- create terminology from repeated pain;
-- publish first 10 anonymized failure stories;
-- run live demo weekly.
-
-Success target — aggressive, not guaranteed:
-
-```text
-1,000 apps scanned
-100 apps deeply verified
-30 design partners
-10 users willing to pay
-```
-
-Most important metric:
-
-> % of seemingly “done” apps where Relyo discovers a material unknown or failure.
-
----
-
-## Month 2 — Make proof shareable
-
-Ship:
-
-- public/private Production Passport;
-- GitHub badge/check;
-- R1/R2 assurance;
-- Stripe lifecycle proof;
-- email proof;
-- safe remediation for top recurring failures;
-- referral/share loop;
-- agency workspace beta.
-
-Launch campaign:
-
-# **AI Said Done. Prove It.**
-
-Publish:
-
-- first mini Relyo Reliability Report;
-- 20 short failure/fix demos;
-- public methodology.
-
-Aggressive targets:
-
-```text
-5,000–10,000 apps scanned
-1,000 active verified apps
-100 paying accounts
-10 agencies
-20%+ weekly organic growth during launch weeks
-```
-
----
-
-## Month 3 — Turn product into infrastructure
-
-Ship earlier than originally planned:
-
-- Proof API v1;
-- MCP server;
-- TypeScript SDK;
-- webhooks;
-- white-label Passport component;
-- builder partner sandbox;
-- contract pack versioning;
-- usage metering.
-
-Goal:
-
-Get the first **external product** to initiate a Relyo proof run without a human visiting Relyo first.
-
-Aggressive targets:
-
-```text
-25,000+ cumulative apps scanned
-5,000 continuously verified apps
-1M proof-contract executions cumulative
-1–3 small builder/platform integrations
-25 agencies/design partners
-```
-
-This milestone matters more than raw user count because it proves Relyo can become infrastructure.
-
----
-
-## Month 4 — Own one ecosystem
-
-Do not add 50 shallow integrations.
-
-Dominate the initial stack.
+### Day 22–30
 
 Launch:
 
-- “Relyo Verified for Next.js + Vercel + Supabase” contract pack;
-- recovery/rollback verification;
-- cost guardrails;
-- fleet dashboard;
-- production drift detection;
-- monthly Reliability Index.
+- first paid Launch Proof;
+- shareable Passport;
+- referral waitlist/credits;
+- first live Proof Day;
+- agency beta.
 
-Partnership targets:
+Aggressive learning goal:
 
-- AI builder communities;
-- Vercel/Supabase ecosystem agencies;
-- startup studios;
-- smaller vibe-coding platforms;
-- accelerator portfolios.
-
-Aggressive targets:
-
-```text
-50,000+ apps scanned
-10,000 active proof apps
-50 agencies
-3 embedded builder integrations
-5 enterprise pilots
-```
+> Find the message/channel/product combination that produces repeated app connections without founder hand-holding.
 
 ---
 
-## Month 5 — Create industry evidence
+# 16. Six-Month Moonshot
 
-Ship:
+These are aggressive operating targets, not promises.
 
-- Verified Failure Graph intelligence v1;
-- automatic contract recommendation;
-- privacy-safe benchmark data;
-- builder analytics;
-- remediation success-rate intelligence;
-- enterprise policy preview.
-
-Publish flagship:
-
-# **The State of AI-Built Software — Relyo Report**
-
-The report should be based on real proof data and transparent methodology.
-
-Goal:
-
-Relyo becomes a source journalists/investors/builders reference when discussing reliability of AI-built software.
-
-Aggressive targets:
+## Month 1
 
 ```text
-100,000+ cumulative apps scanned
-20,000+ active proof apps
-2–5M proof runs/month
-5–10 builder integrations/pilots
-10+ enterprise pilots
+1,000 free checks/scans
+100 deep proof runs
+30 design partners
+10 paying users
 ```
 
----
+Goal: prove users care once Relyo shows the risk in their own app.
 
-## Month 6 — Unicorn-readiness checkpoint
-
-By month six, do not ask:
-
-> Are we worth $1B?
-
-Ask:
-
-> Do we have evidence that a credible investor could believe this becomes a global software trust network?
-
-### Base breakout case
+## Month 2
 
 ```text
-100k–250k cumulative apps discovered
+5k–10k scans
+1,000 active verified apps
+100–300 paid users
+10 agency partners
+```
+
+Ship Passport + payment/auth proof.
+
+## Month 3
+
+```text
+25k cumulative scans
+5k active verified apps
+1M contract executions
+500–1,500 paid accounts
+1–3 external builder/API integrations
+```
+
+Proof API/MCP becomes real distribution.
+
+## Month 4
+
+```text
+50k–100k cumulative scans
+10k–20k active verified apps
+1,500–4,000 paid accounts
+50 agencies/experts
+3+ embedded product relationships
+```
+
+Dominate initial stack.
+
+## Month 5
+
+```text
+100k–250k cumulative scans
 20k–50k active verified apps
-2M–5M proof runs/month
-strong 20%+ monthly active growth
-meaningful paid conversion
-3+ embedded builder relationships
-10+ enterprise/agency fleet customers
+3k–8k paid accounts
+2–5M proof runs/month
+5–10 builder/API pilots
 ```
 
-### Extreme unicorn-case evidence
+Publish first rigorous reliability report.
 
-A $1B–$2B case this early would likely require exceptional evidence such as a combination of:
+## Month 6
+
+Breakout target:
 
 ```text
-500k–1M+ apps scanned/discovered
-100k+ active verified apps
-10M+ proof runs/month
-$10M+ ARR run-rate or extremely rapid credible path to it
-20%–30%+ monthly revenue growth
-3–5 meaningful builder/platform integrations
-major enterprise design partners
-very high organic/product-led acquisition
-clear network effect in Passport consumption
-strong retention and low false-pass rate
+250k–500k cumulative free users/scans
+50k–100k active verified apps
+5k–15k paid accounts
+5M–10M proof runs/month
+5+ meaningful embedded integrations/pilots
+strong organic share
+credible multi-million-dollar ARR trajectory
 ```
 
-These are **moonshot operating targets, not forecasts or promises**.
-
-Lovable's 2025 unicorn benchmark was extraordinary: approximately eight months after launch it reported 2.3M active users, 180k paying subscribers and roughly $75M–$100M ARR when it reached a $1.8B valuation. Relyo should respect that level of evidence rather than assuming a category story alone creates a unicorn.
+Extreme case can exceed these numbers. Do not manipulate pricing or free activity merely to chase a headline.
 
 ---
 
-# 12. Twelve-Month Category-Leadership Plan
+# 17. Twelve-Month Moonshot
 
-## Months 7–9
+Lovable’s consumer-scale growth proves very fast adoption is possible when product magic and distribution align, but Relyo has a different job and monetization model.
 
-- private Relyo Runner;
-- enterprise policy engine;
-- SSO/RBAC;
-- release authorization API;
-- GitLab support;
-- second high-density stack;
-- formal builder partner program;
-- R3 resilience packs;
-- 24/7 continuous proof for selected contracts.
+Relyo should target a mix of users + apps + usage + platform distribution.
 
-Growth goal:
+Aggressive 12-month ambition:
 
 ```text
-Founder product → agency fleets → builder embeds → enterprise policy
+1M–3M registered/free users or organizations reached
+500k+ apps scanned/discovered
+100k–300k active verified apps
+25k–100k paying founder/team/agency accounts
+20M+ monthly proof executions
+10+ meaningful platform/builder integrations
+multiple enterprise policy deployments
+strong ARR with high growth
+meaningful third-party Passport consumption
 ```
 
-## Months 10–12
+These are moonshot targets. Actual plan must adapt monthly to retention, unit economics, proof costs and customer behavior.
 
-- R4 Continuous Proof;
-- public/private Passport registry;
-- provider-certified adapters;
-- marketplace/procurement proof pilot;
-- insurer/auditor conversations;
-- annual State of Machine-Built Software report;
-- third-party Passport consumption APIs.
+The target should not be “copy Lovable’s user number.”
 
-End-of-year strategic test:
+The target is:
 
-> Are organizations consuming Relyo proof even when they did not create the software?
-
-If yes, the trust network is starting.
+> **Build a similarly explosive growth engine for the trust/verification job.**
 
 ---
 
-# 13. Fundraising Must Follow Growth Milestones
+# 18. How We Can Create Lovable-Like Paid Adoption
 
-Do not raise because we wrote a big vision.
+Lovable converted because the value was immediate and the free-to-paid step unlocked more creation.
 
-### Pre-seed trigger
+Relyo needs an equally clear paywall moment.
 
-Raise when we have:
+### Free value
 
-- magical demo;
-- 10–30 design partners;
-- real failure data;
-- Proof Contract + Passport working;
-- initial organic adoption.
+> “Here are the production areas that deserve attention.”
 
-Target can remain roughly $1M–$2M, with larger outcome only if traction justifies it.
+### Paid value
 
-### Seed trigger
+> “Relyo will independently test the real flows, collect evidence, and continuously re-check them.”
 
-Raise when:
+The paid conversion trigger should happen when the user has something meaningful to lose:
 
-- thousands of active apps;
-- repeatable paid conversion;
-- Proof API usage;
-- builder integrations;
-- strong retention;
-- credible Verified Failure Graph.
+- first launch;
+- first customer;
+- first payment;
+- investor demo;
+- client delivery;
+- production update;
+- enterprise review.
 
-### Breakout / large round trigger
+Potential conversion products:
 
-Raise aggressively only when the capital accelerates an already-working loop:
+1. **Launch Proof** — one-time payment.
+2. **Continuous Proof** — monthly.
+3. **Agency Fleet** — portfolio subscription.
+4. **Proof API** — usage.
+5. **Enterprise Gate** — annual contract.
 
-- platform integrations;
-- enterprise sales;
-- global trust infrastructure;
-- certified adapters;
-- security/compliance maturity.
-
-Never use funding to hide weak activation.
+This supports many paid customers without forcing every user into the same subscription.
 
 ---
 
-# 14. The Lean Distribution Stack
+# 19. Partner-Led Market Capture
 
-First six months, every channel should be product-adjacent.
+Lovable used partner/co-marketing channels; Relyo should design partner economics from the beginning.
 
-Priority order:
+Partner types:
 
-1. GitHub App + Checks
-2. Production Passport badge
-3. Free Proof Scan
-4. founder-led demos
-5. MCP / CLI / SDK
-6. agency fleet adoption
-7. builder partnerships
-8. reliability research/PR
-9. accelerator/portfolio partnerships
-10. technical SEO from proof/failure documentation
+### Agencies
 
-Avoid early dependence on:
+Relyo improves client trust and creates a recurring service layer.
 
-- expensive paid ads;
-- generic influencer sponsorships;
-- giant sales teams;
-- enterprise conferences before enterprise product exists;
-- brand campaigns without product proof.
+### AI builders
 
----
+Relyo adds independent verification without competing for their core builder relationship.
 
-# 15. SEO as a Product Output
+### Infrastructure providers
 
-Every recurring failure class can become a high-intent technical page:
+Relyo helps users implement verified best practices on their service.
 
-```text
-Vercel Supabase OAuth callback failed
-Stripe webhook successful but subscription not activated
-Supabase RLS AI generated app
-Lovable app production verification
-AI app restore test
-Cursor generated app deployment regression
-```
+### Accelerators/VCs
 
-The page should contain:
+Offer portfolio app readiness days.
 
-- symptom;
-- why it happens;
-- how Relyo detects it;
-- how the Proof Contract verifies the fix;
-- CTA: “Prove my app.”
+### Creators/educators
 
-This creates search demand around symptoms before users know the category name.
+Teach real launch reliability, not fear marketing.
+
+### Consultants/MSPs
+
+Use Relyo to scale assurance across many clients.
 
 ---
 
-# 16. Founder-Led Category Marketing
+# 20. The “100 Apps Verified” Launch Program
 
-The founder should repeatedly communicate three messages.
+A flagship launch campaign:
 
-### Message 1 — The uncomfortable truth
+# **100 Apps Verified**
 
-> **AI saying “done” is not proof.**
+Invite 100 founders who built with:
 
-### Message 2 — The new behavior
+- Lovable;
+- Replit;
+- Cursor;
+- Bolt;
+- v0;
+- Claude Code;
+- Codex;
+- traditional engineering.
 
-> **Every important release should be independently proven.**
+Promise:
 
-### Message 3 — The artifact
+> We will help you verify the critical production flows before your next launch.
 
-> **That proof should travel with the release as a Production Passport.**
+Do not compare which builder is “worst.”
 
-Do not explain 20 features in public messaging.
+Publish aggregate lessons:
 
-Teach one mental model until the market repeats it.
+- most common auth problems;
+- most common payment-state mistakes;
+- most forgotten recovery check;
+- what founders should verify next time.
 
----
-
-# 17. Partnership Strategy — Do Not Attack Builders
-
-Never market Relyo as:
-
-> “Lovable/Replit/Cursor builds bad apps.”
-
-That destroys partnership potential.
-
-Correct framing:
-
-> **AI builders are making software creation abundant. Relyo gives their customers independent proof that the output is ready for the real world.**
-
-Partner value proposition:
-
-- fewer support tickets;
-- fewer failed launches;
-- stronger enterprise trust;
-- independent evidence;
-- lower internal verification engineering cost;
-- better feedback data for the builder's own agent;
-- white-label proof.
-
-Builders growing faster should make Relyo grow faster.
+Every founder becomes a case study/referral source.
 
 ---
 
-# 18. The Builder Partnership Ladder
+# 21. The Reliability Report as a Growth Asset
 
-Do not start by asking the largest platform for a strategic deal.
+First external report should combine established third-party evidence with Relyo’s own data when sample quality is adequate.
 
-Sequence:
+Structure:
 
-```text
-individual founders
-→ agencies
-→ small AI builders
-→ startup studios
-→ mid-size builders
-→ enterprise internal agents
-→ major builders/model labs
-```
+1. Software creation is accelerating.
+2. Production risk remains universal.
+3. Established industry statistics.
+4. Relyo sample methodology.
+5. Observed failure categories.
+6. Practical prevention checklist.
+7. Verification methodology.
 
-For every step, show measurable economic benefit:
+This is more credible than “AI apps fail.”
 
-```text
-failed launches ↓
-support tickets ↓
-time-to-production ↓
-escaped incidents ↓
-enterprise confidence ↑
-```
+The conclusion:
 
-A partner integration must improve the partner's business, not merely Relyo's distribution.
+> **Build faster. Verify the critical outcomes before they matter.**
 
 ---
 
-# 19. The “Relyo Verified” Trust Brand
-
-The badge must never become a meaningless paid seal.
-
-Rules:
-
-- only issued from actual contracts;
-- always tied to exact release/environment;
-- evidence inspectable;
-- validity expires;
-- proof degrades when contracts fail;
-- unknowns/exclusions visible;
-- no absolute “100% secure” claim.
-
-The badge becomes valuable only if users trust that it cannot be bought.
-
----
-
-# 20. Growth Metrics — The Only Dashboard That Matters
-
-## Awareness
-
-- free scans/week;
-- % organic;
-- branded search growth;
-- Reliability Index citations/mentions;
-- “False Done” phrase adoption.
-
-## Activation
-
-- connect → Production Graph time;
-- % scans discovering material unknown/failure;
-- % users starting deeper proof;
-- time to first verified outcome.
-
-## Product value
-
-- verified releases;
-- critical journeys verified;
-- failures caught before customer impact;
-- remediation success rate;
-- escaped incident rate after proof;
-- false-pass rate.
-
-## Virality
-
-- passports shared;
-- visitors per public Passport;
-- scan signups originating from Passport;
-- GitHub badge installs;
-- referral coefficient.
-
-## Platform transition
-
-- external API/MCP initiated proof runs;
-- builder integrations;
-- percentage of proof runs not initiated from Relyo dashboard;
-- third-party Passport consumers.
-
-## Economics
-
-- cost per proof run;
-- gross margin;
-- founder/team paid conversion;
-- agency ARPA;
-- platform revenue;
-- enterprise ACV;
-- CAC payback.
-
-## Retention
-
-- apps continuously verified after 30/90 days;
-- Passport refresh frequency;
-- proof runs per active app;
-- platform net retention.
-
----
-
-# 21. Weekly Hypergrowth Operating Cadence
-
-Every week the team answers:
-
-1. What hidden failure did we discover most often?
-2. Can it become a deterministic Proof Contract?
-3. Can it be safely remediated?
-4. Can that contract create shareable proof?
-5. Which acquisition loop generated the most activated apps?
-6. What stopped a user from reaching R1/R2?
-7. Which proof generated a partner conversation?
-8. Which expensive feature did not create verified outcomes?
-9. What lowered false-pass probability?
-10. What did we learn that a competitor cannot learn without our proof volume?
-
-### Weekly release rule
-
-Every week should improve at least one of:
-
-```text
-proof depth
-activation speed
-shareability
-partner distribution
-failure intelligence
-trust/security
-```
-
-If a feature improves none of these, question why it exists.
-
----
-
-# 22. Product Changes Required by This Hypergrowth Plan
-
-The previous V2 strategy remains correct, but execution priority changes:
-
-### Move earlier
-
-- Free Production Proof Scan;
-- shareable Production Passport;
-- GitHub Check/badge;
-- Proof API;
-- MCP;
-- usage telemetry for Verified Failure Graph;
-- partner/white-label mode;
-- agency fleet workspace;
-- public research methodology.
-
-### Keep narrow
-
-- provider integrations;
-- remediation scope;
-- enterprise feature set;
-- compliance breadth.
-
-### Delay
-
-- hundreds of providers;
-- large custom enterprise features;
-- generic observability replacement;
-- generic security platform;
-- our own IDE;
-- our own frontier model;
-- expensive broad marketing.
-
----
-
-# 23. The AI/Data Flywheel Is Central
+# 22. AI/Data Moat — Growth and Product Become the Same Loop
 
 Every proof run should create privacy-safe structured intelligence:
 
 ```text
 producer family
 stack fingerprint
-contract attempted
+release change
+contract executed
 failure class
 root-cause class
 repair class
@@ -1114,154 +1156,250 @@ latency
 cost
 ```
 
-The flywheel:
+Then:
 
 ```text
-more apps
-→ more proof
-→ more verified failure patterns
-→ better contract selection
-→ faster diagnosis
+more free scans
+→ more paid proofs
+→ more verified failures/outcomes
+→ better contract recommendations
+→ faster verification
 → safer remediation
-→ higher proof accuracy
-→ more partner trust
-→ more apps
+→ better product
+→ stronger case studies/research
+→ more distribution
 ```
 
-This is how Relyo gets smarter without betting the company on one model provider.
+This is the Relyo compounding advantage.
 
-**AI reasons. Evidence decides.**
-
----
-
-# 24. What We Must Never Do for Growth
-
-Do not:
-
-- fabricate security incidents;
-- shame builders using weak or biased samples;
-- publish private customer data;
-- claim an app is “100% safe”;
-- pay for meaningless “Relyo Verified” status;
-- create fake users or fake traction;
-- optimize only for scans while proof adoption is weak;
-- sacrifice verification quality for viral growth;
-- allow the same agent to make consequential changes and self-certify success without independent evidence;
-- call Relyo competitor-free.
-
-There are adjacent competitors in testing, AppSec, observability, DevOps, and builder-native verification. Our opportunity is that **the independent cross-builder proof category is not yet clearly owned**.
+> **AI reasons. Evidence decides.**
 
 ---
 
-# 25. The Correct 6-Month Goal
+# 23. Team: No Famous Marketer Needed Initially
 
-The wrong goal:
+Do not hire a celebrity CMO before the loops work.
 
-> Be worth $2B in six months.
-
-The correct goal:
-
-> **By six months, make the market believe Relyo can become the universal proof layer for machine-built software.**
-
-Evidence required:
+First breakout team can be roughly:
 
 ```text
-users discover a pain they did not know they had
-product proves the pain instantly
-proof artifacts spread organically
-builders begin calling Relyo programmatically
-verified failure data compounds
-customers repeatedly refresh proof
-third parties consume the Passport
-revenue grows rapidly
+Founder/CEO — product narrative, customer onboarding, partnerships, fundraising
+2–4 exceptional product/infra engineers
+1 security/reliability engineer
+1 design/product generalist
+1 growth/devrel/content engineer once activation is working
 ```
 
-If that happens at extraordinary scale, a $1B–$2B valuation can become an outcome.
+Marketing is initially produced by:
 
-It is never the product requirement itself.
+- product magic;
+- founder;
+- users;
+- partners;
+- data;
+- public evidence;
+- shareable Passports.
+
+When one or two acquisition loops become repeatable, hire leadership to scale them.
 
 ---
 
-# 26. Twelve-Month North Star
+# 24. Weekly Growth Operating System
 
-By 12 months, Relyo should try to move from:
+Every week answer:
+
+1. Which acquisition source produced the most **verified** apps?
+2. Which public statistic/content piece drove highest-quality signups?
+3. What percentage of free users reached app-specific findings?
+4. What percentage upgraded to a proof run?
+5. Which proof made users share a Passport?
+6. Why did users refuse to pay?
+7. Which partner can distribute Relyo to many apps?
+8. Which new contract reduces time-to-value most?
+9. What did the Verified Failure Graph learn?
+10. Did false-pass risk improve or worsen?
+11. What is proof cost and gross margin?
+12. Are API/MCP-initiated runs growing faster than dashboard runs?
+
+Every week ship something that improves at least one:
 
 ```text
-“a tool founders use”
+activation
+proof depth
+shareability
+paid conversion
+partner distribution
+verification economics
+trust
 ```
 
-to:
+---
+
+# 25. Sacred Metrics
+
+Do not optimize for vanity scans alone.
+
+### Awareness
+
+- qualified site visitors;
+- checklist usage;
+- free scans;
+- organic/branded search;
+- content citations.
+
+### Activation
+
+- scan → meaningful finding rate;
+- time to first finding;
+- connect → R1/R2 time;
+- proof-run start rate.
+
+### Revenue
+
+- free → one-time Launch Proof conversion;
+- free → subscription conversion;
+- paid accounts;
+- ARR/MRR;
+- agency ARPA;
+- API revenue;
+- enterprise ACV.
+
+### Virality
+
+- Passports shared;
+- visitor-to-scan conversion from Passport;
+- referral coefficient;
+- public badge installs.
+
+### Infrastructure transition
+
+- external API/MCP proof runs;
+- partner-initiated runs;
+- builder integrations;
+- third-party Passport consumers.
+
+### Trust
+
+- false VERIFIED rate;
+- escaped critical incident rate;
+- evidence freshness;
+- rollback success;
+- remediation success.
+
+The false VERIFIED rate remains sacred. Growth never justifies lowering verification quality.
+
+---
+
+# 26. Marketing Guardrails
+
+Never:
+
+- attack Lovable/Replit/Cursor or imply their products are inherently unsafe;
+- claim “all AI apps fail”;
+- use a self-selected scanner sample as universal market prevalence;
+- claim Relyo guarantees zero bugs or 100% safety;
+- publish platform rankings from weak samples;
+- buy fake users/reviews;
+- sell an evidence-free “Relyo Verified” badge;
+- use fear without giving actionable prevention;
+- sacrifice trust to improve conversion.
+
+Always:
+
+- cite source/date/methodology for public statistics;
+- distinguish industry data from Relyo data;
+- show sample caveats;
+- make the builder/founder the hero;
+- position Relyo as complementary assurance;
+- explain exactly what the Passport did and did not prove.
+
+---
+
+# 27. Current Campaign Lines
+
+Primary founder line:
+
+> **Build fast. Verify before customers depend on it.**
+
+Secondary:
+
+> **Before you launch, prove the critical flows.**
+
+Free-tool CTA:
+
+> **Check my app**
+
+Paid CTA:
+
+> **Verify my launch**
+
+Builder/platform:
+
+> **Your users build faster. Relyo helps them launch with independent proof.**
+
+Enterprise:
+
+> **Build with any agent. Verify with one trust layer.**
+
+Long-term:
+
+> **AI builds it. Relyo proves it.**
+
+---
+
+# 28. Six-Month Strategic Test
+
+Do not judge success only by valuation.
+
+Ask:
+
+- Did hundreds of thousands of people learn a launch problem through Relyo?
+- Do tens of thousands of apps refresh proof?
+- Are thousands paying?
+- Is paid growth strongly organic/partner-driven?
+- Do agencies standardize Relyo?
+- Do external builders call Proof API?
+- Is Verified Failure Graph improving product performance?
+- Do Passports travel to investors, clients, buyers or other systems?
+- Is Relyo being cited as a source of software-readiness evidence?
+
+If several are true at exceptional scale, very large financing outcomes become plausible.
+
+---
+
+# 29. Twelve-Month Strategic Test
+
+The most important year-one transformation:
 
 ```text
-“a proof network software producers and software consumers both depend on.”
+Month 1:
+Relyo is a useful founder tool.
+
+Month 12:
+Relyo is a proof network used by producers and consumers of software.
 ```
 
-The decisive milestone is not user count.
+The strongest signal is:
 
-It is:
+> **A meaningful share of proof runs originate from external products, and a meaningful share of Production Passports are consumed outside Relyo.**
 
-> **A meaningful percentage of proof runs are initiated by external products, and a meaningful percentage of Production Passports are consumed by third parties.**
-
-That is the beginning of infrastructure-level network effects.
+That is the beginning of infrastructure/network economics.
 
 ---
 
-# 27. Current Hypergrowth Positioning
+# 30. Execution Instruction
 
-### User-facing
+For marketing/growth work, future developers and agents must:
 
-> **Your AI says the app is done. Prove it.**
+1. read `V2_MASTER_PLAN.md`;
+2. read this file;
+3. read `docs/AI_MOAT.md`;
+4. preserve builder neutrality;
+5. use evidence-led education rather than adversarial slogans;
+6. optimize the free-scan → paid-proof → Passport → partner loop;
+7. maintain rigorous statistic/source notes;
+8. prefer one dense stack over shallow breadth;
+9. move Proof API/MCP early enough that Relyo becomes infrastructure, not only a dashboard;
+10. update this plan when real conversion/retention data contradicts assumptions.
 
-### Founder-facing
-
-> **Connect your app. Relyo proves the real business works.**
-
-### Developer-facing
-
-> **Stop shipping False Done.**
-
-### Builder-facing
-
-> **Your agent builds it. Relyo proves it.**
-
-### Enterprise-facing
-
-> **One independent production trust gate for every coding agent.**
-
-### Long-term
-
-> **Relyo is the independent proof layer for machine-built software.**
-
----
-
-# 28. Evidence Behind This Plan
-
-Current external signals used in forming this plan include:
-
-- Lovable announced a $200M Series A at a $1.8B valuation eight months after launch in July 2025; public reporting at the time cited 2.3M active users, 180k paying subscribers, and approximately $75M–$100M ARR. https://lovable.dev/blog/200m-series-a-fundraise and https://techcrunch.com/2025/07/23/eight-months-in-swedish-unicorn-lovable-crosses-the-100m-arr-milestone/
-- Lovable announced a $400M Series C at a $13.3B valuation in August 2026 and reported more than 60M projects and 900M+ monthly visits to Lovable-built apps. https://lovable.dev/blog/series-c
-- Replit announced a $400M round at a $9B valuation in March 2026 and said its valuation had tripled in six months. https://replit.com/blog/replit-raises-400-million-dollars
-- Uber described 34%+ month-over-month growth in 2011 while rapidly expanding its proven city model. https://www.uber.com/fr/en/blog/were-going-global-with-big-funding/
-- American Express describes its differentiated closed-loop network, direct ecosystem relationships, trust/security posture, and agentic-commerce strategy. https://www.americanexpress.com/en-us/newsroom/articles/financial-news/2026-chairman-s-letter-to-shareholders.html and https://www.americanexpress.com/en-us/company/agentic-commerce/
-- Wiz described reaching a $6B valuation in 18 months and signing its first multi-million-dollar customer six months after the first line of code. https://www.wiz.io/blog/celebrating-our-series-c-zero-to-6-billion-in-18-months
-
-These comparables are evidence of what exceptional execution can look like, not promises that Relyo will reproduce their outcomes.
-
----
-
-# 29. Execution Instruction for Future Agents
-
-When working on growth or product execution:
-
-1. Read `V2_MASTER_PLAN.md`.
-2. Read `docs/V2_HYPERGROWTH_CATEGORY_PLAN.md`.
-3. Read `docs/AI_MOAT.md`.
-4. Read `V2_EXECUTION_PLAN.md`.
-5. Prefer product-led growth surfaces over paid marketing.
-6. Preserve builder neutrality.
-7. Optimize for proof density on the initial stack.
-8. Build shareable proof and headless distribution early.
-9. Track false-pass rate as a sacred trust metric.
-10. Update this plan when real data contradicts assumptions.
-
-Relyo should learn faster than the market because every verified outcome improves both product and distribution.
+Relyo should become famous for helping people **verify**, not for attacking how they chose to build.
