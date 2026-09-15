@@ -197,12 +197,13 @@ export function buildVercelR1Report(input: {
     kind: "application",
   };
 
+  const deploymentId = input.provider.productionDeployment?.id;
   const release = input.discovery.repo
     ? {
         kind: "git" as const,
         repository: input.discovery.repo.repository,
         commitSha: input.discovery.repo.commitSha,
-        buildId: input.provider.productionDeployment?.id,
+        ...(deploymentId ? { buildId: deploymentId } : {}),
       }
     : {
         kind: "url-observation" as const,
