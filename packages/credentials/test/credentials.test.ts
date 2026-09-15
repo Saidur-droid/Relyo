@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import {
   CredentialCipher,
   MemoryCredentialStore,
+  bindProviderProject,
   createPkceTransaction,
   createProviderConnection,
   secureEqual,
@@ -63,5 +64,35 @@ describe("provider credential boundary", () => {
 
     expect(loaded?.id).toBe(connection.id);
     expect(JSON.stringify(loaded)).not.toContain("never-store-plaintext");
+  });
+
+  it("persists an explicit provider project binding without changing the encrypted credential", async () => {
+    const cipher = new CredentialCipher(randomBytes(32).toString("base64url"), "test-key");
+    const connection = createProviderConnection({
+      provider: "vercel",
+      scopes: ["read:project"],
+      credential: cipher.encrypt({
+        accessToken: "bound-project-secret",
+        tokenType: "Bearer",
+        scope: ["read:project"],
+      }),
+      now: "2026-09-15T00:00:00.000Z",
+    });
+    const bound = bindProviderProject(connection, {
+      projectId: "prj_123",
+      projectName: "relyo-demo",
+      now: "2026-09-15T01:00:00.000Z",
+    });
+    const store = new MemoryCredentialStore();
+    await store.save(bound);
+    const loaded = await store.get(connection.id);
+
+    expect(loaded).toMatchObject({
+      boundProjectId: "prj_123",
+      boundProjectName: "relyo-demo",
+      updatedAt: "2026-09-15T01:00:00.000Z",
+    });
+    expect(loaded?.credential).toEqual(connection.credential);
+    expect(JSON.stringify(loaded)).not.toContain("bound-project-secret");
   });
 });

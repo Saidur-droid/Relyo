@@ -37,6 +37,8 @@ export interface ProviderConnection {
   provider: "vercel";
   providerAccountId?: string;
   providerTeamId?: string;
+  boundProjectId?: string;
+  boundProjectName?: string;
   scopes: string[];
   credential: EncryptedCredentialEnvelope;
   createdAt: string;
@@ -148,11 +150,14 @@ export class PostgresCredentialStore implements CredentialStore {
   async save(connection: ProviderConnection): Promise<void> {
     await this.pool.query(
       `INSERT INTO provider_connections
-       (id, provider, provider_account_id, provider_team_id, scopes, credential_envelope, created_at, updated_at)
-       VALUES ($1, $2, $3, $4, $5::jsonb, $6::jsonb, $7, $8)
+       (id, provider, provider_account_id, provider_team_id, bound_project_id, bound_project_name,
+        scopes, credential_envelope, created_at, updated_at)
+       VALUES ($1, $2, $3, $4, $5, $6, $7::jsonb, $8::jsonb, $9, $10)
        ON CONFLICT (id) DO UPDATE SET
          provider_account_id = EXCLUDED.provider_account_id,
          provider_team_id = EXCLUDED.provider_team_id,
+         bound_project_id = EXCLUDED.bound_project_id,
+         bound_project_name = EXCLUDED.bound_project_name,
          scopes = EXCLUDED.scopes,
          credential_envelope = EXCLUDED.credential_envelope,
          updated_at = EXCLUDED.updated_at`,
@@ -161,6 +166,8 @@ export class PostgresCredentialStore implements CredentialStore {
         connection.provider,
         connection.providerAccountId ?? null,
         connection.providerTeamId ?? null,
+        connection.boundProjectId ?? null,
+        connection.boundProjectName ?? null,
         JSON.stringify(connection.scopes),
         JSON.stringify(connection.credential),
         connection.createdAt,
@@ -175,13 +182,15 @@ export class PostgresCredentialStore implements CredentialStore {
       provider: "vercel";
       provider_account_id: string | null;
       provider_team_id: string | null;
+      bound_project_id: string | null;
+      bound_project_name: string | null;
       scopes: string[];
       credential_envelope: EncryptedCredentialEnvelope;
       created_at: string | Date;
       updated_at: string | Date;
     }>(
-      `SELECT id, provider, provider_account_id, provider_team_id, scopes,
-              credential_envelope, created_at, updated_at
+      `SELECT id, provider, provider_account_id, provider_team_id, bound_project_id, bound_project_name,
+              scopes, credential_envelope, created_at, updated_at
        FROM provider_connections WHERE id = $1`,
       [connectionId],
     );
@@ -196,6 +205,8 @@ export class PostgresCredentialStore implements CredentialStore {
       provider: row.provider,
       ...(row.provider_account_id ? { providerAccountId: row.provider_account_id } : {}),
       ...(row.provider_team_id ? { providerTeamId: row.provider_team_id } : {}),
+      ...(row.bound_project_id ? { boundProjectId: row.bound_project_id } : {}),
+      ...(row.bound_project_name ? { boundProjectName: row.bound_project_name } : {}),
       scopes: row.scopes,
       credential: row.credential_envelope,
       createdAt,
@@ -222,5 +233,21 @@ export function createProviderConnection(input: {
     credential: input.credential,
     createdAt: now,
     updatedAt: now,
+  };
+}
+
+export function bindProviderProject(
+  connection: ProviderConnection,
+  input: { projectId: string; projectName: string; now?: string },
+): ProviderConnection {
+  const projectId = input.projectId.trim();
+  const projectName = input.projectName.trim();
+  if (!projectId || !projectName) throw new Error("Provider project binding requires an ID and name.");
+
+  return {
+    ...cloneConnection(connection),
+    boundProjectId: projectId,
+    boundProjectName: projectName,
+    updatedAt: input.now ?? new Date().toISOString(),
   };
 }

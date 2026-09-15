@@ -1,0 +1,132 @@
+.heroActions {
+  margin-top: 28px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.primaryLink,
+.secondaryButton,
+.verifyForm button {
+  border: 0;
+  border-radius: 12px;
+  padding: 13px 16px;
+  background: var(--accent);
+  color: #062016;
+  font-weight: 780;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.textLink {
+  padding: 12px 8px;
+  color: #b7cbc1;
+  font-size: 13px;
+}
+
+.verifyStage { padding-bottom: 92px; }
+.verifyShell {
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  padding: 34px;
+  background: linear-gradient(145deg, rgba(102,240,176,.055), rgba(7,16,13,.78) 45%);
+  box-shadow: 0 30px 80px rgba(0,0,0,.18);
+}
+.verifyIntro { max-width: 760px; }
+.verifyIntro h2 { margin-top: 9px; font-size: 36px; }
+.verifyIntro p { color: var(--muted); line-height: 1.65; }
+.securityStrip { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 18px; }
+.securityStrip span {
+  border: 1px solid rgba(102,240,176,.17);
+  color: #9fc6b3;
+  border-radius: 999px;
+  padding: 7px 10px;
+  font-size: 10px;
+}
+.verifyFlow { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 30px; }
+.verifyStep {
+  min-height: 180px;
+  display: grid;
+  align-content: start;
+  gap: 12px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 15px;
+  background: rgba(5,13,10,.54);
+}
+.stepTop { display: flex; align-items: center; gap: 10px; }
+.stepTop > span {
+  color: var(--accent);
+  border: 1px solid rgba(102,240,176,.2);
+  border-radius: 999px;
+  padding: 4px 7px;
+  font-size: 9px;
+}
+.stepTop strong { font-size: 13px; }
+.stepReady { color: #a7c5b6; font-size: 12px; line-height: 1.55; }
+.verifyStep small { color: #728b7f; line-height: 1.45; }
+.verifyStep select,
+.verifyForm input {
+  width: 100%;
+  padding: 12px 13px;
+  background: #091510;
+  color: var(--text);
+  border: 1px solid rgba(169,255,213,.16);
+  border-radius: 10px;
+  outline: none;
+}
+.verifyStep select:focus,
+.verifyForm input:focus { border-color: rgba(102,240,176,.65); }
+.secondaryButton {
+  background: rgba(102,240,176,.09);
+  color: var(--accent);
+  border: 1px solid rgba(102,240,176,.18);
+}
+.secondaryButton:disabled,
+.verifyForm button:disabled { opacity: .42; cursor: not-allowed; }
+.verifyForm { display: grid; gap: 8px; }
+.verifyMessage {
+  margin-top: 16px;
+  border: 1px solid rgba(170,185,255,.17);
+  border-radius: 12px;
+  padding: 13px 15px;
+  color: #aeb8df;
+  background: rgba(170,185,255,.035);
+  font-size: 12px;
+}
+.launchProofResult {
+  margin-top: 22px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+  display: grid;
+  gap: 17px;
+}
+.launchProofHead { display: flex; justify-content: space-between; gap: 20px; align-items: center; }
+.launchProofHead h3 { margin: 7px 0 6px; font-size: 25px; }
+.launchProofHead p { margin: 0; color: var(--muted); font-size: 12px; }
+.signatureRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  padding: 12px 14px;
+  border-radius: 11px;
+  background: rgba(255,255,255,.02);
+  color: #758b80;
+  font-size: 10px;
+}
+.signatureRow code { color: #a2b9ad; }
+
+@media (max-width: 900px) {
+  .verifyFlow { grid-template-columns: 1fr; }
+  .verifyStep { min-height: auto; }
+}
+
+@media (max-width: 620px) {
+  .verifyShell { padding: 22px; }
+  .verifyIntro h2 { font-size: 29px; }
+  .launchProofHead { align-items: flex-start; }
+}

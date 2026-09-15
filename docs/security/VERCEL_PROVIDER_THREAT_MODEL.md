@@ -1,6 +1,6 @@
 # Vercel Provider Credential Threat Model
 
-> Scope: Issue #2 read-only provider evidence used to move a release from public discovery toward `R1 Launch Verified`.
+> Scope: Issues #2 and #3 — read-only Vercel evidence plus the OAuth/PKCE connection and user-facing `Verify My Launch` path.
 
 ## Security objective
 
@@ -8,25 +8,49 @@ Observe enough Vercel production state to independently verify release identity,
 
 ## Risk classification
 
-All operations in this issue are `OBSERVE`.
+All Vercel operations in the current product are `OBSERVE`.
 
-No deployment promotion, rollback, environment mutation, domain mutation, redeploy, or project change is permitted in this adapter.
+No deployment promotion, rollback, environment mutation, domain mutation, redeploy, project mutation, or secret mutation is exposed by this adapter or UI.
 
-## Credential boundary
+## OAuth and browser trust boundary
+
+The normal product flow never asks a founder to paste a provider token.
+
+Current controls:
+
+1. `/api/vercel/connect` creates unpredictable OAuth `state`, OIDC `nonce`, and a PKCE verifier/challenge.
+2. State, nonce, and verifier are kept only in short-lived `HttpOnly`, `SameSite=Lax` cookies.
+3. The callback rejects missing/mismatched state and validates the OIDC ID token issuer, audience, signature and nonce.
+4. Authorization-code exchange happens server-side and includes the PKCE verifier.
+5. Provider access/refresh tokens are encrypted before persistence with AES-256-GCM authenticated encryption.
+6. The long-lived browser cookie contains only an opaque Relyo connection ID; it never contains provider credentials.
+7. Project-list, project-bind and proof responses expose only normalized project/proof data, never the credential envelope or decrypted token.
+8. State-changing product POSTs reject an explicit cross-origin `Origin` header.
+9. Missing Vercel App, database, signing-key, or encryption-key configuration fails closed rather than falling back to browser tokens or plaintext storage.
+
+## Credential storage boundary
 
 Provider credentials are capabilities, not proof data.
 
 Required controls:
 
-- credentials are injected at runtime through a server-side credential boundary;
-- credentials are never accepted in browser-visible form for normal product UX;
+- credentials remain server-side;
+- credentials are encrypted at rest using an authenticated envelope;
 - credentials are never committed to Git;
 - credentials are never placed in model context;
 - credentials are never included in evidence envelopes or Production Passports;
 - credentials are never emitted in analytics/log fields;
 - use the narrowest practical Vercel read permissions and project/team scope;
 - support credential revocation/rotation without invalidating historical evidence;
-- production deployment actions require a separate, higher-risk capability in future work.
+- production deployment actions require a separate higher-risk capability in future work.
+
+The credential-encryption key and Passport signing key are deployment secrets. Production should move these to KMS/HSM-backed key management as the system matures.
+
+## Explicit project binding
+
+The user must select a project returned through the authenticated read-only Vercel project API. Relyo then stores only that provider project ID/name alongside the encrypted connection record.
+
+The proof API does not accept an arbitrary project ID from the browser. It reads the stored project binding, uses that binding for provider observation, and rejects provider identity mismatch. This limits cross-project confusion and prevents a later browser request from silently switching the evidence target.
 
 ## Environment variables
 
@@ -62,44 +86,33 @@ R1 requires a verified Vercel domain that matches the checked public host. A ran
 
 ## Rollback readiness
 
-The Vercel API supports promoting an existing deployment to production. Relyo uses that capability only as observed capability metadata in this issue; it does not call the mutation endpoint.
+The Vercel API supports promoting an existing deployment to production. Relyo uses that capability only as observed capability metadata in R1; it does not call the mutation endpoint.
 
-For the current R1 contract, rollback readiness requires:
+Current R1 rollback readiness requires a current production deployment plus at least one previous `READY` production deployment for the same project. This is deliberately weaker than R3 resilience proof; R3 must exercise recovery rather than only observe an eligible prior deployment.
 
-- a current production deployment;
-- at least one previous `READY` production deployment observed for the same project;
-- provider capability to promote an existing deployment.
+## Evidence and Passport integrity
 
-This is deliberately weaker than R3 resilience proof. R3 should require a stronger exercised recovery/restore contract rather than merely observing an eligible prior deployment.
+Provider observations are converted to redacted evidence envelopes containing normalized provider/project identity, deployment metadata, Git commit metadata, verified domains, environment key names/targets/types, rollback metadata, collection time, and SHA-256 evidence hashes.
 
-## Evidence integrity
+The Verify My Launch path executes deterministic R1 contracts, signs the resulting Production Passport with Ed25519, and stores the run/evidence through the immutable ProofStore. The browser receives the signed proof envelope, blockers, and safe project identity only.
 
-Provider observations are converted to redacted evidence envelopes containing:
+## Main threats and controls
 
-- provider/project identity;
-- normalized deployment identity and state;
-- deployment Git commit metadata when available;
-- verified domain metadata;
-- environment key names/targets/types only;
-- rollback candidate counts/capability;
-- SHA-256 evidence hash;
-- collection timestamp.
+### OAuth CSRF / authorization response substitution
 
-Production Passports can be wrapped in Ed25519 signatures. Signature keys must be held independently from ordinary application data, ideally through KMS/HSM-backed signing in production.
-
-## Main threats
+Controls: high-entropy state, timing-safe equality, short-lived HttpOnly transaction cookies, PKCE, OIDC nonce validation, issuer/audience/signature verification.
 
 ### Token exfiltration
 
-Controls: server-only credential boundary, no token persistence in Passport/evidence, log redaction, least privilege, rotation/revocation.
+Controls: server-side code exchange, AES-256-GCM at rest, opaque HttpOnly connection cookie, no token fields in browser responses/evidence/analytics/model context, narrow read-only capabilities.
 
-### Secret-value leakage from env API
+### Secret-value leakage from environment API
 
-Control: value-like response fields are discarded during normalization and are covered by adapter tests that assert a supplied secret test value does not survive serialization.
+Control: value-like response fields are discarded during normalization; adapter tests assert supplied secret values do not survive serialization.
 
 ### Cross-project confusion
 
-Control: all observations bind to provider project ID/name and the resulting Passport environment binds to that project ID.
+Controls: user can bind only a project returned by the authenticated Vercel API; binding is persisted server-side; verification uses only the stored binding and checks observed provider project identity.
 
 ### Release confusion / stale deployment
 
@@ -107,22 +120,23 @@ Control: compare exact production deployment commit metadata to repository relea
 
 ### False rollback confidence
 
-Control: no previous READY production deployment means rollback contract fails. Current R1 is provider-observed readiness only; stronger recovery claims remain out of scope.
+Control: no previous READY production deployment means rollback contract fails. Current R1 remains provider-observed readiness only.
 
 ### Credential misuse for mutation
 
-Control: adapter implements GET-only calls. Mutation APIs are not exposed by this package.
+Control: current adapter uses GET-only provider calls. Mutation APIs are not exposed.
 
-## Required hardening before broad production use
+## Residual risks / required hardening before broad production use
 
-- OAuth/App-based credential acquisition rather than manually managed broad tokens;
-- encrypted credential vault/KMS with auditable access;
-- per-project capability tokens where possible;
-- explicit credential-access audit events without token contents;
-- distributed job isolation for provider calls;
-- retry budgets and provider rate-limit handling;
-- signed evidence by a verifier-specific key;
-- key rotation and signature key registry;
-- evidence freshness/expiry policy;
-- security review of provider scopes;
-- private-runner option for enterprise customers.
+- rotate/refresh OAuth credentials without exposing refresh tokens and handle provider revocation explicitly;
+- bind opaque connection IDs to an authenticated Relyo user/account before multi-user production launch;
+- add server-side session invalidation/revocation and connection disconnect flows;
+- add credential-access audit events containing no secret material;
+- move encryption/signing keys to KMS/HSM-backed storage and maintain a key registry/rotation path;
+- review exact Vercel App scopes against provider changes and deny unexpected privilege expansion;
+- add distributed runner/job isolation, provider retry budgets and rate-limit handling;
+- define evidence freshness/expiry and provider-connection freshness policies;
+- add enterprise private-runner/data-residency options;
+- commission external security review before broad production credential handling.
+
+Relyo must never interpret this connection flow as proof of total application safety. The Passport remains scoped to the exact contracts, release, environment, evidence, timestamp and exclusions shown to the user.

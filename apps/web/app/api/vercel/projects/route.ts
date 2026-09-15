@@ -28,10 +28,23 @@ export async function GET(request: NextRequest) {
     });
 
     return Response.json(
-      { projects },
+      {
+        projects: projects.map((project) => ({
+          id: project.id,
+          name: project.name,
+          framework: project.framework,
+        })),
+        boundProject: connection.boundProjectId
+          ? {
+              id: connection.boundProjectId,
+              name: connection.boundProjectName ?? connection.boundProjectId,
+            }
+          : null,
+      },
       {
         headers: {
           "cache-control": "no-store",
+          "content-security-policy": "default-src 'none'; frame-ancestors 'none'",
           "x-content-type-options": "nosniff",
         },
       },
