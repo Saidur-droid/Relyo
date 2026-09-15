@@ -9,14 +9,21 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@relyo/adapter-vercel": "workspace:*",
     "@relyo/contracts": "workspace:*",
+    "@relyo/credentials": "workspace:*",
     "@relyo/discovery": "workspace:*",
     "@relyo/kernel": "workspace:*",
+    "@relyo/proof-engine": "workspace:*",
+    "@relyo/store": "workspace:*",
+    "jose": "^6.1.0",
     "next": "16.2.9",
+    "pg": "^8.16.3",
     "react": "19.1.1",
     "react-dom": "19.1.1"
   },
   "devDependencies": {
+    "@types/pg": "^8.15.5",
     "@types/react": "^19.1.0",
     "@types/react-dom": "^19.1.0"
   }
