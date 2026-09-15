@@ -18,8 +18,22 @@ describe("VercelReadClient", () => {
       if (url.includes("/v13/deployments")) {
         return jsonResponse({
           deployments: [
-            { uid: "dpl_new", url: "demo-new.vercel.app", readyState: "READY", target: "production", createdAt: 20 },
-            { uid: "dpl_old", url: "demo-old.vercel.app", readyState: "READY", target: "production", createdAt: 10 },
+            {
+              uid: "dpl_new",
+              url: "demo-new.vercel.app",
+              readyState: "READY",
+              target: "production",
+              createdAt: 20,
+              meta: { githubCommitSha: "0123456789abcdef0123456789abcdef01234567" },
+            },
+            {
+              uid: "dpl_old",
+              url: "demo-old.vercel.app",
+              readyState: "READY",
+              target: "production",
+              createdAt: 10,
+              meta: { githubCommitSha: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" },
+            },
           ],
         });
       }
@@ -41,6 +55,9 @@ describe("VercelReadClient", () => {
     const observation = await client.inspectProduction({ projectIdOrName: "demo" });
 
     expect(observation.productionDeployment?.id).toBe("dpl_new");
+    expect(observation.productionDeployment?.gitCommitSha).toBe(
+      "0123456789abcdef0123456789abcdef01234567",
+    );
     expect(observation.rollback.ready).toBe(true);
     expect(observation.environmentKeys).toEqual([
       { key: "DATABASE_URL", targets: ["production"], type: "encrypted" },
@@ -58,7 +75,14 @@ describe("VercelReadClient", () => {
       if (url.includes("/v13/deployments")) {
         return jsonResponse({
           deployments: [
-            { uid: "dpl_only", url: "demo.vercel.app", readyState: "READY", target: "production", createdAt: 20 },
+            {
+              uid: "dpl_only",
+              url: "demo.vercel.app",
+              readyState: "READY",
+              target: "production",
+              createdAt: 20,
+              meta: { githubCommitSha: "0123456789abcdef0123456789abcdef01234567" },
+            },
           ],
         });
       }
