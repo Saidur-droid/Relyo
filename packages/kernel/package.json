@@ -7,6 +7,10 @@
     ".": {
       "types": "./src/index.ts",
       "import": "./src/index.ts"
+    },
+    "./signing": {
+      "types": "./src/signing.ts",
+      "import": "./src/signing.ts"
     }
   },
   "scripts": {
