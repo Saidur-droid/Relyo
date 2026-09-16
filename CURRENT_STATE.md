@@ -4,6 +4,28 @@
 
 Last updated: 2026-09-16 (Bangladesh time)
 
+## Continuation verification — 2026-09-16 session
+
+The deployment remains **blocked and unverified**. No application or build configuration was changed in this continuation because the latest Vercel build log could not be accessed.
+
+### Evidence checked
+
+- Main at the start of this continuation: `db983d48f746818b5bdbab57bf166f85251e7b1f` (the handoff documentation commit).
+- GitHub's Vercel commit status for that main revision is **failure**, pointing to [deployment ADKof18Fhtrx2GjkNDm1D6ZNXLiG](https://vercel.com/saidur-droids-projects/relyo/ADKof18Fhtrx2GjkNDm1D6ZNXLiG). This is newer than the historical `e978ec8` deployment below.
+- [GitHub Actions verify job](https://github.com/Saidur-droid/Relyo/actions/runs/35029316389/job/104583810711) completed successfully for `db983d48`. Its logs confirm pnpm 10.15.1 dependency installation, typechecking, **34 passing tests across 11 test files**, and a successful Next.js 16.2.9 production build.
+- These CI results are **not** proof of a successful Vercel deployment or production OAuth/database behavior.
+- Connected Vercel lists the expected team: `saidur-droids-projects`, ID `team_BsJXXtOBNmww7MhlgiE7JzzO`.
+- Its project list returns only `ai-experience-network`, not `relyo`. Getting `relyo` by name returns **404** with both the team slug and team ID. Latest deployment lookup/build-log retrieval also returns **404**.
+- Plugin discovery confirms Vercel is already installed and enabled. The available plugin-management actions do not provide a reconnect operation. The exact cause of the missing project visibility is unknown.
+
+### Next executable action
+
+Reconnect/re-authorize the Vercel connection for the account/team containing `relyo`, ensuring that this project is visible. Do not ask the founder to repeat database setup or supply secrets.
+
+Once visibility is restored, resolve the current main SHA/status again (this documentation update may trigger another deployment), inspect that exact deployment's build log and effective project settings, and make the smallest evidence-backed fix. Then complete the production E2E checklist below. **Issue #5 remains deferred.**
+
+Risk classification for this continuation: provider/GitHub inspection `OBSERVE`; this documentation-only continuity update `SAFE_REVERSIBLE`. No production settings, credentials, database schema, or application code were mutated.
+
 ## Immediate priority
 
 **Do not start a new product issue yet. Finish production deployment and end-to-end verification of the Vercel `Verify My Launch` flow first.**
@@ -30,7 +52,7 @@ Deployment troubleshooting commits made afterward:
 - `4b436dfa338601ba6855e78fcf466b99bf0b6520` — root Vercel install switched to Bun to bypass pnpm registry metadata failure.
 - `e978ec81b39d1d5fd07c20d89e4ccc02686cc9ff` — added `apps/web/vercel.json` so the install/build override is visible if the Vercel project root is `apps/web`.
 
-At this handoff, `e978ec81b39d1d5fd07c20d89e4ccc02686cc9ff` is the latest known main commit and its Vercel deployment is **failing**.
+At the original handoff, `e978ec81b39d1d5fd07c20d89e4ccc02686cc9ff` was the latest inspected application/configuration commit and its Vercel deployment was **failing**. See the continuation verification above for the subsequently verified main revision and newer failed deployment.
 
 Latest known Vercel deployment target for that commit:
 
@@ -162,7 +184,7 @@ However, the latest deployment for commit `e978ec8` still reports failure. **Do 
 ## First actions for the next session
 
 1. Read `AGENTS.md`, this file, then the required V2 docs before material product changes.
-2. Inspect the Vercel status/build log for latest main commit `e978ec81b39d1d5fd07c20d89e4ccc02686cc9ff` and deployment `Ag6x5GJZLRAZ6JGk4SKR5yc625mR`.
+2. Resolve the current main commit and its Vercel status target, then inspect that exact deployment's build log. Historical targets are recorded above; do not assume they are still the latest.
 3. Confirm what Vercel actually uses for:
    - project Root Directory;
    - Install Command;
