@@ -35,8 +35,12 @@ type VercelTokenResponse = {
 };
 
 export async function GET(request: NextRequest) {
-  const failure = () => {
-    const response = NextResponse.redirect(new URL("/?vercel=error", request.url));
+  const failure = (stage: string, status?: number) => {
+    const url = new URL("/", request.url);
+    url.searchParams.set("vercel", "error");
+    url.searchParams.set("stage", stage);
+    if (typeof status === "number") url.searchParams.set("status", String(status));
+    const response = NextResponse.redirect(url);
     clearTransactionCookies(response);
     response.headers.set("cache-control", "no-store");
     return response;
@@ -50,7 +54,7 @@ export async function GET(request: NextRequest) {
     const codeVerifier = request.cookies.get("relyo_vercel_oauth_verifier")?.value;
 
     if (!code || !secureEqual(returnedState, storedState) || !storedNonce || !codeVerifier) {
-      return failure();
+      return failure("transaction");
     }
 
     const config = vercelOAuthConfig();
@@ -70,16 +74,24 @@ export async function GET(request: NextRequest) {
       signal: AbortSignal.timeout(8_000),
     });
 
-    if (!tokenResponse.ok) return failure();
+    if (!tokenResponse.ok) return failure("token-exchange", tokenResponse.status);
     const tokenData = await tokenResponse.json() as VercelTokenResponse;
-    if (!tokenData.access_token || !tokenData.token_type || !tokenData.id_token) return failure();
+    if (!tokenData.access_token || !tokenData.token_type || !tokenData.id_token) {
+      return failure("token-payload");
+    }
 
-    const verified = await jwtVerify(tokenData.id_token, JWKS, {
-      issuer: "https://vercel.com",
-      audience: config.clientId,
-    });
+    let verified;
+    try {
+      verified = await jwtVerify(tokenData.id_token, JWKS, {
+        issuer: "https://vercel.com",
+        audience: config.clientId,
+      });
+    } catch {
+      return failure("id-token");
+    }
+
     if (typeof verified.payload.nonce !== "string" || !secureEqual(verified.payload.nonce, storedNonce)) {
-      return failure();
+      return failure("nonce");
     }
 
     const scopes = (tokenData.scope ?? config.scope)
@@ -96,27 +108,31 @@ export async function GET(request: NextRequest) {
         : {}),
     };
 
-    const services = credentialServices();
-    const connection = createProviderConnection({
-      provider: "vercel",
-      scopes,
-      credential: services.cipher.encrypt(tokens),
-      providerAccountId: typeof verified.payload.sub === "string" ? verified.payload.sub : undefined,
-    });
-    await services.store.save(connection);
+    try {
+      const services = credentialServices();
+      const connection = createProviderConnection({
+        provider: "vercel",
+        scopes,
+        credential: services.cipher.encrypt(tokens),
+        providerAccountId: typeof verified.payload.sub === "string" ? verified.payload.sub : undefined,
+      });
+      await services.store.save(connection);
 
-    const response = NextResponse.redirect(new URL("/?vercel=connected", request.url));
-    clearTransactionCookies(response);
-    response.cookies.set("relyo_vercel_connection", connection.id, {
-      httpOnly: true,
-      secure: secureCookie(request),
-      sameSite: "lax",
-      path: "/",
-      maxAge: 60 * 60 * 24 * 30,
-    });
-    response.headers.set("cache-control", "no-store");
-    return response;
+      const response = NextResponse.redirect(new URL("/?vercel=connected", request.url));
+      clearTransactionCookies(response);
+      response.cookies.set("relyo_vercel_connection", connection.id, {
+        httpOnly: true,
+        secure: secureCookie(request),
+        sameSite: "lax",
+        path: "/",
+        maxAge: 60 * 60 * 24 * 30,
+      });
+      response.headers.set("cache-control", "no-store");
+      return response;
+    } catch {
+      return failure("persistence");
+    }
   } catch {
-    return failure();
+    return failure("unexpected");
   }
 }
