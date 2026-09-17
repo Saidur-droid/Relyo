@@ -56,3 +56,10 @@ export function vercelOAuthConfig() {
     scope: process.env.VERCEL_OAUTH_SCOPE?.trim() || "openid profile offline_access",
   };
 }
+
+export function supabaseOAuthConfig() {
+  return {
+    clientId: required("SUPABASE_APP_CLIENT_ID"),
+    clientSecret: required("SUPABASE_APP_CLIENT_SECRET"),
+  };
+}
