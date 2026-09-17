@@ -6,6 +6,7 @@ import {
   credentialServices,
   passportSigningPrivateKeyPem,
   proofStore,
+  vercelProviderReadToken,
 } from "@/lib/server-services";
 
 export const runtime = "nodejs";
@@ -83,7 +84,7 @@ export async function POST(request: NextRequest) {
       ...(githubRepo ? { githubRepo } : {}),
     });
     const provider = await new VercelReadClient({
-      token: tokens.accessToken,
+      token: vercelProviderReadToken(tokens.accessToken),
       ...(connection.providerTeamId ? { teamId: connection.providerTeamId } : {}),
     }).inspectProduction({ projectIdOrName: connection.boundProjectId });
 
