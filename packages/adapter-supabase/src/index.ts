@@ -24,12 +24,26 @@ export interface SupabaseBackupObservation {
   latestStatus: string | null;
 }
 
+export interface SupabaseRlsTableObservation {
+  schema: string;
+  table: string;
+  rlsEnabled: boolean;
+  policyCount: number;
+}
+
+export interface SupabaseRlsObservation {
+  observed: boolean;
+  tables: SupabaseRlsTableObservation[];
+  exposedTableCount: number | null;
+  tablesWithoutRls: number | null;
+}
+
 export interface SupabaseProductionObservation {
   provider: "supabase";
   project: SupabaseProjectSummary;
   auth: SupabaseAuthObservation | null;
   backups: SupabaseBackupObservation;
-  schemaPolicyInspection: "UNAVAILABLE_WITH_MANAGEMENT_API_OAUTH";
+  rls: SupabaseRlsObservation;
   evidence: EvidenceEnvelope[];
 }
 
@@ -60,6 +74,8 @@ type AuthConfigApi = {
 type BackupsApi = {
   backups?: Array<{ status?: unknown; created_at?: unknown }>;
 };
+
+type QueryRow = Record<string, unknown>;
 
 function normalizeProject(input: ProjectApi): SupabaseProjectSummary | null {
   const ref = typeof input.ref === "string" ? input.ref : typeof input.id === "string" ? input.id : "";
@@ -96,6 +112,53 @@ function authObservation(input: AuthConfigApi): SupabaseAuthObservation {
   };
 }
 
+function queryRows(payload: unknown): QueryRow[] {
+  if (Array.isArray(payload)) return payload.filter((row): row is QueryRow => Boolean(row) && typeof row === "object");
+  if (payload && typeof payload === "object") {
+    const record = payload as Record<string, unknown>;
+    for (const key of ["result", "data", "rows"]) {
+      if (Array.isArray(record[key])) return (record[key] as unknown[]).filter((row): row is QueryRow => Boolean(row) && typeof row === "object");
+    }
+  }
+  return [];
+}
+
+function rlsObservation(payload: unknown): SupabaseRlsObservation {
+  const tables = queryRows(payload).flatMap((row) => {
+    const schema = typeof row.schema_name === "string" ? row.schema_name : "";
+    const table = typeof row.table_name === "string" ? row.table_name : "";
+    const rlsEnabled = typeof row.rls_enabled === "boolean" ? row.rls_enabled : null;
+    const count = typeof row.policy_count === "number"
+      ? row.policy_count
+      : typeof row.policy_count === "string" && /^\d+$/.test(row.policy_count)
+        ? Number(row.policy_count)
+        : null;
+    return schema && table && rlsEnabled !== null && count !== null
+      ? [{ schema, table, rlsEnabled, policyCount: count }]
+      : [];
+  });
+  return {
+    observed: true,
+    tables,
+    exposedTableCount: tables.length,
+    tablesWithoutRls: tables.filter((table) => !table.rlsEnabled).length,
+  };
+}
+
+const RLS_QUERY = `
+SELECT
+  n.nspname AS schema_name,
+  c.relname AS table_name,
+  c.relrowsecurity AS rls_enabled,
+  COUNT(p.polname)::int AS policy_count
+FROM pg_catalog.pg_class c
+JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
+LEFT JOIN pg_catalog.pg_policy p ON p.polrelid = c.oid
+WHERE c.relkind IN ('r', 'p')
+  AND n.nspname IN ('public', 'storage')
+GROUP BY n.nspname, c.relname, c.relrowsecurity
+ORDER BY n.nspname, c.relname`;
+
 export class SupabaseReadClient {
   private readonly fetchImpl: typeof fetch;
   private readonly apiBaseUrl: string;
@@ -119,8 +182,11 @@ export class SupabaseReadClient {
     const project = projects.find((item) => item.ref === input.projectRef || item.id === input.projectRef);
     if (!project) throw new Error("Supabase project was not found or is not accessible to this connection.");
 
-    const authRaw = await this.getOptionalJson<AuthConfigApi>(`/v1/projects/${encodeURIComponent(project.ref)}/config/auth`);
-    const backupsRaw = await this.getOptionalJson<BackupsApi>(`/v1/projects/${encodeURIComponent(project.ref)}/database/backups`);
+    const [authRaw, backupsRaw, rlsRaw] = await Promise.all([
+      this.getOptionalJson<AuthConfigApi>(`/v1/projects/${encodeURIComponent(project.ref)}/config/auth`),
+      this.getOptionalJson<BackupsApi>(`/v1/projects/${encodeURIComponent(project.ref)}/database/backups`),
+      this.postOptionalJson<unknown>(`/v1/projects/${encodeURIComponent(project.ref)}/database/query/read-only`, { query: RLS_QUERY }),
+    ]);
     const auth = authRaw ? authObservation(authRaw) : null;
     const backupsList = backupsRaw?.backups ?? [];
     const backups: SupabaseBackupObservation = backupsRaw
@@ -130,13 +196,11 @@ export class SupabaseReadClient {
           latestStatus: typeof backupsList[0]?.status === "string" ? backupsList[0].status : null,
         }
       : { observed: false, backupCount: null, latestStatus: null };
+    const rls: SupabaseRlsObservation = rlsRaw
+      ? rlsObservation(rlsRaw)
+      : { observed: false, tables: [], exposedTableCount: null, tablesWithoutRls: null };
 
-    const payload = {
-      project,
-      auth,
-      backups,
-      schemaPolicyInspection: "UNAVAILABLE_WITH_MANAGEMENT_API_OAUTH" as const,
-    };
+    const payload = { project, auth, backups, rls };
     const evidence = [
       createEvidenceEnvelope({
         kind: "supabase-production-observation",
@@ -149,6 +213,8 @@ export class SupabaseReadClient {
           authConfigObserved: Boolean(auth),
           backupMetadataObserved: backups.observed,
           backupCount: backups.backupCount,
+          rlsObserved: rls.observed,
+          tablesWithoutRls: rls.tablesWithoutRls,
         },
       }),
     ];
@@ -157,7 +223,16 @@ export class SupabaseReadClient {
   }
 
   private async getOptionalJson<T>(path: string): Promise<T | null> {
-    const response = await this.request(path);
+    const response = await this.request(path, "GET");
+    return await this.optionalResponse<T>(response);
+  }
+
+  private async postOptionalJson<T>(path: string, body: unknown): Promise<T | null> {
+    const response = await this.request(path, "POST", body);
+    return await this.optionalResponse<T>(response);
+  }
+
+  private async optionalResponse<T>(response: Response): Promise<T | null> {
     if (response.status === 403 || response.status === 404) {
       await response.body?.cancel();
       return null;
@@ -167,7 +242,7 @@ export class SupabaseReadClient {
   }
 
   private async getJson<T>(path: string): Promise<T> {
-    const response = await this.request(path);
+    const response = await this.request(path, "GET");
     if (response.status === 401 || response.status === 403) {
       throw new Error("Supabase credential is invalid or lacks access to this resource.");
     }
@@ -176,13 +251,15 @@ export class SupabaseReadClient {
     return await response.json() as T;
   }
 
-  private async request(path: string): Promise<Response> {
+  private async request(path: string, method: "GET" | "POST", body?: unknown): Promise<Response> {
     return await this.fetchImpl(`${this.apiBaseUrl}${path}`, {
-      method: "GET",
+      method,
       headers: {
         authorization: `Bearer ${this.options.token}`,
         accept: "application/json",
+        ...(body ? { "content-type": "application/json" } : {}),
       },
+      ...(body ? { body: JSON.stringify(body) } : {}),
       cache: "no-store",
       signal: AbortSignal.timeout(8_000),
     });
