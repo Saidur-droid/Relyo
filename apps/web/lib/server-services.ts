@@ -19,9 +19,10 @@ function databasePool(): Pool {
   if (!pool) {
     pool = new Pool({
       connectionString: required("DATABASE_URL"),
-      max: 5,
-      idleTimeoutMillis: 30_000,
+      max: 1,
+      idleTimeoutMillis: 10_000,
       connectionTimeoutMillis: 5_000,
+      allowExitOnIdle: true,
       ssl: process.env.NODE_ENV === "production" ? { rejectUnauthorized: false } : undefined,
     });
   }
