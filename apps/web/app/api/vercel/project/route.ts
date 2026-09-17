@@ -1,7 +1,7 @@
 import { listVercelProjects } from "@relyo/adapter-vercel/projects";
 import { bindProviderProject } from "@relyo/credentials";
 import { NextRequest } from "next/server";
-import { credentialServices, vercelProviderReadToken } from "@/lib/server-services";
+import { credentialServices, hasVercelProviderReadToken, vercelProviderReadToken } from "@/lib/server-services";
 
 export const runtime = "nodejs";
 
@@ -47,7 +47,8 @@ export async function POST(request: NextRequest) {
     }
 
     const tokens = services.cipher.decrypt(connection.credential);
-    if (tokens.expiresAt && Date.parse(tokens.expiresAt) <= Date.now()) {
+    const oauthExpired = Boolean(tokens.expiresAt && Date.parse(tokens.expiresAt) <= Date.now());
+    if (oauthExpired && !hasVercelProviderReadToken()) {
       return json({ error: "Vercel connection expired. Reconnect Vercel." }, 401);
     }
 
