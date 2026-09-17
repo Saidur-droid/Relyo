@@ -11,7 +11,7 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "pnpm -r build",
+    "build": "pnpm --filter @relyo/web... run build",
     "test": "pnpm -r test",
     "typecheck": "pnpm -r typecheck",
     "dev": "pnpm --filter @relyo/web dev"
@@ -19,6 +19,7 @@
   "devDependencies": {
     "@types/node": "^22.15.0",
     "typescript": "^5.9.3",
-    "vitest": "^3.2.7"
+    "vitest": "^3.2.7",
+    "next": "16.2.9"
   }
 }
