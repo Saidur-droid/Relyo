@@ -1,5 +1,4 @@
 import { Pool } from "pg";
-import { NextResponse } from "next/server";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -41,5 +40,11 @@ export async function GET() {
     }
   }
 
-  return NextResponse.json({ key, database }, { headers: { "cache-control": "no-store" } });
+  const html = `<!doctype html><html><head><title>Relyo persistence diagnostic</title></head><body><h1>Relyo persistence diagnostic</h1><p id="key">key=${key}</p><p id="database">database=${database}</p></body></html>`;
+  return new Response(html, {
+    headers: {
+      "content-type": "text/html; charset=utf-8",
+      "cache-control": "no-store",
+    },
+  });
 }
