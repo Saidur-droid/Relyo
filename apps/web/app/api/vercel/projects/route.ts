@@ -1,6 +1,6 @@
 import { listVercelProjects } from "@relyo/adapter-vercel/projects";
 import { NextRequest } from "next/server";
-import { credentialServices } from "@/lib/server-services";
+import { credentialServices, vercelProviderReadToken } from "@/lib/server-services";
 
 export const runtime = "nodejs";
 
@@ -23,7 +23,7 @@ export async function GET(request: NextRequest) {
     }
 
     const projects = await listVercelProjects({
-      token: tokens.accessToken,
+      token: vercelProviderReadToken(tokens.accessToken),
       ...(connection.providerTeamId ? { teamId: connection.providerTeamId } : {}),
     });
 
