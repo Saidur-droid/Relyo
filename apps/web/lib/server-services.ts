@@ -52,9 +52,13 @@ function normalizePem(value: string): string | null {
     .trim()
     .replace(/^['"]|['"]$/g, "")
     .replace(/\\n/g, "\n")
-    .replace(/\r\n/g, "\n");
+    .replace(/\r\n/g, "\n")
+    // Some generators label Ed25519 PKCS#8 material as "ED25519 PRIVATE KEY".
+    // Node/OpenSSL expects the generic PKCS#8 "PRIVATE KEY" PEM label.
+    .replace(/-----BEGIN ED25519 PRIVATE KEY-----/g, "-----BEGIN PRIVATE KEY-----")
+    .replace(/-----END ED25519 PRIVATE KEY-----/g, "-----END PRIVATE KEY-----");
 
-  return /-----BEGIN (?:ED25519 )?PRIVATE KEY-----/.test(normalized)
+  return /-----BEGIN PRIVATE KEY-----/.test(normalized)
     ? normalized.endsWith("\n") ? normalized : `${normalized}\n`
     : null;
 }
@@ -74,11 +78,15 @@ function looksLikeUtf16Le(buffer: Buffer): boolean {
 }
 
 function validateEd25519PrivateKey(pem: string): string {
-  const key = createPrivateKey(pem);
-  if (key.asymmetricKeyType !== "ed25519") {
-    throw new Error("Server configuration RELYO_PASSPORT_SIGNING_PRIVATE_KEY_B64 must contain an Ed25519 private key.");
+  try {
+    const key = createPrivateKey(pem);
+    if (key.asymmetricKeyType !== "ed25519") {
+      throw new Error("wrong-key-type");
+    }
+    return pem;
+  } catch {
+    throw new Error("Server configuration RELYO_PASSPORT_SIGNING_PRIVATE_KEY_B64 is not a supported Ed25519 private-key encoding.");
   }
-  return pem;
 }
 
 /**
