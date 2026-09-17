@@ -1,6 +1,7 @@
+import { SupabaseReadClient } from "@relyo/adapter-supabase";
 import { VercelReadClient } from "@relyo/adapter-vercel";
 import { discoverApplication } from "@relyo/discovery";
-import { executeVercelR1Proof } from "@relyo/proof-engine";
+import { executeCombinedR1Proof, executeVercelR1Proof } from "@relyo/proof-engine";
 import { NextRequest } from "next/server";
 import {
   credentialServices,
@@ -32,7 +33,6 @@ function emitProofEvent(event: "proof_run_started" | "proof_run_completed" | "pa
     event,
     occurred_at: new Date().toISOString(),
     initiating_surface: "verify_my_launch",
-    proof_pack: "vercel-r1-launch",
     assurance_target: "R1",
     ...properties,
   }));
@@ -41,8 +41,8 @@ function emitProofEvent(event: "proof_run_started" | "proof_run_completed" | "pa
 export async function POST(request: NextRequest) {
   if (!sameOrigin(request)) return json({ error: "Cross-origin proof requests are not allowed." }, 403);
 
-  const connectionId = request.cookies.get("relyo_vercel_connection")?.value;
-  if (!connectionId) return json({ error: "Connect Vercel before running launch proof." }, 401);
+  const vercelConnectionId = request.cookies.get("relyo_vercel_connection")?.value;
+  if (!vercelConnectionId) return json({ error: "Connect Vercel before running launch proof." }, 401);
 
   let body: unknown;
   try {
@@ -58,23 +58,25 @@ export async function POST(request: NextRequest) {
   if (url.length > 2048 || githubRepo.length > 256) return json({ error: "Input is too long." }, 400);
 
   const startedAt = Date.now();
+  const supabaseConnectionId = request.cookies.get("relyo_supabase_connection")?.value;
   emitProofEvent("proof_run_started", {
     has_url: Boolean(url),
     has_repo: Boolean(githubRepo),
+    supabase_connected: Boolean(supabaseConnectionId),
   });
 
   try {
     const services = credentialServices();
-    const connection = await services.store.get(connectionId);
-    if (!connection || connection.provider !== "vercel") {
+    const vercelConnection = await services.store.get(vercelConnectionId);
+    if (!vercelConnection || vercelConnection.provider !== "vercel") {
       return json({ error: "Vercel connection was not found. Reconnect Vercel." }, 401);
     }
-    if (!connection.boundProjectId) {
+    if (!vercelConnection.boundProjectId) {
       return json({ error: "Choose a Vercel project before running launch proof." }, 409);
     }
 
-    const tokens = services.cipher.decrypt(connection.credential);
-    if (tokens.expiresAt && Date.parse(tokens.expiresAt) <= Date.now()) {
+    const vercelTokens = services.cipher.decrypt(vercelConnection.credential);
+    if (vercelTokens.expiresAt && Date.parse(vercelTokens.expiresAt) <= Date.now()) {
       return json({ error: "Vercel connection expired. Reconnect Vercel." }, 401);
     }
 
@@ -82,44 +84,72 @@ export async function POST(request: NextRequest) {
       ...(url ? { url } : {}),
       ...(githubRepo ? { githubRepo } : {}),
     });
-    const provider = await new VercelReadClient({
-      token: tokens.accessToken,
-      ...(connection.providerTeamId ? { teamId: connection.providerTeamId } : {}),
-    }).inspectProduction({ projectIdOrName: connection.boundProjectId });
-
-    if (provider.projectId !== connection.boundProjectId) {
-      throw new Error("Provider project identity did not match the stored binding.");
+    const vercel = await new VercelReadClient({
+      token: vercelTokens.accessToken,
+      ...(vercelConnection.providerTeamId ? { teamId: vercelConnection.providerTeamId } : {}),
+    }).inspectProduction({ projectIdOrName: vercelConnection.boundProjectId });
+    if (vercel.projectId !== vercelConnection.boundProjectId) {
+      throw new Error("Vercel project identity did not match the stored binding.");
     }
 
-    const proof = await executeVercelR1Proof({
-      discovery,
-      provider,
-      store: proofStore(),
-      signingPrivateKey: passportSigningPrivateKeyPem(),
-    });
+    let proof;
+    let supabaseProject: { id: string; name: string } | null = null;
+    if (supabaseConnectionId) {
+      const supabaseConnection = await services.store.get(supabaseConnectionId);
+      if (!supabaseConnection || supabaseConnection.provider !== "supabase") {
+        return json({ error: "Supabase connection was not found. Reconnect Supabase." }, 401);
+      }
+      if (!supabaseConnection.boundProjectId) {
+        return json({ error: "Choose a Supabase project before running combined launch proof." }, 409);
+      }
+      const supabaseTokens = services.cipher.decrypt(supabaseConnection.credential);
+      if (supabaseTokens.expiresAt && Date.parse(supabaseTokens.expiresAt) <= Date.now()) {
+        return json({ error: "Supabase connection expired. Reconnect Supabase." }, 401);
+      }
+      const supabase = await new SupabaseReadClient({ token: supabaseTokens.accessToken })
+        .inspectProduction({ projectRef: supabaseConnection.boundProjectId });
+      if (supabase.project.ref !== supabaseConnection.boundProjectId) {
+        throw new Error("Supabase project identity did not match the stored binding.");
+      }
+      supabaseProject = { id: supabase.project.ref, name: supabase.project.name };
+      proof = await executeCombinedR1Proof({
+        discovery,
+        vercel,
+        supabase,
+        store: proofStore(),
+        signingPrivateKey: passportSigningPrivateKeyPem(),
+      });
+    } else {
+      proof = await executeVercelR1Proof({
+        discovery,
+        provider: vercel,
+        store: proofStore(),
+        signingPrivateKey: passportSigningPrivateKeyPem(),
+      });
+    }
 
     emitProofEvent("proof_run_completed", {
       duration_ms: Date.now() - startedAt,
       proof_state: proof.run.state,
       assurance_achieved: proof.signedPassport.passport.assurance,
       blocker_count: proof.blockers.length,
+      supabase_included: Boolean(supabaseProject),
     });
     emitProofEvent("passport_issued", {
       assurance_achieved: proof.signedPassport.passport.assurance,
       signed: true,
+      supabase_included: Boolean(supabaseProject),
     });
 
     return json({
-      project: {
-        id: provider.projectId,
-        name: provider.projectName,
-      },
+      project: { id: vercel.projectId, name: vercel.projectName },
+      supabaseProject,
       run: proof.run,
       blockers: proof.blockers,
       signedPassport: proof.signedPassport,
     });
   } catch (reason) {
-    const message = reason instanceof Error && /public|URL|repository|hostname|GitHub|Vercel project/i.test(reason.message)
+    const message = reason instanceof Error && /public|URL|repository|hostname|GitHub|Vercel project|Supabase project/i.test(reason.message)
       ? reason.message
       : "Relyo could not complete provider-backed launch proof.";
     return json({ error: message }, 422);
