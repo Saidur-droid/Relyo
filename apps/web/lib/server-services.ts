@@ -57,3 +57,13 @@ export function vercelOAuthConfig() {
     scope: process.env.VERCEL_OAUTH_SCOPE?.trim() || "openid profile offline_access",
   };
 }
+
+/**
+ * Optional production-only fallback for provider read APIs.
+ * The value stays server-side and is never returned to the browser or proof evidence.
+ * OAuth remains the primary credential path; this only bridges Vercel App installations
+ * that currently issue identity-only OAuth tokens without project API permissions.
+ */
+export function vercelProviderReadToken(oauthAccessToken: string): string {
+  return process.env.VERCEL_READ_TOKEN?.trim() || oauthAccessToken;
+}
