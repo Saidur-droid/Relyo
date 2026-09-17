@@ -9,7 +9,7 @@ function jsonResponse(payload: unknown, status = 200) {
 }
 
 describe("SupabaseReadClient", () => {
-  it("normalizes project/auth/backup metadata without retaining secret fields", async () => {
+  it("normalizes project/auth/backup/RLS metadata without retaining secret fields", async () => {
     const fakeFetch = vi.fn<typeof fetch>(async (input) => {
       const url = String(input);
       if (url.endsWith("/v1/projects")) {
@@ -30,6 +30,12 @@ describe("SupabaseReadClient", () => {
       if (url.includes("/database/backups")) {
         return jsonResponse({ backups: [{ status: "COMPLETED", created_at: "2026-09-17T00:00:00Z", backup_key: "secret-value" }] });
       }
+      if (url.includes("/database/query/read-only")) {
+        return jsonResponse([
+          { schema_name: "public", table_name: "profiles", rls_enabled: true, policy_count: 2 },
+          { schema_name: "public", table_name: "unsafe", rls_enabled: false, policy_count: 0 },
+        ]);
+      }
       return new Response("not found", { status: 404 });
     });
 
@@ -39,7 +45,8 @@ describe("SupabaseReadClient", () => {
     expect(observation.project.name).toBe("prod");
     expect(observation.auth?.redirectUrls).toHaveLength(2);
     expect(observation.backups).toEqual({ observed: true, backupCount: 1, latestStatus: "COMPLETED" });
-    expect(observation.schemaPolicyInspection).toBe("UNAVAILABLE_WITH_MANAGEMENT_API_OAUTH");
+    expect(observation.rls.observed).toBe(true);
+    expect(observation.rls.tablesWithoutRls).toBe(1);
     expect(JSON.stringify(observation)).not.toContain("must-not-survive");
     expect(JSON.stringify(observation)).not.toContain("secret-value");
   });
@@ -59,5 +66,7 @@ describe("SupabaseReadClient", () => {
     expect(observation.auth).toBeNull();
     expect(observation.backups.observed).toBe(false);
     expect(observation.backups.backupCount).toBeNull();
+    expect(observation.rls.observed).toBe(false);
+    expect(observation.rls.tablesWithoutRls).toBeNull();
   });
 });
