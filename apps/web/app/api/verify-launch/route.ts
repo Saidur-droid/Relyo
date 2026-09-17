@@ -4,6 +4,7 @@ import { executeVercelR1Proof } from "@relyo/proof-engine";
 import { NextRequest } from "next/server";
 import {
   credentialServices,
+  hasVercelProviderReadToken,
   passportSigningPrivateKeyPem,
   proofStore,
   vercelProviderReadToken,
@@ -75,7 +76,8 @@ export async function POST(request: NextRequest) {
     }
 
     const tokens = services.cipher.decrypt(connection.credential);
-    if (tokens.expiresAt && Date.parse(tokens.expiresAt) <= Date.now()) {
+    const oauthExpired = Boolean(tokens.expiresAt && Date.parse(tokens.expiresAt) <= Date.now());
+    if (oauthExpired && !hasVercelProviderReadToken()) {
       return json({ error: "Vercel connection expired. Reconnect Vercel." }, 401);
     }
 
