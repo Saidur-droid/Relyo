@@ -61,9 +61,13 @@ export function vercelOAuthConfig() {
 /**
  * Optional production-only fallback for provider read APIs.
  * The value stays server-side and is never returned to the browser or proof evidence.
- * OAuth remains the primary credential path; this only bridges Vercel App installations
- * that currently issue identity-only OAuth tokens without project API permissions.
+ * OAuth remains the connection/session bootstrap; this bridges Vercel App installations
+ * that issue identity-only OAuth tokens without project API permissions.
  */
+export function hasVercelProviderReadToken(): boolean {
+  return Boolean(process.env.VERCEL_READ_TOKEN?.trim());
+}
+
 export function vercelProviderReadToken(oauthAccessToken: string): string {
   return process.env.VERCEL_READ_TOKEN?.trim() || oauthAccessToken;
 }
