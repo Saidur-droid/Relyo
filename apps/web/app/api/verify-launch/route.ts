@@ -1,4 +1,5 @@
 import { VercelReadClient } from "@relyo/adapter-vercel";
+import { listVercelProjects } from "@relyo/adapter-vercel/projects";
 import { discoverApplication } from "@relyo/discovery";
 import { executeVercelR1Proof } from "@relyo/proof-engine";
 import { NextRequest } from "next/server";
@@ -60,6 +61,7 @@ export async function POST(request: NextRequest) {
   if (url.length > 2048 || githubRepo.length > 256) return json({ error: "Input is too long." }, 400);
 
   const startedAt = Date.now();
+  let stage = "connection";
   emitProofEvent("proof_run_started", {
     has_url: Boolean(url),
     has_repo: Boolean(githubRepo),
@@ -81,19 +83,37 @@ export async function POST(request: NextRequest) {
       return json({ error: "Vercel connection expired. Reconnect Vercel." }, 401);
     }
 
+    const readToken = vercelProviderReadToken(tokens.accessToken);
+
+    stage = "project-scope";
+    const accessibleProjects = await listVercelProjects({ token: readToken });
+    const boundProject = accessibleProjects.find((project) => project.id === connection.boundProjectId);
+    if (!boundProject) {
+      return json({ error: "The bound Vercel project is not accessible with the production read token." }, 422);
+    }
+
+    const providerTeamId = boundProject.accountId ?? connection.providerTeamId;
+    if (providerTeamId && providerTeamId !== connection.providerTeamId) {
+      await services.store.save({ ...connection, providerTeamId, updatedAt: new Date().toISOString() });
+    }
+
+    stage = "public-discovery";
     const discovery = await discoverApplication({
       ...(url ? { url } : {}),
       ...(githubRepo ? { githubRepo } : {}),
     });
+
+    stage = "provider-observation";
     const provider = await new VercelReadClient({
-      token: vercelProviderReadToken(tokens.accessToken),
-      ...(connection.providerTeamId ? { teamId: connection.providerTeamId } : {}),
+      token: readToken,
+      ...(providerTeamId ? { teamId: providerTeamId } : {}),
     }).inspectProduction({ projectIdOrName: connection.boundProjectId });
 
     if (provider.projectId !== connection.boundProjectId) {
       throw new Error("Provider project identity did not match the stored binding.");
     }
 
+    stage = "proof-persistence";
     const proof = await executeVercelR1Proof({
       discovery,
       provider,
@@ -122,9 +142,11 @@ export async function POST(request: NextRequest) {
       signedPassport: proof.signedPassport,
     });
   } catch (reason) {
-    const message = reason instanceof Error && /public|URL|repository|hostname|GitHub|Vercel project/i.test(reason.message)
-      ? reason.message
-      : "Relyo could not complete provider-backed launch proof.";
-    return json({ error: message }, 422);
+    const safeReason = reason instanceof Error ? reason.message : "Unknown provider error.";
+    console.error(JSON.stringify({ type: "relyo_verify_launch_error", stage, message: safeReason }));
+    const safeMessage = /token|secret|credential envelope|private key|password/i.test(safeReason)
+      ? `Relyo could not complete ${stage}.`
+      : safeReason;
+    return json({ error: `R1 ${stage} failed: ${safeMessage}` }, 422);
   }
 }
