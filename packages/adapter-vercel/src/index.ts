@@ -133,7 +133,7 @@ export class VercelReadClient {
 
     const [deploymentsResponse, domainsResponse, envsResponse] = await Promise.all([
       this.getJson<VercelDeploymentsResponse>(
-        `/v13/deployments?projectId=${encodeURIComponent(project.id)}&target=production&limit=10`,
+        `/v6/deployments?projectId=${encodeURIComponent(project.id)}&target=production&limit=10`,
       ),
       this.getJson<VercelDomainsResponse>(
         `/v9/projects/${encodeURIComponent(project.id)}/domains`,
@@ -160,7 +160,6 @@ export class VercelReadClient {
       .map((item) => ({ name: item.name, verified: item.verified === true }))
       .sort((a, b) => a.name.localeCompare(b.name));
 
-    // Deliberately drop every value-like field returned by Vercel. Only key/target/type metadata survives.
     const environmentKeys = (envsResponse.envs ?? [])
       .filter((item): item is Required<Pick<VercelEnvResponse, "key">> & VercelEnvResponse => Boolean(item.key))
       .map((item) => ({
