@@ -6,9 +6,22 @@ Last updated: 2026-09-17
 
 ## Immediate priority
 
-Finish production deployment and end-to-end verification of the Vercel `Verify My Launch` flow. **Issue #5 remains deferred until production E2E is evidence-backed complete.**
+The Vercel packaging/deployment blocker is fixed and the current main deployment is green. Finish production runtime/end-to-end verification of the Vercel `Verify My Launch` flow. **Issue #5 remains deferred until production E2E is evidence-backed complete.**
 
 PR #4 / Issue #3 implementation is merged (`095768c3544e5a85b39d9af26bd2c91bb4e372be`).
+
+## Production deployment after fix
+
+Current main fix commit: `f2fc6cd8f70b5165918db547a272ed7494431ff4` (`fix: package the monorepo web app as a native Next.js deployment`).
+
+Verified after push:
+
+- GitHub combined status reports Vercel `success` for this commit, target deployment `4pdRTg7VqDGce9hV3VkL3nQ9dkoR`.
+- GitHub Actions CI run `35165720919` completed successfully for the same commit.
+- Therefore the previous `No Output Directory named "public"` production build blocker is resolved on current main.
+- This proves deployment/build success, but it does **not** by itself prove production OAuth, project binding, database persistence, signed Passport, or token-redaction behavior.
+
+The connected Vercel integration still does not list the `relyo` project even though GitHub receives a successful Vercel deployment status. Do not ask for reconnect as a default fix; the project-visibility discrepancy is separate from the now-resolved build blocker.
 
 ## Confirmed deployment failure and fix
 
@@ -57,26 +70,26 @@ Using an isolated source snapshot with no production credentials:
   - GET /api/vercel/connect with local OAuth configuration intentionally absent: 503.
 - Function groups must be tested in separate processes, matching production isolation; loading multiple bundled Next.js servers in one process causes shared-runtime conflicts in the test harness.
 
-These are local deployment-packaging and failure-path checks, **not production OAuth/database/passport proof**. Production status must be checked for the resulting fix commit.
+These are local deployment-packaging and failure-path checks, **not production OAuth/database/passport proof**.
 
 ### Next executable actions
 
-1. Resolve the current main commit and inspect its GitHub Vercel status target; do not keep inspecting the historical failed deployment.
-2. Confirm production deployment succeeds and the production homepage/API routes respond.
-3. Complete OAuth, project list/binding, Verify My Launch, database evidence persistence, signed Passport, and secret-redaction checks.
-4. Record production evidence before starting Issue #5.
+1. Confirm the production homepage and API routes respond on the actual production alias/domain.
+2. Complete OAuth, project list/binding, Verify My Launch, database evidence persistence, signed Passport, and secret-redaction checks.
+3. Record production evidence.
+4. Only then start Issue #5 implementation.
 
 ### Access limitations
 
 The connected Vercel tool sees team `saidur-droids-projects` (`team_BsJXXtOBNmww7MhlgiE7JzzO`) but returns only `ai-experience-network` in its project list. Looking up `relyo` still returns 404. GitHub can read/write Relyo and exposes deployment status links.
 
-The Vercel account is connected. The cause of this connector visibility discrepancy is unconfirmed; **do not state that reconnecting is a proven fix**. The founder-supplied log was sufficient to diagnose and locally verify the deployment configuration repair.
+The Vercel account is connected. The cause of this connector visibility discrepancy is unconfirmed; **do not state that reconnecting is a proven fix**. The founder-supplied log was sufficient to diagnose and locally verify the deployment configuration repair, and GitHub now confirms the resulting Vercel deployment is successful.
 
 ### Risk and rollback
 
 Inspection: `OBSERVE`. Repository configuration repair: `SAFE_REVERSIBLE`, with the founder having requested the deployment fix. No credential values, database schema, OAuth privilege model, or application route logic changed.
 
-Rollback: revert this configuration-fix commit to restore the previous repository configuration. That previous configuration is known to fail deployment; retain the last healthy production deployment if one exists.
+Rollback: revert configuration-fix commit `f2fc6cd8f70b5165918db547a272ed7494431ff4` to restore the previous repository configuration. That previous configuration is known to fail deployment; retain the healthy production deployment instead.
 
 ## Historical references
 
@@ -85,6 +98,7 @@ Rollback: revert this configuration-fix commit to restore the previous repositor
 - `e978ec81b39d1d5fd07c20d89e4ccc02686cc9ff`: added app-level Vercel configuration.
 - `db983d48f746818b5bdbab57bf166f85251e7b1f`: original continuity handoff.
 - `af2e9183864abcfcdbb78d30e3ec3e969234c58e`: pre-fix baseline; CI passed, Vercel failed as documented above.
+- `f2fc6cd8f70b5165918db547a272ed7494431ff4`: packaging/output fix; CI and Vercel deployment successful.
 
 Official configuration reference: https://vercel.com/docs/project-configuration/vercel-json
 
