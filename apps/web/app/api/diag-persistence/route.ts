@@ -40,7 +40,8 @@ export async function GET() {
     }
   }
 
-  const html = `<!doctype html><html><head><title>Relyo persistence diagnostic</title></head><body><h1>Relyo persistence diagnostic</h1><p id="key">key=${key}</p><p id="database">database=${database}</p></body></html>`;
+  const title = `Relyo diag key-${key} db-${database}`;
+  const html = `<!doctype html><html><head><title>${title}</title></head><body><h1>${title}</h1></body></html>`;
   return new Response(html, {
     headers: {
       "content-type": "text/html; charset=utf-8",
