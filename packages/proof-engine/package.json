@@ -15,6 +15,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
+    "@relyo/adapter-supabase": "workspace:*",
     "@relyo/adapter-vercel": "workspace:*",
     "@relyo/contracts": "workspace:*",
     "@relyo/discovery": "workspace:*",
