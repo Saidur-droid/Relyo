@@ -15,7 +15,7 @@ describe("VercelReadClient", () => {
       if (url.includes("/v9/projects/demo?") || url.endsWith("/v9/projects/demo")) {
         return jsonResponse({ id: "prj_1", name: "demo" });
       }
-      if (url.includes("/v13/deployments")) {
+      if (url.includes("/v6/deployments")) {
         return jsonResponse({
           deployments: [
             {
@@ -72,7 +72,7 @@ describe("VercelReadClient", () => {
       if (url.includes("/v9/projects/demo?") || url.endsWith("/v9/projects/demo")) {
         return jsonResponse({ id: "prj_1", name: "demo" });
       }
-      if (url.includes("/v13/deployments")) {
+      if (url.includes("/v6/deployments")) {
         return jsonResponse({
           deployments: [
             {
