@@ -2,46 +2,62 @@
 
 Last updated: 2026-09-18
 
-Read `WORK_PROGRESS.md` first for the latest saved checkpoint. Never infer production R1 from passing CI or deployment alone.
+Read `WORK_PROGRESS.md` first. The repository and deployment work that can be completed without human account authentication is now merged and green.
 
-## Implemented in PR #8
+## Completed
 
-- Real pnpm 10.15.1 `pnpm-lock.yaml` at workspace root; CI frozen installs.
-- Existing environment contract populated through root `.env.example` with blank assignments only:
-  - `DATABASE_URL`
-  - `RELYO_CREDENTIAL_ENCRYPTION_KEY`
-  - `RELYO_PASSPORT_SIGNING_PRIVATE_KEY_B64`
-  - `VERCEL_APP_CLIENT_ID`
-  - `VERCEL_APP_CLIENT_SECRET`
-  - `VERCEL_READ_TOKEN`
-- The read-token key is required by this production installation's documented identity-only OAuth setup. It remains server-side. `RELYO_CREDENTIAL_ENCRYPTION_KEY_ID` and `VERCEL_OAUTH_SCOPE` have code defaults and are optional comments, not required assertions.
-- Preview-only keys cannot pass production assertions; missing declarations remain UNKNOWN.
-- Temporary public persistence diagnostic handlers removed; raw provider/database errors excluded from proof logs and browser responses; malformed proof JSON bodies rejected.
-- Local frozen install, typecheck, 46 tests / 13 files, and production build passed. Existing Vercel Bun install configuration is preserved.
+- PR #8 R1 readiness fixes are merged: generated pnpm lockfile, frozen CI install, production environment-key contract, preview-key rejection, diagnostic removal and proof-error redaction.
+- PR #9 / Issue #5 implementation is merged on current main as `a10b297b1858dafc51939bd7153a4e7dcc29ff4d`.
+- Supabase read-only OAuth/provider adapter, project binding, deterministic R1 contracts, combined Vercel+Supabase Passport path, UI and threat-model/tests are in main.
+- The prior Turbopack source-import failure is fixed.
+- Fresh PR CI and main CI pass frozen install, typecheck, tests and production build.
+- Vercel preview and production deployment statuses are green.
+- Production database migration allows both `vercel` and `supabase` provider connections.
+- Stale PR #7 is closed as superseded.
 
-## Merge approval required
+## Remaining human/account gates
 
-PR #8 is ready and its implementation commit `4e0b5e9068e0685b5b1e0a63521ba0416a175678` passed CI run `35300986829` and Vercel preview. It is **not merged**. Automatic approval review rejected default-branch merge because the founder has not explicitly authorized this exact merge. Ask for authorization to merge PR #8 into main and deploy; do not bypass via direct push/ref update.
+### 1. Current-release Vercel R1 proof
 
-Production code is unchanged. Read-only database inspection confirmed only the prior signed R0 run with three matching stored evidence records. Vercel login is needed in this session's browser for the later end-to-end proof.
+In a browser session that is authenticated to the user's Vercel account:
 
-## After merge authorization: authenticated production R1
+1. Open `https://relyo-two.vercel.app`.
+2. Connect Vercel if the Relyo session is not already connected.
+3. Bind the `relyo` project.
+4. Run **Verify My Launch** with:
+   - production URL: `https://relyo-two.vercel.app`
+   - GitHub repository: `Saidur-droid/Relyo`
+5. Require `R1 — Launch Verified`, zero blockers, exact deployed release binding and a signed Production Passport.
+6. Verify matching new `proof_runs` and `evidence_envelopes` rows in production Postgres without reading credential envelopes or secret values.
 
-1. Confirm the complete PR #8 changes are merged/deployed to Production and the matching GitHub CI/Vercel statuses are successful.
-2. Open `https://relyo-two.vercel.app` and use an existing Vercel connection, or complete normal OAuth if the browser has no connection. Do not change OAuth app settings or rotate keys.
-3. Bind the `relyo` project; run **Verify my launch** with production URL `https://relyo-two.vercel.app` and repository `Saidur-droid/Relyo`.
-4. Require `R1 — Launch Verified`, no blockers, exact deployed commit match, and a signed Production Passport. Presence of key names does not prove value correctness.
-5. Verify the matching run/evidence exist in production Postgres using safe IDs/counts only. Never select credential envelopes or environment values.
-6. Record exact release/run/evidence references in `WORK_PROGRESS.md` and `CURRENT_STATE.md`. Preserve the release SHA a proof attests to, even if later documentation commits advance main.
+### 2. Production Supabase OAuth activation
 
-## Current access limits
+The code and database migration are ready, but the live endpoint currently returns 503 because real OAuth credentials are not configured.
 
-Production homepage loads, but this session's browser has no authenticated Relyo Vercel connection. The Vercel connector still returns 404 for `relyo` under the recorded team. Do not label this an app outage or repeat reconnect/configuration troubleshooting without new evidence. If authentication is required, finish and save all available work first, then request only the needed sign-in step through secure browser authentication.
+The founder needs to create/configure a Supabase OAuth application with callback:
 
-## Work after R1
+`https://relyo-two.vercel.app/api/supabase/callback`
 
-Issue #5 (Supabase and combined-provider proof) remains gated on evidence-backed production R1. Inspect its existing branch and reconcile with current main before implementing. Do not reopen solved setup loops or claim the entire V2 roadmap is complete.
+Then add these to the Vercel `relyo` **Production** environment:
+
+- `SUPABASE_APP_CLIENT_ID`
+- `SUPABASE_APP_CLIENT_SECRET`
+
+Do not send either secret value in chat or commit it to GitHub.
+
+After that:
+
+1. Redeploy Production if Vercel does not automatically redeploy after env changes.
+2. Connect Supabase from Relyo.
+3. Bind `relyo-prod`.
+4. Run the combined Vercel + Supabase proof.
+5. Require evidence-backed R1 and matching persisted evidence for the exact deployed release.
+6. Update `WORK_PROGRESS.md` and `CURRENT_STATE.md` with the exact run/release/evidence IDs.
+
+## Current evidence baseline
+
+Production Postgres currently contains only the historical signed R0 run for release `8ed6309739f0c31f24e115658eb087170f79e08b`. Passing CI or a Ready deployment is not a substitute for the new authenticated proof.
 
 ## Continuity
 
-Update `WORK_PROGRESS.md` after each meaningful milestone and save working changes regularly. Each checkpoint must show completed fixes, verification results, remaining tasks and blockers, so a token/session interruption does not erase the handoff.
+Keep `WORK_PROGRESS.md` updated after every meaningful milestone. Distinguish code merged, CI tested, deployed, account configured and production-verified states. Never expose provider secrets or credential envelopes.
