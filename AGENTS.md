@@ -582,6 +582,8 @@ Trust is the product. Growth that weakens trust destroys the company.
 
 At the end of meaningful work, update repository documentation, issues, roadmap state, ADRs, or execution status so the next developer/agent can continue without chat history.
 
+For active implementation sessions, keep `WORK_PROGRESS.md` current at meaningful checkpoints, not only at the end. Record completed fixes, checks and their results, the saved branch/commit, remaining tasks and concrete access blockers. Save reviewable changes to the working branch regularly so an interrupted session can resume. Give the founder concise progress updates while working; distinguish implemented, tested, deployed and production-verified states. Never promise a final message after a hard token/session cutoff.
+
 If strategy changes, update at minimum:
 
 - `V2_MASTER_PLAN.md`

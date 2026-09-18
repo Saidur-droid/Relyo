@@ -54,6 +54,9 @@ export async function POST(request: NextRequest) {
     return json({ error: "Request body must be valid JSON." }, 400);
   }
 
+  if (!body || typeof body !== "object" || Array.isArray(body)) {
+    return json({ error: "Request body must be a JSON object." }, 400);
+  }
   const input = body as { url?: unknown; githubRepo?: unknown };
   const url = typeof input.url === "string" ? input.url.trim() : "";
   const githubRepo = typeof input.githubRepo === "string" ? input.githubRepo.trim() : "";
@@ -141,12 +144,10 @@ export async function POST(request: NextRequest) {
       blockers: proof.blockers,
       signedPassport: proof.signedPassport,
     });
-  } catch (reason) {
-    const safeReason = reason instanceof Error ? reason.message : "Unknown provider error.";
-    console.error(JSON.stringify({ type: "relyo_verify_launch_error", stage, message: safeReason }));
-    const safeMessage = /token|secret|credential envelope|private key|password/i.test(safeReason)
-      ? `Relyo could not complete ${stage}.`
-      : safeReason;
-    return json({ error: `R1 ${stage} failed: ${safeMessage}` }, 422);
+  } catch {
+    // Provider/DB errors can contain credential values without recognizable words.
+    // Log only the controlled stage; never serialize the underlying error.
+    console.error(JSON.stringify({ type: "relyo_verify_launch_error", stage }));
+    return json({ error: `Relyo could not complete R1 ${stage}.` }, 422);
   }
 }

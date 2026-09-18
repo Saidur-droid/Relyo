@@ -31,3 +31,11 @@ Update this file after each meaningful milestone. Distinguish implemented, local
 - Added discovery tests for exact-release reads, declaration names, optional-key exclusion, value redaction and inaccessible templates; added contract UNKNOWN/preview regression tests.
 - Node 22.23.2 / pnpm 10.15.1 frozen install is running; tests/build not yet claimed.
 - Production homepage loaded in the browser. This browser has no Relyo Vercel connection, so authenticated R1 remains pending.
+
+## Checkpoint 3 — local verification passed
+- PR #8: https://github.com/Saidur-droid/Relyo/pull/8.
+- Main readiness code saved in `05f91f8518207b4f71d12c338124aca860495554`; its CI run `35300720285` and Vercel preview succeeded.
+- Node 22.23.2 / pnpm 10.15.1: frozen install, typecheck, 46 tests in 13 files, production build passed.
+- Additional verified hardening: no raw proof errors in logs/browser, non-object JSON body returns 400, temporary public DB diagnostic handlers removed.
+- AGENTS.md now requires periodic saved checkpoints and founder updates, rather than waiting until a session ends.
+- Remaining: save hardening/docs, verify complete PR CI, publish production changes, authenticated R1 and matching Postgres proof/evidence, then Issue #5.
