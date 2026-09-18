@@ -1,5 +1,5 @@
 {
-  "name": "@relyo/proof-engine",
+  "name": "@relyo/adapter-supabase",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -15,11 +15,6 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@relyo/adapter-supabase": "workspace:*",
-    "@relyo/adapter-vercel": "workspace:*",
-    "@relyo/contracts": "workspace:*",
-    "@relyo/discovery": "workspace:*",
-    "@relyo/kernel": "workspace:*",
-    "@relyo/store": "workspace:*"
+    "@relyo/kernel": "workspace:*"
   }
 }

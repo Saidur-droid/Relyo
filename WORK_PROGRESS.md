@@ -57,3 +57,13 @@ Update this file after each meaningful milestone. Distinguish implemented, local
 4. Update this file / current state with actual production results. Only then resume Issue #5 after inspecting its existing branch.
 
 No credential values were requested or retrieved; no database mutation, key rotation, or production configuration change was performed.
+
+## Checkpoint 5 — post-merge verification and Issue #5 reconciliation
+
+- PR #8 is merged on `main` at `aa6feede3de0f8748c31c4520133d3c6b18be59d`; GitHub CI and Vercel status for that release are green.
+- Production homepage is reachable; unauthenticated provider APIs continue to reject access safely.
+- Production Postgres still contains the historical signed R0 run only; a new authenticated R1 run for the current release remains pending.
+- Issue #5 Supabase work has been reconciled onto current main on branch `fix/issue-5-supabase-r1-reconcile` while preserving the newer Vercel token fallback and error-redaction hardening.
+- The previous Turbopack `.js` source-import build blocker is addressed through package self-exports, and the pnpm lockfile importer graph includes the new Supabase workspace package.
+- Next automated gate: frozen install, typecheck, tests, build, and Vercel preview on the reconciliation PR.
+- Human/account gate still pending: authenticated production Vercel proof for the current release, then Supabase OAuth application credentials for production combined proof. No secret values are committed or requested here.

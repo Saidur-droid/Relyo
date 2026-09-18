@@ -1,0 +1,104 @@
+import {
+  createProviderConnection,
+  secureEqual,
+  type ProviderTokenSet,
+} from "@relyo/credentials";
+import { Buffer } from "node:buffer";
+import { NextRequest, NextResponse } from "next/server";
+import { credentialServices, supabaseOAuthConfig } from "@/lib/server-services";
+
+export const runtime = "nodejs";
+
+function secureCookie(request: NextRequest) {
+  return process.env.NODE_ENV === "production" || request.nextUrl.protocol === "https:";
+}
+
+function clearTransactionCookies(response: NextResponse) {
+  for (const name of ["relyo_supabase_oauth_state", "relyo_supabase_oauth_verifier"]) {
+    response.cookies.set(name, "", { httpOnly: true, path: "/", maxAge: 0 });
+  }
+}
+
+type SupabaseTokenResponse = {
+  access_token?: string;
+  refresh_token?: string;
+  token_type?: string;
+  expires_in?: number;
+  scope?: string;
+};
+
+export async function GET(request: NextRequest) {
+  const failure = () => {
+    const response = NextResponse.redirect(new URL("/?supabase=error", request.url));
+    clearTransactionCookies(response);
+    response.headers.set("cache-control", "no-store");
+    return response;
+  };
+
+  try {
+    const code = request.nextUrl.searchParams.get("code");
+    const returnedState = request.nextUrl.searchParams.get("state");
+    const storedState = request.cookies.get("relyo_supabase_oauth_state")?.value;
+    const codeVerifier = request.cookies.get("relyo_supabase_oauth_verifier")?.value;
+    if (!code || !secureEqual(returnedState, storedState) || !codeVerifier) return failure();
+
+    const config = supabaseOAuthConfig();
+    const redirectUri = new URL("/api/supabase/callback", request.nextUrl.origin).toString();
+    const basic = Buffer.from(`${config.clientId}:${config.clientSecret}`, "utf8").toString("base64");
+    const tokenResponse = await fetch("https://api.supabase.com/v1/oauth/token", {
+      method: "POST",
+      headers: {
+        "content-type": "application/x-www-form-urlencoded",
+        accept: "application/json",
+        authorization: `Basic ${basic}`,
+      },
+      body: new URLSearchParams({
+        grant_type: "authorization_code",
+        code,
+        redirect_uri: redirectUri,
+        code_verifier: codeVerifier,
+      }),
+      cache: "no-store",
+      signal: AbortSignal.timeout(8_000),
+    });
+    if (!tokenResponse.ok) return failure();
+
+    const tokenData = await tokenResponse.json() as SupabaseTokenResponse;
+    if (!tokenData.access_token || !tokenData.token_type) return failure();
+    const scopes = (tokenData.scope ?? "management-api")
+      .split(/\s+/)
+      .map((scope) => scope.trim())
+      .filter(Boolean);
+    const tokens: ProviderTokenSet = {
+      accessToken: tokenData.access_token,
+      ...(tokenData.refresh_token ? { refreshToken: tokenData.refresh_token } : {}),
+      tokenType: tokenData.token_type,
+      scope: scopes,
+      ...(typeof tokenData.expires_in === "number"
+        ? { expiresAt: new Date(Date.now() + tokenData.expires_in * 1000).toISOString() }
+        : {}),
+    };
+
+    const services = credentialServices();
+    const connection = createProviderConnection({
+      provider: "supabase",
+      scopes,
+      credential: services.cipher.encrypt(tokens),
+    });
+    await services.store.save(connection);
+
+    const response = NextResponse.redirect(new URL("/?supabase=connected", request.url));
+    clearTransactionCookies(response);
+    response.cookies.set("relyo_supabase_connection", connection.id, {
+      httpOnly: true,
+      secure: secureCookie(request),
+      sameSite: "lax",
+      path: "/",
+      maxAge: 60 * 60 * 24 * 30,
+    });
+    response.headers.set("cache-control", "no-store");
+    return response;
+  } catch {
+    return failure();
+  }
+}

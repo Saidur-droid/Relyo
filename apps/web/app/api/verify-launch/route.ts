@@ -1,7 +1,8 @@
+import { SupabaseReadClient } from "@relyo/adapter-supabase";
 import { VercelReadClient } from "@relyo/adapter-vercel";
 import { listVercelProjects } from "@relyo/adapter-vercel/projects";
 import { discoverApplication } from "@relyo/discovery";
-import { executeVercelR1Proof } from "@relyo/proof-engine";
+import { executeCombinedR1Proof, executeVercelR1Proof } from "@relyo/proof-engine";
 import { NextRequest } from "next/server";
 import {
   credentialServices,
@@ -64,10 +65,12 @@ export async function POST(request: NextRequest) {
   if (url.length > 2048 || githubRepo.length > 256) return json({ error: "Input is too long." }, 400);
 
   const startedAt = Date.now();
+  const supabaseConnectionId = request.cookies.get("relyo_supabase_connection")?.value;
   let stage = "connection";
   emitProofEvent("proof_run_started", {
     has_url: Boolean(url),
     has_repo: Boolean(githubRepo),
+    supabase_connected: Boolean(supabaseConnectionId),
   });
 
   try {
@@ -116,23 +119,61 @@ export async function POST(request: NextRequest) {
       throw new Error("Provider project identity did not match the stored binding.");
     }
 
-    stage = "proof-persistence";
-    const proof = await executeVercelR1Proof({
-      discovery,
-      provider,
-      store: proofStore(),
-      signingPrivateKey: passportSigningPrivateKeyPem(),
-    });
+    let proof: Awaited<ReturnType<typeof executeVercelR1Proof>>;
+    let supabaseProject: { id: string; name: string } | null = null;
+
+    if (supabaseConnectionId) {
+      stage = "supabase-connection";
+      const supabaseConnection = await services.store.get(supabaseConnectionId);
+      if (!supabaseConnection || supabaseConnection.provider !== "supabase") {
+        return json({ error: "Supabase connection was not found. Reconnect Supabase." }, 401);
+      }
+      if (!supabaseConnection.boundProjectId) {
+        return json({ error: "Choose a Supabase project before running combined launch proof." }, 409);
+      }
+
+      const supabaseTokens = services.cipher.decrypt(supabaseConnection.credential);
+      if (supabaseTokens.expiresAt && Date.parse(supabaseTokens.expiresAt) <= Date.now()) {
+        return json({ error: "Supabase connection expired. Reconnect Supabase." }, 401);
+      }
+
+      stage = "supabase-observation";
+      const supabase = await new SupabaseReadClient({ token: supabaseTokens.accessToken })
+        .inspectProduction({ projectRef: supabaseConnection.boundProjectId });
+      if (supabase.project.ref !== supabaseConnection.boundProjectId) {
+        throw new Error("Supabase project identity did not match the stored binding.");
+      }
+      supabaseProject = { id: supabase.project.ref, name: supabase.project.name };
+
+      stage = "proof-persistence";
+      proof = await executeCombinedR1Proof({
+        discovery,
+        vercel: provider,
+        supabase,
+        store: proofStore(),
+        signingPrivateKey: passportSigningPrivateKeyPem(),
+      });
+    } else {
+      stage = "proof-persistence";
+      proof = await executeVercelR1Proof({
+        discovery,
+        provider,
+        store: proofStore(),
+        signingPrivateKey: passportSigningPrivateKeyPem(),
+      });
+    }
 
     emitProofEvent("proof_run_completed", {
       duration_ms: Date.now() - startedAt,
       proof_state: proof.run.state,
       assurance_achieved: proof.signedPassport.passport.assurance,
       blocker_count: proof.blockers.length,
+      supabase_included: Boolean(supabaseProject),
     });
     emitProofEvent("passport_issued", {
       assurance_achieved: proof.signedPassport.passport.assurance,
       signed: true,
+      supabase_included: Boolean(supabaseProject),
     });
 
     return json({
@@ -140,6 +181,7 @@ export async function POST(request: NextRequest) {
         id: provider.projectId,
         name: provider.projectName,
       },
+      supabaseProject,
       run: proof.run,
       blockers: proof.blockers,
       signedPassport: proof.signedPassport,
