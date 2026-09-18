@@ -9,6 +9,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@relyo/adapter-supabase": "workspace:*",
     "@relyo/adapter-vercel": "workspace:*",
     "@relyo/contracts": "workspace:*",
     "@relyo/credentials": "workspace:*",

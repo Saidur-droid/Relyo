@@ -8,6 +8,8 @@ import {
 } from "node:crypto";
 import type { Pool } from "pg";
 
+export type ProviderName = "vercel" | "supabase";
+
 export interface PkceTransaction {
   state: string;
   nonce: string;
@@ -34,7 +36,7 @@ export interface EncryptedCredentialEnvelope {
 
 export interface ProviderConnection {
   id: string;
-  provider: "vercel";
+  provider: ProviderName;
   providerAccountId?: string;
   providerTeamId?: string;
   boundProjectId?: string;
@@ -179,7 +181,7 @@ export class PostgresCredentialStore implements CredentialStore {
   async get(connectionId: string): Promise<ProviderConnection | null> {
     const result = await this.pool.query<{
       id: string;
-      provider: "vercel";
+      provider: ProviderName;
       provider_account_id: string | null;
       provider_team_id: string | null;
       bound_project_id: string | null;
@@ -216,7 +218,7 @@ export class PostgresCredentialStore implements CredentialStore {
 }
 
 export function createProviderConnection(input: {
-  provider: "vercel";
+  provider: ProviderName;
   scopes: string[];
   credential: EncryptedCredentialEnvelope;
   providerAccountId?: string;

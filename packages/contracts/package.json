@@ -11,6 +11,14 @@
     "./vercel-r1": {
       "types": "./src/vercel-r1.ts",
       "import": "./src/vercel-r1.ts"
+    },
+    "./supabase-r1": {
+      "types": "./src/supabase-r1.ts",
+      "import": "./src/supabase-r1.ts"
+    },
+    "./combined-r1": {
+      "types": "./src/combined-r1.ts",
+      "import": "./src/combined-r1.ts"
     }
   },
   "scripts": {
@@ -19,6 +27,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
+    "@relyo/adapter-supabase": "workspace:*",
     "@relyo/adapter-vercel": "workspace:*",
     "@relyo/discovery": "workspace:*",
     "@relyo/kernel": "workspace:*"

@@ -143,6 +143,13 @@ export function vercelOAuthConfig() {
   };
 }
 
+export function supabaseOAuthConfig() {
+  return {
+    clientId: required("SUPABASE_APP_CLIENT_ID"),
+    clientSecret: required("SUPABASE_APP_CLIENT_SECRET"),
+  };
+}
+
 /**
  * Optional production-only fallback for provider read APIs.
  * The value stays server-side and is never returned to the browser or proof evidence.
