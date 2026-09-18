@@ -67,3 +67,20 @@ No credential values were requested or retrieved; no database mutation, key rota
 - The previous Turbopack `.js` source-import build blocker is addressed through package self-exports, and the pnpm lockfile importer graph includes the new Supabase workspace package.
 - Next automated gate: frozen install, typecheck, tests, build, and Vercel preview on the reconciliation PR.
 - Human/account gate still pending: authenticated production Vercel proof for the current release, then Supabase OAuth application credentials for production combined proof. No secret values are committed or requested here.
+
+
+## Checkpoint 6 — Supabase R1 code merged; production account gates isolated
+
+- PR #9 merged to `main` as `a10b297b1858dafc51939bd7153a4e7dcc29ff4d`.
+- Fresh PR CI and post-merge main CI both passed frozen install, typecheck, tests and production build; Vercel preview and production deployment statuses are green.
+- Production UI now exposes the Vercel + Supabase read-only launch-proof flow.
+- Production migration `allow_supabase_provider` was applied successfully; `provider_connections.provider` now permits both `vercel` and `supabase`.
+- Stale PR #7 was closed as superseded by PR #9.
+- Production Supabase OAuth is not configured yet: `/api/supabase/connect` returns 503 because the required Supabase OAuth client credentials are absent.
+- Production Postgres still has only the historical signed R0 run for release `8ed6309739f0c31f24e115658eb087170f79e08b`; no current-release R1 proof exists yet.
+- Remaining human/account gates only:
+  1. authenticate/connect Vercel in the production Relyo browser session, bind `relyo`, and run **Verify My Launch** for `https://relyo-two.vercel.app` + `Saidur-droid/Relyo`;
+  2. create/configure the Supabase OAuth application with callback `https://relyo-two.vercel.app/api/supabase/callback`, then add `SUPABASE_APP_CLIENT_ID` and `SUPABASE_APP_CLIENT_SECRET` to Vercel Production;
+  3. connect/bind `relyo-prod` in Relyo and run the combined proof;
+  4. confirm new signed R1 proof/evidence rows for the exact deployed release.
+- No secret values were requested, read, printed or committed.
