@@ -2,7 +2,26 @@
 
 > Durable handoff for the next session. Read after AGENTS.md. The repository is the project memory.
 
-Last updated: 2026-09-17
+Last updated: 2026-09-18
+
+## Current checkpoint — 2026-09-18
+
+This section supersedes the historical September 17 execution notes below. Resume from `WORK_PROGRESS.md` and `NEXT_WORKFLOW.md`.
+
+- R1 repository blockers are repaired on `fix/r1-launch-readiness`, PR #8: generated pnpm lockfile and six-key root environment declaration. CI uses frozen installs; production checks reject preview-only variables.
+- Original code checkpoint: `05f91f8518207b4f71d12c338124aca860495554`. Its PR CI run `35300720285` succeeded and Vercel preview status is success.
+- Additional hardening removes temporary public diagnostic handlers and raw proof-error logging; malformed non-object proof requests return 400.
+- Local Node 22.23.2 / pnpm 10.15.1 frozen install, typecheck, 46 tests across 13 files, and Next.js 16.2.9 production build passed.
+- Production homepage is reachable. This session's browser has no authenticated Relyo Vercel connection. Connector lookup for `relyo` still returns 404 under the recorded team; this does not prove an outage.
+- Complete implementation commit `4e0b5e9068e0685b5b1e0a63521ba0416a175678` passed CI run `35300986829` and Vercel preview `CRtMT6Y8BsfRyXcgxwp531n6ybVw`. PR #8 is ready, not merged.
+- Automatic approval review rejected the requested merge into `main` because it requires explicit user authorization for this exact merge. Obtain authorization to merge PR #8 and deploy; do not bypass the rejection. Production code remains unchanged.
+- Independently confirmed the historical signed R0 run `run_89fc0874-af07-4809-bf16-915a07f4c66c` in Postgres, with all three evidence IDs/hashes matching stored evidence. This does not prove new R1.
+- After merge/deployment, authenticated R1 proof and matching new database evidence remain. The browser reaches Vercel login and requires user authentication. Do not call R1 complete yet. Issue #5 remains deferred until that gate is met.
+- No production secret values were requested/read, no keys rotated, no database schema changed.
+
+## Historical September 17 notes
+
+
 
 ## Immediate priority
 

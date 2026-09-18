@@ -152,6 +152,27 @@ describe("provider-backed Vercel R1", () => {
     expect(resultStatus(report, "launch.production-environment")).toBe("FAIL");
   });
 
+  it("keeps undeclared environment requirements UNKNOWN even if provider keys exist", () => {
+    const discovered = discovery();
+    discovered.repo!.envTemplateVariables = [];
+    const report = buildVercelR1Report({ discovery: discovered, provider: provider() });
+    expect(report.achievedAssurance).toBe("R0");
+    expect(resultStatus(report, "launch.production-environment")).toBe("UNKNOWN");
+  });
+
+  it("does not count preview-only keys as production configuration", () => {
+    const report = buildVercelR1Report({
+      discovery: discovery(),
+      provider: provider({ environmentKeys: [
+        { key: "APP_SECRET", targets: ["preview"], type: "encrypted" },
+        { key: "DATABASE_URL", targets: ["production"], type: "encrypted" },
+      ] }),
+    });
+    expect(report.achievedAssurance).toBe("R0");
+    expect(resultStatus(report, "launch.production-environment")).toBe("FAIL");
+    expect(report.blockers).toContain("APP_SECRET was not observed in Vercel production environment metadata.");
+  });
+
   it("refuses R1 when rollback readiness is not independently observed", () => {
     const report = buildVercelR1Report({
       discovery: discovery(),

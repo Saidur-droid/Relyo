@@ -140,3 +140,11 @@ Control: current adapter uses GET-only provider calls. Mutation APIs are not exp
 - commission external security review before broad production credential handling.
 
 Relyo must never interpret this connection flow as proof of total application safety. The Passport remains scoped to the exact contracts, release, environment, evidence, timestamp and exclusions shown to the user.
+
+## R1 readiness hardening (2026-09-18)
+
+- The root `.env.example` is the versioned production environment-key contract. It contains only blank assignments. The six required keys support database persistence, credential encryption, Passport signing, OAuth client configuration, and the current deployment's server-side Vercel read-token fallback. Key ID and OAuth scope have code defaults and are documented as optional comments.
+- Discovery reads the template at the observed commit SHA and retains names only. Missing/inaccessible declarations remain UNKNOWN. Environment assertions also enforce the production target, even if passed an unfiltered provider observation.
+- Temporary public persistence diagnostics are removed. Operational DB/key inspection belongs in authenticated operator tooling; the public app must not expose DB host/user metadata or permit unauthenticated diagnostic queries.
+- Proof failures emit only a controlled stage identifier in logs and a generic stage-specific response. Raw provider/database error messages are not logged or returned: substring-based secret detection is insufficient.
+- Null, array and primitive proof request bodies receive 400 before credential access. Existing origin and connection checks remain enforced.

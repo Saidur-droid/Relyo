@@ -109,7 +109,9 @@ function environmentContract(
       .map((key) => key.trim())
       .filter(Boolean),
   )).sort();
-  const observed = new Set(provider.environmentKeys.map((item) => item.key));
+  const observed = new Set(provider.environmentKeys
+    .filter((item) => item.targets.includes("production"))
+    .map((item) => item.key));
 
   const assertions: Assertion[] = required.length === 0
     ? [
