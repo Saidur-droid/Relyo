@@ -19,7 +19,13 @@ Read `WORK_PROGRESS.md` first for the latest saved checkpoint. Never infer produ
 - Temporary public persistence diagnostic handlers removed; raw provider/database errors excluded from proof logs and browser responses; malformed proof JSON bodies rejected.
 - Local frozen install, typecheck, 46 tests / 13 files, and production build passed. Existing Vercel Bun install configuration is preserved.
 
-## Next executable gate: authenticated production R1
+## Merge approval required
+
+PR #8 is ready and its implementation commit `4e0b5e9068e0685b5b1e0a63521ba0416a175678` passed CI run `35300986829` and Vercel preview. It is **not merged**. Automatic approval review rejected default-branch merge because the founder has not explicitly authorized this exact merge. Ask for authorization to merge PR #8 into main and deploy; do not bypass via direct push/ref update.
+
+Production code is unchanged. Read-only database inspection confirmed only the prior signed R0 run with three matching stored evidence records. Vercel login is needed in this session's browser for the later end-to-end proof.
+
+## After merge authorization: authenticated production R1
 
 1. Confirm the complete PR #8 changes are merged/deployed to Production and the matching GitHub CI/Vercel statuses are successful.
 2. Open `https://relyo-two.vercel.app` and use an existing Vercel connection, or complete normal OAuth if the browser has no connection. Do not change OAuth app settings or rotate keys.
