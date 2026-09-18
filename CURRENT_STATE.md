@@ -4,6 +4,10 @@
 
 Last updated: 2026-09-18
 
+## Fresh live verification — 2026-09-18
+
+See `WORK_PROGRESS.md` checkpoint 7. Baseline main `478fdf7bc2bfc92ca08796d7d82b7d0c4d5b9fa7` has successful CI run `35304846452` and Vercel deployment status `2Nyeh8EEzeTBHrfEZS5Dx4qgR1Rc`. The production UI is reachable. Vercel connection requires interactive sign-in in the current browser; Supabase connect still returns HTTP 503 (not configured). Read-only database inspection still finds only the historical PARTIAL/R0 run with 3 matching evidence records. No current-release R1 is proven. Application code and production configuration were not changed during this verification.
+
 ## Latest checkpoint — 2026-09-18 (supersedes the earlier checkpoint below)
 
 - Current merged implementation: `a10b297b1858dafc51939bd7153a4e7dcc29ff4d` (`feat: add Supabase read-only R1 proof`).

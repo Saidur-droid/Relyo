@@ -1,5 +1,19 @@
 # R1 work checkpoint
 
+## Checkpoint 7 — fresh production verification, 2026-09-18
+
+- Resumed from the current remote repository and Issue #5, not the older local checkouts. Baseline main: `478fdf7bc2bfc92ca08796d7d82b7d0c4d5b9fa7`.
+- Independently verified main CI run `35304846452`: completed/success. Vercel reports success for the same commit, deployment `2Nyeh8EEzeTBHrfEZS5Dx4qgR1Rc`.
+- Opened the production UI and confirmed both provider connection flows and the combined-proof form are present.
+- Normal Connect Vercel reaches the Vercel sign-in page. The user selected GitHub through secure browser authentication and submitted the requested GitHub sign-in form. GitHub then rendered `500 Error / Looks like something went wrong!`. Authentication success is unknown; no bound-project or R1 success was observed. Stop automated sign-in retries after this generic failure; resume only through an appropriate user-directed authentication recovery.
+- This checkpoint is saved on branch `docs/production-verification-20260918`, PR #10. Automatic approval review rejected directly updating main because it would bypass the merge/review path; main remains unchanged. Use the PR for continuation and review.
+- Rechecked `/api/supabase/connect`: HTTP 503, with the safe response `Supabase connection is not configured on this Relyo deployment.` OAuth activation remains outstanding.
+- Read-only Supabase inspection confirms `relyo-prod` is ACTIVE_HEALTHY and the provider constraint permits `vercel` and `supabase`.
+- Production still has only `run_89fc0874-af07-4809-bf16-915a07f4c66c`: PARTIAL, achieved R0, target R1, release `8ed6309739f0c31f24e115658eb087170f79e08b`, with an Ed25519 signature envelope. All 3 referenced evidence IDs/hashes match stored evidence rows. This checks persistence and envelope metadata, not a fresh cryptographic signature verification.
+- No application code, provider configuration, credentials, or database rows were changed in this checkpoint. Risk: OBSERVE for verification; SAFE_REVERSIBLE for these documentation updates.
+- Remaining: authenticated Vercel bind/proof; Supabase OAuth application setup and production environment configuration; combined proof; verify exact release, signature, and persisted evidence before closing Issue #5.
+- Preserve the verified release SHA above separately from subsequent documentation commits. Never promise a final message after a hard session cutoff; use these saved checkpoints to resume.
+
 Updated: 2026-09-18. Branch: `fix/r1-launch-readiness`.
 
 ## Completed
