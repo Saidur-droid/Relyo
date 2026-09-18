@@ -2,6 +2,8 @@
 
 Last updated: 2026-09-18
 
+Latest recheck: `WORK_PROGRESS.md` checkpoint 7 confirms the main CI/deployment baseline is green, Vercel requires interactive sign-in, Supabase connect still returns 503, and no new R1 run exists. Start with secure Vercel browser authentication; do not repeat completed implementation work. After any configuration redeploy, use the actual deployed SHA for proof and database verification.
+
 Read `WORK_PROGRESS.md` first. The repository and deployment work that can be completed without human account authentication is now merged and green.
 
 ## Completed
