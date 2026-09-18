@@ -4,7 +4,19 @@
 
 Last updated: 2026-09-18
 
-## Current checkpoint — 2026-09-18
+## Latest checkpoint — 2026-09-18 (supersedes the earlier checkpoint below)
+
+- Current merged implementation: `a10b297b1858dafc51939bd7153a4e7dcc29ff4d` (`feat: add Supabase read-only R1 proof`).
+- PR #9 reconciled the old Issue #5 branch onto current main, preserved the Vercel server-read-token fallback, Ed25519 signing-key normalization, proof error redaction and frozen lockfile, and fixed the previous Turbopack package-resolution failure.
+- PR #9 CI and post-merge main CI passed install/typecheck/tests/build; Vercel preview and production status are green.
+- Production homepage now includes Vercel + Supabase OAuth/binding UI and combined deterministic R1 proof support.
+- Production database migration now allows provider connections for both `vercel` and `supabase`.
+- Production Supabase OAuth is still unconfigured; the connect endpoint returns 503 until the founder supplies/configures the real Supabase OAuth application credentials in Vercel Production.
+- A current-release authenticated Vercel R1 proof has not yet been generated. Production Postgres still contains only the historical signed R0 proof for release `8ed6309739f0c31f24e115658eb087170f79e08b`.
+- Therefore code/build/deployment/database-schema work available without human authentication is complete; the remaining work is account-authenticated production proof and real OAuth credential setup. Do not claim R1 or Issue #5 production completion until those evidence-backed runs exist.
+- No production secret values were read or committed.
+
+## Earlier checkpoint — 2026-09-18
 
 This section supersedes the historical September 17 execution notes below. Resume from `WORK_PROGRESS.md` and `NEXT_WORKFLOW.md`.
 
