@@ -41,6 +41,9 @@ importers:
       '@relyo/kernel':
         specifier: workspace:*
         version: link:../../packages/kernel
+      '@relyo/mcp':
+        specifier: workspace:*
+        version: link:../../packages/mcp
       '@relyo/proof-engine':
         specifier: workspace:*
         version: link:../../packages/proof-engine
