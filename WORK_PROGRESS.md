@@ -1,3 +1,26 @@
+# Checkpoint 10 — final technical 1% isolated, 2026-09-19
+
+- Current main before this documentation checkpoint: `d8a7bc2203484e190c9e038387926a2c84aaf3e6`.
+- PR #45 merged explicit Vercel project validation/linking.
+- Founder replaced `VERCEL_TOKEN` with a team-scoped token; value remains secret and must never be requested or exposed.
+- PR #46 merged the pnpm install correction for Vercel builds.
+- PR #47 merged the intentional free-prebuilt retry trigger.
+- Main production prebuilt workflow run `35435808696`:
+  - token/project read PASS;
+  - explicit project link PASS;
+  - production `vercel pull` PASS;
+  - locked pnpm install PASS;
+  - GitHub-hosted `vercel build --prod` PASS;
+  - upload reached `vercel deploy --prebuilt --prod` and failed only with Vercel Hobby free daily deployment quota `api-deployments-free-per-day` / `try again in 24 hours`.
+- This confirms the remaining production gate is external quota, not a repository/code/config/token bug.
+- Provider bindings already exist for Vercel `relyo` and Supabase `relyo-prod`.
+- Current contract code correctly places Supabase backup observability at R3/R4 only; it is not an R1 requirement.
+- Final required technical sequence after quota reset: fresh production deploy -> exact main SHA verification -> combined Vercel+Supabase VERIFIED/R1 -> independent evidence ID/hash verification -> Issue #5 close.
+- Issue #39 remains intentionally open for later 5–20 real independent design partners and does not block calling the technical implementation/evidence path complete once Issue #5 is truthfully closed.
+- Practical technical completion at this checkpoint: approximately **99%**.
+
+---
+
 # Checkpoint 9 — free prebuilt deploy fallback + live R2/R3/R4 evidence, 2026-09-19
 
 - Current main at this checkpoint: `4ce1224ee09676014fd239f3aa2c34bf6605b5f5`.
