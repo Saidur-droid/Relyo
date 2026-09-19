@@ -1,3 +1,17 @@
+# FINAL CURRENT STATE — 2026-09-19
+
+**Technical completion: ~99%.** Current main before this documentation checkpoint: `d8a7bc2203484e190c9e038387926a2c84aaf3e6`.
+
+The remaining technical work is not a coding blocker. GitHub Actions run `35435808696` proved the team-scoped Vercel token, explicit project link, production settings pull and GitHub-hosted prebuilt production build all work. The final `vercel deploy --prebuilt --prod` upload is blocked only by Vercel Hobby's daily free deployment quota: `api-deployments-free-per-day` / `try again in 24 hours`.
+
+After the free quota resets, perform exactly one fresh production deployment, verify the stable production URL is bound to the exact current main SHA, then run and independently verify a combined Vercel + Supabase `VERIFIED/R1` proof in `proof_runs` + `evidence_envelopes`, and close Issue #5 only after the evidence IDs/hashes and provider bindings match.
+
+Issue #39 is intentionally **not** part of this last technical 1%; it remains open for later real third-party design-partner validation (5–20 partners, minimum 5).
+
+Do not upgrade Vercel, use paid resources, expose secrets, inspect credential envelopes, or fabricate proof. Read `CHAT_HANDOFF_2026-09-19.md` first in any new session.
+
+---
+
 # Current checkpoint — 2026-09-19 late handoff
 
 Current main: `4ce1224ee09676014fd239f3aa2c34bf6605b5f5`.
