@@ -112,6 +112,12 @@ importers:
         specifier: workspace:*
         version: link:../kernel
 
+  packages/cost-intelligence:
+    dependencies:
+      '@relyo/kernel':
+        specifier: workspace:*
+        version: link:../kernel
+
   packages/credentials:
     dependencies:
       pg:
