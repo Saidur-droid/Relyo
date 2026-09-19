@@ -41,9 +41,6 @@ importers:
       '@relyo/kernel':
         specifier: workspace:*
         version: link:../../packages/kernel
-      '@relyo/mcp':
-        specifier: workspace:*
-        version: link:../../packages/mcp
       '@relyo/proof-engine':
         specifier: workspace:*
         version: link:../../packages/proof-engine
@@ -53,6 +50,12 @@ importers:
       '@relyo/store':
         specifier: workspace:*
         version: link:../../packages/store
+      '@relyo/mcp':
+        specifier: workspace:*
+        version: link:../../packages/mcp
+      '@relyo/sdk':
+        specifier: workspace:*
+        version: link:../../packages/sdk-js
       jose:
         specifier: ^6.1.0
         version: 6.2.12
@@ -149,6 +152,12 @@ importers:
         specifier: workspace:*
         version: link:../kernel
 
+  packages/governance:
+    dependencies:
+      '@relyo/kernel':
+        specifier: workspace:*
+        version: link:../kernel
+
   packages/journey:
     dependencies:
       '@relyo/kernel':
@@ -197,6 +206,12 @@ importers:
         version: link:../kernel
 
   packages/runner:
+    dependencies:
+      '@relyo/kernel':
+        specifier: workspace:*
+        version: link:../kernel
+
+  packages/trust-network:
     dependencies:
       '@relyo/kernel':
         specifier: workspace:*
