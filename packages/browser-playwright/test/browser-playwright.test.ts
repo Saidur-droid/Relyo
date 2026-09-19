@@ -1,6 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import type { Browser, BrowserContext, Locator, Page } from "playwright-core";
-import { PlaywrightJourneyDriver } from "../src/index.js";
+import { PlaywrightJourneyDriver, type PlaywrightBrowserLike, type PlaywrightContextLike, type PlaywrightLocatorLike, type PlaywrightPageLike } from "../src/index.js";
 
 function fakeBrowser() {
   const calls: string[] = [];
@@ -9,20 +8,20 @@ function fakeBrowser() {
     click: vi.fn(async () => { calls.push("click"); }),
     waitFor: vi.fn(async () => { calls.push("visible"); }),
     textContent: vi.fn(async () => "Dashboard ready"),
-  } as unknown as Locator;
+  } as unknown as PlaywrightLocatorLike;
   const page = {
     goto: vi.fn(async () => { calls.push("goto"); return null; }),
     locator: vi.fn(() => locator),
     waitForURL: vi.fn(async () => { calls.push("waitForURL"); }),
     screenshot: vi.fn(async () => Buffer.from("png")),
-  } as unknown as Page;
+  } as unknown as PlaywrightPageLike;
   const context = {
     newPage: vi.fn(async () => page),
     close: vi.fn(async () => { calls.push("close"); }),
-  } as unknown as BrowserContext;
+  } as unknown as PlaywrightContextLike;
   const browser = {
     newContext: vi.fn(async () => context),
-  } as unknown as Browser;
+  } as unknown as PlaywrightBrowserLike;
   return { browser, calls };
 }
 
