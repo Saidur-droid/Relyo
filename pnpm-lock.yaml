@@ -85,6 +85,12 @@ importers:
         specifier: workspace:*
         version: link:../kernel
 
+  packages/auth-proof:
+    dependencies:
+      '@relyo/kernel':
+        specifier: workspace:*
+        version: link:../kernel
+
   packages/contracts:
     dependencies:
       '@relyo/adapter-supabase':
