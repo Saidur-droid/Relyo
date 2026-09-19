@@ -1,9 +1,9 @@
 import { appendFileSync } from "node:fs";
 
-const apiKey = process.env["INPUT_API-KEY"]?.trim();
-const baseUrl = (process.env["INPUT_BASE-URL"] || "https://relyo-two.vercel.app").replace(/\/$/, "");
-const productionUrl = process.env["INPUT_PRODUCTION-URL"]?.trim();
-const githubRepo = process.env["INPUT_GITHUB-REPO"]?.trim() || process.env.GITHUB_REPOSITORY?.trim();
+const apiKey = process.env.INPUT_API_KEY?.trim();
+const baseUrl = (process.env.INPUT_BASE_URL || "https://relyo-two.vercel.app").replace(/\/$/, "");
+const productionUrl = process.env.INPUT_PRODUCTION_URL?.trim();
+const githubRepo = process.env.INPUT_GITHUB_REPO?.trim() || process.env.GITHUB_REPOSITORY?.trim();
 
 if (!apiKey?.startsWith("rly_live_")) throw new Error("A Relyo API key is required.");
 if (!productionUrl && !githubRepo) throw new Error("Provide production-url or github-repo.");
