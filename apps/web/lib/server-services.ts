@@ -7,6 +7,7 @@ import {
   type CredentialStore,
 } from "@relyo/credentials";
 import { PostgresProofStore, type ProofStore } from "@relyo/store";
+import { PostgresProofApiKeyStore, type ProofApiKeyStore } from "@relyo/proof-api";
 
 let pool: Pool | undefined;
 
@@ -45,6 +46,10 @@ export function credentialServices(): {
 
 export function proofStore(): ProofStore {
   return new PostgresProofStore(databasePool());
+}
+
+export function proofApiKeyStore(): ProofApiKeyStore {
+  return new PostgresProofApiKeyStore(databasePool());
 }
 
 function normalizePem(value: string): string | null {
