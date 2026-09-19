@@ -199,6 +199,18 @@ importers:
         specifier: workspace:*
         version: link:../kernel
 
+  packages/remediation-supabase:
+    dependencies:
+      '@relyo/remediation':
+        specifier: workspace:*
+        version: link:../remediation
+
+  packages/remediation-vercel:
+    dependencies:
+      '@relyo/remediation':
+        specifier: workspace:*
+        version: link:../remediation
+
   packages/remediation:
     dependencies:
       '@relyo/kernel':
