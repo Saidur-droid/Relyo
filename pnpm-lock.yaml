@@ -44,6 +44,9 @@ importers:
       '@relyo/proof-engine':
         specifier: workspace:*
         version: link:../../packages/proof-engine
+      '@relyo/proof-api':
+        specifier: workspace:*
+        version: link:../../packages/proof-api
       '@relyo/store':
         specifier: workspace:*
         version: link:../../packages/store
