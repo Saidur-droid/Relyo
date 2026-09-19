@@ -1,3 +1,22 @@
+# Current checkpoint — 2026-09-19 late handoff
+
+Current main: `e909492c2746e669f80bedf35e126db278e699b3`.
+
+The founder completed the one-time Vercel access-token setup and stored it as GitHub Actions secret `VERCEL_TOKEN`; the value is intentionally unavailable and must never be requested in chat.
+
+The zero-paid prebuilt Vercel production path exists. The latest main run `35432259329` failed locally with `VERCEL_SCOPE: unbound variable` because stale inline scope flags remained. PR #42 removes those flags; merge it if CI is green, then observe the automatically triggered prebuilt deployment.
+
+Live zero-paid system qualification is already real:
+- R2 + isolated R3: run `35428835006`, PASS.
+- Continuous Proof live qualification: run `35428993526`, PASS.
+- Free Render target: `https://relyo-qualification-free.onrender.com`.
+
+Do not claim Issue #5 complete until a fresh exact-release combined Vercel+Supabase `VERIFIED/R1` is persisted and hashes independently match. Do not claim Founder Go-Live complete until Issue #39 records at least 5 real independent design partners.
+
+Read `CHAT_HANDOFF_2026-09-19.md` before continuing in a new session.
+
+---
+
 # Current checkpoint — 2026-09-19
 
 Current main: `57964864481f07db45deb52b68bda9b0769a68ba`.
