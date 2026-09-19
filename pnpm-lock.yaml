@@ -44,9 +44,18 @@ importers:
       '@relyo/proof-engine':
         specifier: workspace:*
         version: link:../../packages/proof-engine
+      '@relyo/proof-api':
+        specifier: workspace:*
+        version: link:../../packages/proof-api
       '@relyo/store':
         specifier: workspace:*
         version: link:../../packages/store
+      '@relyo/mcp':
+        specifier: workspace:*
+        version: link:../../packages/mcp
+      '@relyo/sdk':
+        specifier: workspace:*
+        version: link:../../packages/sdk-js
       jose:
         specifier: ^6.1.0
         version: 6.2.12
@@ -207,6 +216,30 @@ importers:
       '@relyo/kernel':
         specifier: workspace:*
         version: link:../kernel
+
+  packages/cli:
+    dependencies:
+      '@relyo/sdk':
+        specifier: workspace:*
+        version: link:../sdk-js
+
+  packages/mcp:
+    dependencies:
+      '@relyo/sdk':
+        specifier: workspace:*
+        version: link:../sdk-js
+
+  packages/proof-api:
+    dependencies:
+      pg:
+        specifier: ^8.16.3
+        version: 8.23.0
+    devDependencies:
+      '@types/pg':
+        specifier: ^8.15.5
+        version: 8.23.1
+
+  packages/sdk-js: {}
 
   packages/store:
     dependencies:
