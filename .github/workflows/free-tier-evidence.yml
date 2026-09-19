@@ -1,0 +1,77 @@
+name: Free-Tier Execution Evidence
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/free-tier-evidence.yml"
+      - "packages/runner/**"
+      - "packages/runner-vercel-sandbox/**"
+      - "packages/browser-playwright/**"
+      - "packages/resilience/**"
+      - "packages/resilience-vercel/**"
+      - "pnpm-lock.yaml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  free-evidence:
+    name: free ephemeral runner evidence
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.15.1
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install locked workspace
+        run: pnpm install --frozen-lockfile
+
+      - name: Signed Runner executes on fresh GitHub VM
+        run: pnpm --filter @relyo/runner test
+
+      - name: Vercel Sandbox adapter safety suite (no remote allocation)
+        run: pnpm --filter @relyo/runner-vercel-sandbox test
+
+      - name: Browser journey driver deterministic suite
+        run: pnpm --filter @relyo/browser-playwright test
+
+      - name: R3 recovery driver deterministic suite
+        run: pnpm --filter @relyo/resilience-vercel test
+
+      - name: Real headless browser runtime smoke
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > /tmp/relyo-browser-fixture.html <<'HTML'
+          <!doctype html>
+          <html><body><main id="relyo-live-browser">Relyo free browser runtime PASS</main></body></html>
+          HTML
+          google-chrome --headless --no-sandbox --disable-gpu             --dump-dom "file:///tmp/relyo-browser-fixture.html"             | grep -F "Relyo free browser runtime PASS"
+
+      - name: Record zero-paid execution boundary
+        shell: bash
+        run: |
+          {
+            echo "## Relyo free-tier execution evidence"
+            echo
+            echo "- Runner host: GitHub standard hosted ubuntu-latest"
+            echo "- Repository visibility: public"
+            echo "- Paid Vercel Sandbox allocation: not used"
+            echo "- Paid larger GitHub runner: not used"
+            echo "- Signed Runner tests: passed"
+            echo "- Vercel Sandbox adapter safety tests: passed without provider allocation"
+            echo "- Browser journey driver tests: passed"
+            echo "- Real headless Chrome runtime smoke: passed"
+            echo "- R3 driver safety tests: passed without production mutation"
+            echo "- Commit: $GITHUB_SHA"
+          } >> "$GITHUB_STEP_SUMMARY"
