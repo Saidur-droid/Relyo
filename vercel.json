@@ -1,7 +1,7 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "nextjs",
-  "installCommand": "bun install --no-save",
+  "installCommand": "pnpm install --frozen-lockfile",
   "buildCommand": "pnpm --filter @relyo/web... run build",
   "outputDirectory": "apps/web/.next",
   "ignoreCommand": "node scripts/vercel-ignore-build.mjs"
