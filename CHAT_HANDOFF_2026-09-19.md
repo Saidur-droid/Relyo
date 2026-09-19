@@ -27,21 +27,22 @@ Do not ask the founder to restate the project before reading those sources.
 
 ## Current repository state
 
-Current `main` when this handoff was written:
+Current `main` when this handoff was finalized:
 
-`e909492c2746e669f80bedf35e126db278e699b3`
+`4ce1224ee09676014fd239f3aa2c34bf6605b5f5`
 
-The immediately pending fix is PR #42:
+PR #42 is merged. It removed stale inline `--scope="$VERCEL_SCOPE"` arguments that had caused `VERCEL_SCOPE: unbound variable`.
 
-`fix: remove stale VERCEL_SCOPE flags from prebuilt deploy`
+After #42, the automatic free-prebuilt main workflow ran again:
 
-PR #42 head:
+- workflow run: `35432619820`
+- result: FAILED
+- token secret was present (masked as `***`)
+- dependency install succeeded
+- Vercel CLI reached `vercel pull`
+- exact current blocker: `Error: Could not retrieve Project Settings. To link your Project, remove the .vercel directory and deploy again.`
 
-`78119cf566fb8879078771589b365968e98ae5b6`
-
-Why it exists: the first post-token free-prebuilt workflow reached the step after dependency installation but failed locally because stale inline `--scope="$VERCEL_SCOPE"` arguments remained even after the variable was removed. The exact failure was `VERCEL_SCOPE: unbound variable`. This is a workflow bug, not a token-value failure.
-
-At handoff creation, PR #42 CI was still running after install/typecheck/test had passed and build was in progress. Re-check CI; if green, merge #42.
+This is the current technical continuation point. The likely next area to fix is explicit CI project/repository linking for this monorepo (for example an explicit `.vercel/project.json`/repo link or running the CLI from the correct linked project directory), while keeping the same project-scoped secret and zero-paid policy. Do not ask the founder to recreate the token unless logs later prove it invalid/revoked.
 
 ## Secret/account setup already completed by the founder
 
@@ -184,10 +185,10 @@ A fresh exact-release combined `VERIFIED/R1` must be generated after the current
 
 Required final technical sequence:
 
-1. Finish/merge PR #42 if CI is green.
-2. Observe the automatic `Vercel Free Prebuilt Production Deploy` workflow.
-3. If it fails, inspect logs and fix the workflow; stay free.
-4. Require a successful production deploy from current main.
+1. Start from merged main `4ce1224ee09676014fd239f3aa2c34bf6605b5f5`.
+2. Inspect failed workflow `35432619820`; current failure is Vercel project linking / Project Settings retrieval, not missing GitHub secret.
+3. Fix the CI linking path via normal branch/PR/CI while staying free and preserving the existing `VERCEL_TOKEN`.
+4. Require a successful production deploy from the then-current main.
 5. Verify the exact deployed release SHA.
 6. Open/use production Relyo provider session and run combined Vercel + Supabase R1 with:
    - URL: `https://relyo-two.vercel.app`
