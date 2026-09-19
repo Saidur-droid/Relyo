@@ -24,7 +24,6 @@ jobs:
       VERCEL_ORG_ID: team_BsJXXtOBNmww7MhlgiE7JzzO
       VERCEL_PROJECT_ID: prj_GdpW8gbUqsjZx84AtoHq2twAl7gi
       VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-      VERCEL_SCOPE: saidur-droids-projects
     steps:
       - uses: actions/checkout@v5
         with:
