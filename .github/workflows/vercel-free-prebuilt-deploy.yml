@@ -54,20 +54,20 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          pnpm dlx vercel@latest pull             --yes             --environment=production             --token="$VERCEL_TOKEN"             --scope="$VERCEL_SCOPE"
+          pnpm dlx vercel@latest pull             --yes             --environment=production             --token="$VERCEL_TOKEN"
 
       - name: Build Vercel output on free GitHub runner
         shell: bash
         run: |
           set -euo pipefail
-          pnpm dlx vercel@latest build             --prod             --token="$VERCEL_TOKEN"             --scope="$VERCEL_SCOPE"
+          pnpm dlx vercel@latest build             --prod             --token="$VERCEL_TOKEN"
 
       - name: Upload prebuilt output directly to production
         id: deploy
         shell: bash
         run: |
           set -euo pipefail
-          DEPLOYMENT_URL="$(pnpm dlx vercel@latest deploy             --prebuilt             --prod             --yes             --archive=tgz             --token="$VERCEL_TOKEN"             --scope="$VERCEL_SCOPE"             --no-color | tail -n 1)"
+          DEPLOYMENT_URL="$(pnpm dlx vercel@latest deploy             --prebuilt             --prod             --yes             --archive=tgz             --token="$VERCEL_TOKEN"             --no-color | tail -n 1)"
           case "$DEPLOYMENT_URL" in
             https://*.vercel.app) ;;
             *)
