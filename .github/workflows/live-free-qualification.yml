@@ -1,0 +1,153 @@
+name: Live Free Qualification
+
+on:
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: "Public URL of the free qualification fixture"
+        required: true
+        type: string
+  repository_dispatch:
+    types: [relyo.live-qualification]
+
+permissions:
+  contents: read
+
+jobs:
+  live-r2-r3:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      BASE_URL: ${{ inputs.base_url || github.event.client_payload.base_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate target
+        shell: bash
+        run: |
+          set -euo pipefail
+          case "$BASE_URL" in
+            https://*) ;;
+            *) echo "BASE_URL must use https://"; exit 1 ;;
+          esac
+          curl -fsS --retry 8 --retry-delay 5 "$BASE_URL/health" | tee /tmp/health.json
+          node -e 'const x=require("/tmp/health.json"); if(!x.ok||x.service!=="relyo-qualification-fixture") process.exit(1)'
+
+      - name: Install Playwright CLI and Chromium
+        run: npx -y playwright@1.61.0 install chromium
+
+      - name: Run real browser R2 synthetic customer journey
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/relyo-live-tests
+          cat > /tmp/relyo-live-tests/r2.spec.js <<'JS'
+          const { test, expect } = require('@playwright/test');
+
+          test('real R2 synthetic customer journey', async ({ browser }) => {
+            const base = process.env.BASE_URL;
+            const email = `synthetic-${Date.now()}-${Math.random().toString(36).slice(2)}@example.com`;
+            const context = await browser.newContext();
+            const page = await context.newPage();
+
+            await page.goto(base + '/signup');
+            await page.locator('#email').fill(email);
+            await page.locator('#signup-submit').click();
+            await expect(page).toHaveURL(/\/verify$/);
+            await expect(page.locator('#verify-state')).toContainText('verification-required');
+
+            await page.locator('#verify-submit').click();
+            await expect(page).toHaveURL(/\/dashboard$/);
+            await expect(page.locator('#auth-state')).toHaveText('authenticated');
+            await expect(page.locator('#identity-state')).toHaveText('verified');
+
+            await page.locator('#create-resource').click();
+            await expect(page.locator('#resource-state')).toHaveText('resource-created');
+
+            await page.locator('#run-core').click();
+            await expect(page.locator('#core-state')).toHaveText('core-completed');
+
+            await page.locator('#logout').click();
+            await expect(page).toHaveURL(/\/login$/);
+
+            await page.goto(base + '/dashboard');
+            await expect(page).toHaveURL(/\/login$/);
+
+            await page.locator('#login-email').fill(email);
+            await page.locator('#login-submit').click();
+            await expect(page).toHaveURL(/\/dashboard$/);
+            await expect(page.locator('#core-state')).toHaveText('core-completed');
+
+            await page.locator('#cleanup').click();
+            await expect(page).toHaveURL(/\/signup$/);
+
+            await context.close();
+          });
+          JS
+          cd /tmp/relyo-live-tests
+          npm init -y >/dev/null 2>&1
+          npm install --no-save @playwright/test@1.61.0 >/dev/null 2>&1
+          npx playwright test r2.spec.js --reporter=line
+
+      - name: Run safe isolated live R3 recovery journey
+        shell: bash
+        run: |
+          set -euo pipefail
+          node <<'JS'
+          const base = process.env.BASE_URL;
+          const run = async () => {
+            const start = await fetch(base + '/api/resilience/start', { method: 'POST' });
+            if (!start.ok) throw new Error('R3 start failed');
+            const created = await start.json();
+            const id = created.id;
+
+            try {
+              const inject = await fetch(base + `/api/resilience/${encodeURIComponent(id)}/inject`, { method: 'POST' });
+              const injected = await inject.json();
+              if (!inject.ok || injected.healthy !== false || injected.injected !== true) throw new Error('R3 failure injection was not observed');
+
+              const failedVerify = await fetch(base + `/api/resilience/${encodeURIComponent(id)}/verify`);
+              const failedState = await failedVerify.json();
+              if (!failedVerify.ok || failedState.healthy !== false) throw new Error('R3 failed state was not reproducible');
+
+              const recover = await fetch(base + `/api/resilience/${encodeURIComponent(id)}/recover`, { method: 'POST' });
+              const recovered = await recover.json();
+              if (!recover.ok || recovered.healthy !== true || recovered.recoveryCount < 1) throw new Error('R3 recovery did not execute');
+
+              const verify = await fetch(base + `/api/resilience/${encodeURIComponent(id)}/verify`);
+              const finalState = await verify.json();
+              if (!verify.ok || finalState.healthy !== true || finalState.recoveryCount < 1) throw new Error('R3 recovered outcome did not verify');
+
+              console.log(JSON.stringify({
+                r3: 'PASS',
+                sessionId: id,
+                failureInjected: true,
+                failedStateVerified: true,
+                recoveryExecuted: true,
+                recoveredOutcomeVerified: true,
+              }));
+            } finally {
+              await fetch(base + `/api/resilience/${encodeURIComponent(id)}`, { method: 'DELETE' });
+            }
+          };
+          run().catch((error) => {
+            console.error(error);
+            process.exit(1);
+          });
+          JS
+
+      - name: Write qualification summary
+        shell: bash
+        run: |
+          {
+            echo "## Live free R2/R3 qualification"
+            echo
+            echo "- Target: $BASE_URL"
+            echo "- Transport: public HTTPS"
+            echo "- Real browser: Playwright Chromium"
+            echo "- R2 signup/verify/auth/resource/core/logout/unauthorized/re-login/cleanup: PASS"
+            echo "- R3 isolated failure/recovery/reverification/cleanup: PASS"
+            echo "- Paid compute explicitly requested by workflow: none"
+            echo "- GitHub runner: standard hosted ubuntu-latest"
+            echo "- Repository commit: $GITHUB_SHA"
+          } >> "$GITHUB_STEP_SUMMARY"
