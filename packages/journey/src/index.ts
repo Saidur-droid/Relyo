@@ -184,7 +184,7 @@ export function buildR2JourneyContract(run: JourneyRun): ProofContract {
       description: step.title,
       status: step.status,
       evidenceRefs: refs,
-      message: step.detail,
+      ...(step.detail ? { message: step.detail } : {}),
     })),
   };
 }
