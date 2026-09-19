@@ -1,11 +1,18 @@
 name: Live Free Qualification
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/live-free-qualification.yml"
+      - "apps/qualification-fixture/**"
+      - "pnpm-lock.yaml"
   workflow_dispatch:
     inputs:
       base_url:
         description: "Public URL of the free qualification fixture"
-        required: true
+        required: false
+        default: "https://relyo-qualification-free.onrender.com"
         type: string
   repository_dispatch:
     types: [relyo.live-qualification]
@@ -18,7 +25,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:
-      BASE_URL: ${{ inputs.base_url || github.event.client_payload.base_url }}
+      BASE_URL: ${{ inputs.base_url || github.event.client_payload.base_url || 'https://relyo-qualification-free.onrender.com' }}
     steps:
       - uses: actions/checkout@v4
 
