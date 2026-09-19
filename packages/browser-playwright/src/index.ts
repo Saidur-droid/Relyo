@@ -1,5 +1,27 @@
-import type { Browser, BrowserContext, Page } from "playwright-core";
 import type { JourneyDriver, JourneyStepResult } from "@relyo/journey";
+
+export interface PlaywrightLocatorLike {
+  fill(value: string, options?: { timeout?: number }): Promise<void>;
+  click(options?: { timeout?: number }): Promise<void>;
+  waitFor(options?: { state?: "visible"; timeout?: number }): Promise<void>;
+  textContent(options?: { timeout?: number }): Promise<string | null>;
+}
+
+export interface PlaywrightPageLike {
+  goto(url: string, options?: { waitUntil?: "domcontentloaded"; timeout?: number }): Promise<unknown>;
+  locator(selector: string): PlaywrightLocatorLike;
+  waitForURL(url: string | RegExp, options?: { timeout?: number }): Promise<void>;
+  screenshot(options?: { fullPage?: boolean; type?: "png" }): Promise<Uint8Array>;
+}
+
+export interface PlaywrightContextLike {
+  newPage(): Promise<PlaywrightPageLike>;
+  close(): Promise<void>;
+}
+
+export interface PlaywrightBrowserLike {
+  newContext(options?: { serviceWorkers?: "block"; [key: string]: unknown }): Promise<PlaywrightContextLike>;
+}
 
 export type BrowserAction =
   | { kind: "goto"; url: string }
@@ -44,11 +66,11 @@ export interface BrowserArtifactSink {
 }
 
 export interface PlaywrightJourneyDriverOptions {
-  browser: Browser;
+  browser: PlaywrightBrowserLike;
   spec: BrowserJourneySpec;
   artifacts: BrowserArtifactSink;
   now?: () => Date;
-  contextOptions?: Parameters<Browser["newContext"]>[0];
+  contextOptions?: { serviceWorkers?: "block"; [key: string]: unknown };
 }
 
 function validateSpec(spec: BrowserJourneySpec): void {
@@ -84,8 +106,8 @@ function resolveAppUrl(baseUrl: string, value: string): string {
 }
 
 export class PlaywrightJourneyDriver implements JourneyDriver {
-  private context: BrowserContext | null = null;
-  private page: Page | null = null;
+  private context: PlaywrightContextLike | null = null;
+  private page: PlaywrightPageLike | null = null;
   private readonly now: () => Date;
 
   constructor(private readonly options: PlaywrightJourneyDriverOptions) {
@@ -93,7 +115,7 @@ export class PlaywrightJourneyDriver implements JourneyDriver {
     this.now = options.now ?? (() => new Date());
   }
 
-  private async ensurePage(): Promise<Page> {
+  private async ensurePage(): Promise<PlaywrightPageLike> {
     if (this.page) return this.page;
     this.context = await this.options.browser.newContext({
       serviceWorkers: "block",
