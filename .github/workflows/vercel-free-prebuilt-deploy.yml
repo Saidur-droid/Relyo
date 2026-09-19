@@ -50,6 +50,50 @@ jobs:
       - name: Install locked workspace
         run: pnpm install --frozen-lockfile
 
+      - name: Validate token can read configured Vercel project
+        shell: bash
+        run: |
+          set -euo pipefail
+          PROJECT_STATUS="$(
+            curl --silent --show-error               --output /tmp/vercel-project.json               --write-out "%{http_code}"               --header "Authorization: Bearer $VERCEL_TOKEN"               "https://api.vercel.com/v9/projects/$VERCEL_PROJECT_ID?teamId=$VERCEL_ORG_ID"
+          )"
+
+          if [ "$PROJECT_STATUS" != "200" ]; then
+            echo "::error::Stored VERCEL_TOKEN cannot read configured project $VERCEL_PROJECT_ID in $VERCEL_ORG_ID (HTTP $PROJECT_STATUS). The secret exists, but its project/account access does not match this production project or has been revoked."
+            exit 1
+          fi
+
+          node <<'NODE'
+          const fs = require("node:fs");
+          const project = JSON.parse(fs.readFileSync("/tmp/vercel-project.json", "utf8"));
+          const expectedProject = process.env.VERCEL_PROJECT_ID;
+          const expectedOrg = process.env.VERCEL_ORG_ID;
+
+          if (project.id !== expectedProject) {
+            throw new Error(`Vercel project mismatch: expected ${expectedProject}, received ${project.id ?? "missing"}`);
+          }
+
+          if (project.accountId && project.accountId !== expectedOrg) {
+            throw new Error(`Vercel account mismatch: expected ${expectedOrg}, received ${project.accountId}`);
+          }
+
+          console.log("Configured Vercel project is readable by the stored token.");
+          NODE
+
+      - name: Create explicit local Vercel project link
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p .vercel
+          node <<'NODE'
+          const fs = require("node:fs");
+          const link = {
+            orgId: process.env.VERCEL_ORG_ID,
+            projectId: process.env.VERCEL_PROJECT_ID,
+          };
+          fs.writeFileSync(".vercel/project.json", JSON.stringify(link, null, 2) + "\n");
+          NODE
+
       - name: Pull production project settings and environment
         shell: bash
         run: |
@@ -67,7 +111,9 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          DEPLOYMENT_URL="$(pnpm dlx vercel@latest deploy             --prebuilt             --prod             --yes             --archive=tgz             --token="$VERCEL_TOKEN"             --no-color | tail -n 1)"
+          DEPLOYMENT_URL="$(
+            pnpm dlx vercel@latest deploy               --prebuilt               --prod               --yes               --archive=tgz               --token="$VERCEL_TOKEN"               --no-color | tail -n 1
+          )"
           case "$DEPLOYMENT_URL" in
             https://*.vercel.app) ;;
             *)
