@@ -78,4 +78,14 @@ describe("Supabase R1 contracts", () => {
     }).map(evaluateContract);
     expect(results.find((result) => result.contractId === "supabase.rls-policy")?.status).toBe("UNKNOWN");
   });
+
+  it("keeps backup evidence visible without making provider-managed backups an R1/R2 requirement", () => {
+    const contracts = buildSupabaseR1Contracts({
+      discovery,
+      provider: provider({ backups: { observed: true, backupCount: 0, latestStatus: null } }),
+    });
+    const backup = contracts.find((contract) => contract.id === "supabase.backup-readiness");
+    expect(backup?.requiredFor).toEqual(["R3", "R4"]);
+    expect(backup ? evaluateContract(backup).status : undefined).toBe("FAIL");
+  });
 });

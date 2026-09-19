@@ -108,7 +108,7 @@ function backupContract(provider: SupabaseProductionObservation): ProofContract 
     id: "supabase.backup-readiness",
     version: "1",
     title: "Supabase backup observability",
-    requiredFor: ["R1", "R2", "R3", "R4"],
+    requiredFor: ["R3", "R4"],
     assertions: [{
       id: "supabase.backup-present",
       description: "At least one database backup is observable for the bound production project",
