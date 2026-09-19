@@ -21,6 +21,8 @@ importers:
         specifier: ^3.2.7
         version: 3.2.7(@types/node@22.20.3)
 
+  apps/qualification-fixture: {}
+
   apps/web:
     dependencies:
       '@relyo/adapter-supabase':
