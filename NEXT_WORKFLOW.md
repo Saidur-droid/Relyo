@@ -1,3 +1,21 @@
+# Next execution gate — 2026-09-19
+
+No manual setup is currently required from the founder.
+
+1. Wait for the Vercel Hobby build-rate gate to clear. The automated condition-watch checks hourly without creating probe deployments.
+2. When clearly open, change only `.vercel-deploy-trigger` through normal branch/PR/CI/merge and request the fresh production deployment.
+3. Verify the deployed commit SHA exactly matches current main.
+4. Re-run combined Vercel+Supabase R1 against the exact production release and independently verify the signed Passport plus persisted ProofStore evidence/hashes.
+5. Close Issue #5 only after combined `VERIFIED/R1` exists.
+6. Run the real R2 customer journey using the Playwright-compatible driver with an explicit target journey spec and safe synthetic data.
+7. Run R3 only in an isolated/staging-safe recovery target. Never inject a destructive production failure.
+8. Prefer free GitHub-hosted ephemeral execution and included/free provider capacity. Never upgrade Vercel or use paid compute to satisfy an evidence gate.
+9. Reconcile production evidence into `WORK_PROGRESS.md`, `CURRENT_STATE.md`, issue state, and final Passport documentation.
+
+Current main `57964864481f07db45deb52b68bda9b0769a68ba` has green main CI and green Free-Tier Execution Evidence. Vercel production deployment remains blocked by the Hobby build-rate status.
+
+---
+
 # Relyo — Next Workflow
 
 Last updated: 2026-09-18
