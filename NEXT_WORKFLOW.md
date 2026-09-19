@@ -1,8 +1,8 @@
 # Immediate next workflow — 2026-09-19 late handoff
 
-1. Re-check PR #42. If CI is green, merge it.
-2. Observe `Vercel Free Prebuilt Production Deploy` on the resulting main.
-3. If it fails, inspect only the workflow/build logs, fix via branch/PR/CI, and stay on the zero-paid path.
+1. Start from current main `4ce1224ee09676014fd239f3aa2c34bf6605b5f5`; PR #42 is already merged.
+2. Inspect failed `Vercel Free Prebuilt Production Deploy` run `35432619820`. It reached `vercel pull` and failed with `Could not retrieve Project Settings`.
+3. Fix the Vercel CLI project/repo-linking path for the monorepo via branch/PR/CI, preserving the existing project-scoped `VERCEL_TOKEN` and zero-paid policy.
 4. Once production deploy succeeds, verify the exact deployed main SHA.
 5. Run combined Vercel + Supabase R1 for `https://relyo-two.vercel.app` + `Saidur-droid/Relyo`, bound to Vercel `relyo` and Supabase `relyo-prod`.
 6. Independently verify `proof_runs` + `evidence_envelopes`: VERIFIED, target R1, achieved R1, exact SHA, correct provider binding, matching evidence IDs/hashes.
