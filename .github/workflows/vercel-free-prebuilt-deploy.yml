@@ -1,0 +1,105 @@
+name: Vercel Free Prebuilt Production Deploy
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".vercel-prebuilt-deploy-trigger"
+      - ".github/workflows/vercel-free-prebuilt-deploy.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: relyo-vercel-prebuilt-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: build on GitHub and upload prebuilt output
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      VERCEL_ORG_ID: team_BsJXXtOBNmww7MhlgiE7JzzO
+      VERCEL_PROJECT_ID: prj_GdpW8gbUqsjZx84AtoHq2twAl7gi
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_SCOPE: saidur-droids-projects
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 2
+
+      - name: Require project-scoped Vercel token
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -z "${VERCEL_TOKEN:-}" ]; then
+            echo "::error::Missing GitHub Actions secret VERCEL_TOKEN. Create a free project-scoped Vercel token and add it as repository secret VERCEL_TOKEN."
+            exit 1
+          fi
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.15.1
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install locked workspace
+        run: pnpm install --frozen-lockfile
+
+      - name: Pull production project settings and environment
+        shell: bash
+        run: |
+          set -euo pipefail
+          pnpm dlx vercel@latest pull             --yes             --environment=production             --token="$VERCEL_TOKEN"             --scope="$VERCEL_SCOPE"
+
+      - name: Build Vercel output on free GitHub runner
+        shell: bash
+        run: |
+          set -euo pipefail
+          pnpm dlx vercel@latest build             --prod             --token="$VERCEL_TOKEN"             --scope="$VERCEL_SCOPE"
+
+      - name: Upload prebuilt output directly to production
+        id: deploy
+        shell: bash
+        run: |
+          set -euo pipefail
+          DEPLOYMENT_URL="$(pnpm dlx vercel@latest deploy             --prebuilt             --prod             --yes             --archive=tgz             --token="$VERCEL_TOKEN"             --scope="$VERCEL_SCOPE"             --no-color | tail -n 1)"
+          case "$DEPLOYMENT_URL" in
+            https://*.vercel.app) ;;
+            *)
+              echo "::error::Unexpected Vercel deployment URL: $DEPLOYMENT_URL"
+              exit 1
+              ;;
+          esac
+          echo "url=$DEPLOYMENT_URL" >> "$GITHUB_OUTPUT"
+
+      - name: Verify public production URL
+        shell: bash
+        env:
+          DEPLOYMENT_URL: ${{ steps.deploy.outputs.url }}
+        run: |
+          set -euo pipefail
+          curl -fsS --retry 8 --retry-all-errors --retry-delay 5 "$DEPLOYMENT_URL/" >/tmp/relyo-root.html
+          curl -fsS --retry 8 --retry-all-errors --retry-delay 5 "https://relyo-two.vercel.app/" >/tmp/relyo-stable-root.html
+
+      - name: Record deployment evidence
+        shell: bash
+        env:
+          DEPLOYMENT_URL: ${{ steps.deploy.outputs.url }}
+        run: |
+          {
+            echo "## Free prebuilt Vercel production deployment"
+            echo
+            echo "- Source commit: $GITHUB_SHA"
+            echo "- Build executor: standard GitHub-hosted ubuntu-latest"
+            echo "- Vercel remote build: bypassed by prebuilt upload"
+            echo "- Deployment URL: $DEPLOYMENT_URL"
+            echo "- Stable production URL: https://relyo-two.vercel.app"
+            echo "- Vercel project: $VERCEL_PROJECT_ID"
+            echo "- Paid Vercel upgrade: not required by this workflow"
+          } >> "$GITHUB_STEP_SUMMARY"
