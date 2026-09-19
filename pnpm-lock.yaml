@@ -196,6 +196,30 @@ importers:
         specifier: workspace:*
         version: link:../kernel
 
+  packages/cli:
+    dependencies:
+      '@relyo/sdk':
+        specifier: workspace:*
+        version: link:../sdk-js
+
+  packages/mcp:
+    dependencies:
+      '@relyo/sdk':
+        specifier: workspace:*
+        version: link:../sdk-js
+
+  packages/proof-api:
+    dependencies:
+      pg:
+        specifier: ^8.16.3
+        version: 8.23.0
+    devDependencies:
+      '@types/pg':
+        specifier: ^8.15.5
+        version: 8.23.1
+
+  packages/sdk-js: {}
+
   packages/store:
     dependencies:
       '@relyo/kernel':
