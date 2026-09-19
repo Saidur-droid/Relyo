@@ -1,3 +1,17 @@
+# Current checkpoint — 2026-09-19
+
+Current main: `57964864481f07db45deb52b68bda9b0769a68ba`.
+
+Zero-paid policy is now encoded in-repo. PR #34 added a Vercel Hobby build-conservation guard and a free GitHub-hosted ephemeral execution evidence workflow. Main CI and the free execution workflow are green. The latter proves a real fresh VM and real headless Chrome runtime without paid provider compute.
+
+The current production deployment gate is external: GitHub's Vercel status for current main still points to `upgradeToPro=build-rate-limit`. Do not upgrade, start a paid trial, or create paid resources. An hourly condition-watch is allowed to act only when the free gate is clearly open.
+
+Production assurance is not yet complete. A fresh exact-SHA combined Vercel+Supabase R1 must be generated after the next production deployment; then live R2 and safe isolated R3 evidence can proceed on a free/included path where credentials/capabilities permit. Until then, do not claim 100% production completion.
+
+Engineering estimate: ~90% code implementation, ~65% live evidence, ~75% full V2 roadmap overall.
+
+---
+
 # Relyo — Current Execution State
 
 > Durable handoff for the next session. Read after AGENTS.md. The repository is the project memory.
