@@ -1,10 +1,10 @@
 # Current checkpoint — 2026-09-19 late handoff
 
-Current main: `e909492c2746e669f80bedf35e126db278e699b3`.
+Current main: `4ce1224ee09676014fd239f3aa2c34bf6605b5f5`.
 
 The founder completed the one-time Vercel access-token setup and stored it as GitHub Actions secret `VERCEL_TOKEN`; the value is intentionally unavailable and must never be requested in chat.
 
-The zero-paid prebuilt Vercel production path exists. The latest main run `35432259329` failed locally with `VERCEL_SCOPE: unbound variable` because stale inline scope flags remained. PR #42 removes those flags; merge it if CI is green, then observe the automatically triggered prebuilt deployment.
+The zero-paid prebuilt Vercel production path exists. PR #42 is merged. The next automatic run, `35432619820`, passed secret detection/install and reached Vercel CLI `pull`, then failed with `Could not retrieve Project Settings`. Continue by fixing explicit CI project/repo linking for the monorepo. Do not recreate the existing token unless later evidence proves it invalid.
 
 Live zero-paid system qualification is already real:
 - R2 + isolated R3: run `35428835006`, PASS.
