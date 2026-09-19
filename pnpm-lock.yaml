@@ -205,6 +205,15 @@ importers:
         specifier: workspace:*
         version: link:../kernel
 
+  packages/runner-vercel-sandbox:
+    dependencies:
+      '@relyo/kernel':
+        specifier: workspace:*
+        version: link:../kernel
+      '@relyo/runner':
+        specifier: workspace:*
+        version: link:../runner
+
   packages/runner:
     dependencies:
       '@relyo/kernel':
