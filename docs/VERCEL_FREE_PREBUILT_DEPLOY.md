@@ -24,3 +24,8 @@ Project/team identifiers are deliberately non-secret and are committed in the wo
 - team: `team_BsJXXtOBNmww7MhlgiE7JzzO`
 
 After the secret exists, changing `.vercel-prebuilt-deploy-trigger` launches the free prebuilt production path automatically.
+
+
+## Scoped token behavior
+
+Project-scoped Vercel access tokens infer their project/team context automatically. The workflow therefore does not pass `--scope`; it relies on `VERCEL_PROJECT_ID`, `VERCEL_ORG_ID`, and the scoped token. This avoids the CLI account lookup path that can return `User not found (404)` for project-scoped tokens.
