@@ -154,6 +154,12 @@ importers:
         specifier: workspace:*
         version: link:../store
 
+  packages/resilience:
+    dependencies:
+      '@relyo/kernel':
+        specifier: workspace:*
+        version: link:../kernel
+
   packages/remediation:
     dependencies:
       '@relyo/kernel':
