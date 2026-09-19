@@ -1,3 +1,34 @@
+# Checkpoint 8 — zero-paid execution path and current production gate, 2026-09-19
+
+- Current main at this checkpoint: `57964864481f07db45deb52b68bda9b0769a68ba`.
+- PR #34 merged a strict zero-paid execution path:
+  - Vercel `ignoreCommand` computes the transitive workspace dependency closure of `@relyo/web` and skips unrelated builds to preserve Hobby quota.
+  - `.vercel-deploy-trigger` is the intentional one-file production retry trigger after the free deployment gate clears.
+  - GitHub standard hosted `ubuntu-latest` is the zero-paid ephemeral execution substrate for Runner/browser/R3 development evidence.
+- Main CI run `35427451747` completed successfully.
+- Free-Tier Execution Evidence run `35427451756` completed successfully on a fresh GitHub-hosted VM:
+  - signed Runner suite PASS;
+  - Vercel Sandbox adapter safety suite PASS without allocating remote provider compute;
+  - browser journey driver suite PASS;
+  - real headless Chrome runtime smoke PASS;
+  - R3 recovery driver suite PASS without production mutation.
+- GitHub still reports the Vercel check for main as `failure` with target `upgradeToPro=build-rate-limit`. No paid upgrade/trial is permitted.
+- Vercel's current public pricing lists Hobby Sandbox included usage (5 active CPU hours/month, 420 GB-hours memory/month, 5K creations/month), but a live provider Sandbox run is not claimed because the available connected Vercel authorization does not expose sandbox creation for this project. Do not request a paid plan merely for this evidence.
+- Production ProofStore still lacks a post-fix combined Vercel+Supabase VERIFIED/R1 run on the current deployed release. The latest known combined run remains pre-fix FAILED/R0; the independently verified Vercel-only R1 remains historical evidence.
+- A condition-watch now checks the free deployment gate hourly and will only request a new production deployment when the free gate is clearly open. It must not probe by creating deployments, purchase capacity, expose secrets, or rotate credentials.
+
+## Progress estimate
+
+These percentages are engineering estimates, not assurance claims:
+
+- repository/code implementation: about **90%**;
+- live production/evidence completion: about **65%**;
+- full V2 roadmap including Founder Go-Live beta/design-partner exit criteria: about **75% overall**.
+
+The remaining work is dominated by fresh production deployment/evidence, real R2 journey configuration/evidence, isolated live R3 evidence, and beta/design-partner validation rather than a large core coding backlog.
+
+---
+
 # R1 work checkpoint
 
 ## Checkpoint 7 — fresh production verification, 2026-09-18
