@@ -1,5 +1,15 @@
 # R1 work checkpoint
 
+## Checkpoint 8 — production Vercel R1 independently persisted, 2026-09-19
+
+- Founder completed the production Vercel OAuth flow, selected and bound the `relyo` project, and ran **Verify My Launch** against `https://relyo-two.vercel.app` and `Saidur-droid/Relyo`.
+- Production UI returned **R1 — Launch Verified** for run `run_3d045c4a-161e-4c73-b58b-3ebf2ae68aee` with PASS results for exact release identity, public HTTPS/health, repository readiness, Vercel production state, required production environment key presence and rollback-readiness.
+- Read-only production Postgres verification independently found the same run as `VERIFIED`, target/achieved assurance `R1`, exact release `1cc7a07fe80ab4351c2e7ec4aeb1943e4f5a38fb`, Passport SHA-256 `cb00e81287cbcc06abd818d7dd92769240700effcaf9c25b74a283c557aa2054`, and Ed25519 signature metadata. This confirms persistence and signature-envelope metadata; no signing private key or provider credential was read.
+- The run references exactly three persisted evidence envelopes. Their stored SHA-256 hashes match the hashes referenced by the run: public HTTP observation, GitHub repository observation, and Vercel production observation.
+- This closes the previous authenticated-Vercel production gate. Do not repeat that flow unless a later release requires fresh proof.
+- Issue #5 remains open only because production Supabase OAuth is not yet configured and the combined Vercel + Supabase proof has not yet been run.
+- Next human action: create/configure the Supabase Management API OAuth application for Relyo, add `SUPABASE_APP_CLIENT_ID` and `SUPABASE_APP_CLIENT_SECRET` to the Vercel `relyo` Production environment without exposing values, redeploy if required, then connect/bind `relyo-prod` and run the combined proof.
+
 ## Checkpoint 7 — fresh production verification, 2026-09-18
 
 - Resumed from the current remote repository and Issue #5, not the older local checkouts. Baseline main: `478fdf7bc2bfc92ca08796d7d82b7d0c4d5b9fa7`.
