@@ -1,0 +1,63 @@
+name: Continuous Proof Free Live
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/continuous-proof-free-live.yml"
+      - "packages/continuous-proof/**"
+      - "apps/qualification-fixture/**"
+      - "pnpm-lock.yaml"
+  schedule:
+    - cron: "17 5 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  continuous-proof:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      RELYO_LIVE_QUALIFICATION_URL: https://relyo-qualification-free.onrender.com
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.15.1
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install locked workspace
+        run: pnpm install --frozen-lockfile
+
+      - name: Wake and validate free live target
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fsS --retry 12 --retry-all-errors --retry-delay 5             "$RELYO_LIVE_QUALIFICATION_URL/health" | tee /tmp/relyo-health.json
+          node -e 'const x=require("/tmp/relyo-health.json"); if(!x.ok||x.service!=="relyo-qualification-fixture") process.exit(1)'
+
+      - name: Controlled Continuous Proof break and targeted recovery verification
+        run: pnpm --filter @relyo/continuous-proof test -- --run test/live-continuous-proof.test.ts
+
+      - name: Record continuous proof evidence
+        shell: bash
+        run: |
+          {
+            echo "## Continuous Proof free live evidence"
+            echo
+            echo "- Target: $RELYO_LIVE_QUALIFICATION_URL"
+            echo "- Initial live health observation: PASS"
+            echo "- Controlled isolated runtime break: observed"
+            echo "- Impact planner selected only qualification.health for rerun"
+            echo "- Recovery executed and independently re-observed: PASS"
+            echo "- Refreshed evidence freshness: CURRENT"
+            echo "- Paid infrastructure requested: none"
+            echo "- Commit: $GITHUB_SHA"
+          } >> "$GITHUB_STEP_SUMMARY"
