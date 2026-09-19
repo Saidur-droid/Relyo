@@ -148,6 +148,12 @@ importers:
         specifier: workspace:*
         version: link:../store
 
+  packages/remediation:
+    dependencies:
+      '@relyo/kernel':
+        specifier: workspace:*
+        version: link:../kernel
+
   packages/runner:
     dependencies:
       '@relyo/kernel':
