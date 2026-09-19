@@ -121,6 +121,7 @@ describe("Vercel Sandbox Runner", () => {
         projectId: "prj_1",
         fetchImpl,
         resultPrivateKey: runner.privateKey,
+        now: () => new Date("2026-09-19T00:01:00.000Z"),
       },
     })).rejects.toThrow("command failed");
     expect(urls.some((url) => url.includes("/stop"))).toBe(true);
