@@ -131,6 +131,12 @@ importers:
         specifier: workspace:*
         version: link:../kernel
 
+  packages/fleet:
+    dependencies:
+      '@relyo/kernel':
+        specifier: workspace:*
+        version: link:../kernel
+
   packages/kernel: {}
 
   packages/proof-engine:
