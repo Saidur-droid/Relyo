@@ -166,6 +166,12 @@ importers:
         specifier: workspace:*
         version: link:../kernel
 
+  packages/trust-network:
+    dependencies:
+      '@relyo/kernel':
+        specifier: workspace:*
+        version: link:../kernel
+
   packages/store:
     dependencies:
       '@relyo/kernel':
