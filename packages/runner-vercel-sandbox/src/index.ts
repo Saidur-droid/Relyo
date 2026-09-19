@@ -181,7 +181,7 @@ export async function executeInVercelSandbox(input: {
           relyo_task_sha256: input.taskEnvelope.taskSha256,
         },
       }),
-      signal: input.signal,
+      ...(input.signal ? { signal: input.signal } : {}),
     });
 
     const created = await requireJson<SandboxCreateResponse>(createResponse, "create");
@@ -206,7 +206,7 @@ export async function executeInVercelSandbox(input: {
         logs: true,
         timeout: String(task.timeoutMs),
       }),
-      signal: input.signal,
+      ...(input.signal ? { signal: input.signal } : {}),
     });
     const command = await requireJson<SandboxCommandResponse>(commandResponse, "command");
     commandId = command.command?.id ?? cmdId;
