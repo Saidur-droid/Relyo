@@ -3,5 +3,6 @@
   "framework": "nextjs",
   "installCommand": "bun install --no-save",
   "buildCommand": "pnpm --filter @relyo/web... run build",
-  "outputDirectory": "apps/web/.next"
+  "outputDirectory": "apps/web/.next",
+  "ignoreCommand": "node scripts/vercel-ignore-build.mjs"
 }
