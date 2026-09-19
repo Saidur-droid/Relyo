@@ -1,0 +1,26 @@
+name: "Relyo Proof"
+description: "Submit the current release to the Relyo Proof API"
+inputs:
+  api-key:
+    description: "Relyo API key. Pass from GitHub Actions secrets."
+    required: true
+  base-url:
+    description: "Relyo service URL"
+    required: false
+    default: "https://relyo-two.vercel.app"
+  production-url:
+    description: "Production application URL"
+    required: false
+  github-repo:
+    description: "Repository owner/name"
+    required: false
+outputs:
+  run-id:
+    description: "Relyo proof run ID"
+  state:
+    description: "Proof run state"
+  assurance:
+    description: "Achieved assurance"
+runs:
+  using: "node24"
+  main: "index.mjs"
