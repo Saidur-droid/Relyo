@@ -1,3 +1,17 @@
+# Checkpoint 9 — free prebuilt deploy fallback + live R2/R3/R4 evidence, 2026-09-19
+
+- Current main at this checkpoint: `4ce1224ee09676014fd239f3aa2c34bf6605b5f5`.
+- Founder has created the project-scoped Vercel token and saved it only as GitHub Actions secret `VERCEL_TOKEN`. Never request or reveal its value.
+- PR #40 added the free prebuilt production deployment workflow; PR #41 adjusted scoped-token behavior; PR #42 is merged and removed the stale `VERCEL_SCOPE` arguments.
+- Post-#42 workflow run `35432619820` progressed to Vercel CLI `pull` and failed with `Could not retrieve Project Settings`. The GitHub secret was present. Current continuation is explicit Vercel CI/monorepo linking, not token recreation.
+- Real zero-paid R2/R3 live qualification PASS on Render free target `https://relyo-qualification-free.onrender.com`, Actions run `35428835006`.
+- Real zero-paid Continuous Proof qualification PASS, Actions run `35428993526`.
+- Technical next gate: successful current-main prebuilt Vercel production deploy -> exact SHA verification -> fresh combined Vercel+Supabase VERIFIED/R1 -> independent ProofStore hash verification.
+- External non-coding gate: Issue #39 requires 5–20 real independent design partners; current minimum count is 0/5 and must not be fabricated.
+- See `CHAT_HANDOFF_2026-09-19.md` for exact continuation context.
+
+---
+
 # Checkpoint 8 — zero-paid execution path and current production gate, 2026-09-19
 
 - Current main at this checkpoint: `57964864481f07db45deb52b68bda9b0769a68ba`.
