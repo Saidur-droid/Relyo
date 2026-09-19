@@ -1,17 +1,17 @@
 name: "Relyo Proof"
 description: "Submit the current release to the Relyo Proof API"
 inputs:
-  api-key:
+  api_key:
     description: "Relyo API key. Pass from GitHub Actions secrets."
     required: true
-  base-url:
+  base_url:
     description: "Relyo service URL"
     required: false
     default: "https://relyo-two.vercel.app"
-  production-url:
+  production_url:
     description: "Production application URL"
     required: false
-  github-repo:
+  github_repo:
     description: "Repository owner/name"
     required: false
 outputs:
