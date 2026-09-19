@@ -1,3 +1,19 @@
+# Immediate next workflow — 2026-09-19 late handoff
+
+1. Re-check PR #42. If CI is green, merge it.
+2. Observe `Vercel Free Prebuilt Production Deploy` on the resulting main.
+3. If it fails, inspect only the workflow/build logs, fix via branch/PR/CI, and stay on the zero-paid path.
+4. Once production deploy succeeds, verify the exact deployed main SHA.
+5. Run combined Vercel + Supabase R1 for `https://relyo-two.vercel.app` + `Saidur-droid/Relyo`, bound to Vercel `relyo` and Supabase `relyo-prod`.
+6. Independently verify `proof_runs` + `evidence_envelopes`: VERIFIED, target R1, achieved R1, exact SHA, correct provider binding, matching evidence IDs/hashes.
+7. Close Issue #5 only after that evidence exists.
+8. Keep Issue #39 open until 5–20 real independent design partners use Relyo; synthetic/internal evidence does not count.
+9. See `CHAT_HANDOFF_2026-09-19.md` for all exact IDs, runs, security rules and already-completed work.
+
+No further manual secret setup is currently expected from the founder unless a future provider error proves the stored token is invalid/revoked.
+
+---
+
 # Next execution gate — 2026-09-19
 
 No manual setup is currently required from the founder.
