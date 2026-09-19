@@ -193,6 +193,15 @@ importers:
         specifier: workspace:*
         version: link:../store
 
+  packages/resilience-vercel:
+    dependencies:
+      '@relyo/kernel':
+        specifier: workspace:*
+        version: link:../kernel
+      '@relyo/resilience':
+        specifier: workspace:*
+        version: link:../resilience
+
   packages/resilience:
     dependencies:
       '@relyo/kernel':
