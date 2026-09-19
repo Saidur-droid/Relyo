@@ -21,7 +21,8 @@
     "next": "16.2.9",
     "pg": "^8.16.3",
     "react": "19.1.1",
-    "react-dom": "19.1.1"
+    "react-dom": "19.1.1",
+    "@relyo/proof-api": "workspace:*"
   },
   "devDependencies": {
     "@types/pg": "^8.15.5",
