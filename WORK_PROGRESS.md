@@ -1,3 +1,13 @@
+# Checkpoint 12 — smart provider UX continuation saved, 2026-09-20
+
+- Founder direction for the next implementation session is saved in `SMART_PROVIDER_HANDOFF_2026-09-20.md`.
+- Do not ask the founder to restate the plan.
+- Continue from PR #52 / branch `feat/provider-neutral-launch-onboarding`.
+- Next work: GitHub-first provider detection, relevant-only provider prompts, production URL evidence, and a high-value remediation report explaining where/why/how to fix issues while preserving deterministic proof and explicit UNKNOWNs.
+- Do not merge/deploy while the free production path is blocked in a way that would recreate release-identity drift.
+
+---
+
 # Checkpoint 11 — provider-neutral onboarding fix, 2026-09-20
 
 - Product UX bug identified from live founder use: `Verify My Launch` treated Vercel as mandatory and visually positioned Vercel/Supabase as universal requirements even though Relyo's V2 strategy is provider-neutral.
