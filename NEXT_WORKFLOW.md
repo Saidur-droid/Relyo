@@ -1,3 +1,21 @@
+# FINAL NEXT WORKFLOW — remaining technical 1% — 2026-09-19
+
+No new coding or founder secret setup is currently required.
+
+1. Wait for the Vercel Hobby daily free deployment quota to reopen. Latest definitive failure: Actions run `35435808696`, upload error `api-deployments-free-per-day` / `try again in 24 hours`.
+2. Do not probe repeatedly, pay, upgrade, or start a trial.
+3. When the free gate is available, trigger the existing GitHub-hosted prebuilt production path through `.vercel-prebuilt-deploy-trigger` using normal branch -> PR -> CI -> merge.
+4. Require install, project-read validation, explicit Vercel link, production pull, prebuilt build, upload and stable URL verification all to pass.
+5. Verify `https://relyo-two.vercel.app` is serving the exact then-current main SHA.
+6. Run combined Vercel + Supabase R1 using the existing bound providers: Vercel `relyo` and Supabase `relyo-prod`.
+7. Independently verify production `proof_runs` and `evidence_envelopes`: `VERIFIED`, target R1, achieved R1, exact SHA, correct Vercel+Supabase binding, matching evidence IDs/hashes.
+8. Update Issue #5 + canonical docs and close Issue #5 only after that proof is real.
+9. Leave Issue #39 open. Real design partners are a later external phase, not part of this technical-finalization task.
+
+If a future chat starts from only the repository link, read `CHAT_HANDOFF_2026-09-19.md` and continue from this sequence without making the founder restate history.
+
+---
+
 # Immediate next workflow — 2026-09-19 late handoff
 
 1. Start from current main `4ce1224ee09676014fd239f3aa2c34bf6605b5f5`; PR #42 is already merged.

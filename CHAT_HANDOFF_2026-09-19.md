@@ -1,3 +1,85 @@
+# FINAL CONTINUATION CHECKPOINT — 2026-09-19
+
+This section supersedes older continuation instructions below.
+
+## One-line state
+
+Relyo technical work is approximately **99% complete**. The only remaining technical gate is a fresh zero-paid Vercel production deployment after the Hobby daily deployment quota resets, followed by exact-release combined Vercel + Supabase R1 evidence verification and Issue #5 closure. **Issue #39 is intentionally deferred** because it requires 5–20 real independent design partners and is external/non-coding work.
+
+## Exact current repository state
+
+- Current main before this documentation checkpoint: `d8a7bc2203484e190c9e038387926a2c84aaf3e6`.
+- PR #45 merged explicit Vercel project-link validation/linking.
+- Founder replaced the GitHub Actions `VERCEL_TOKEN` with a team-scoped token. Never request or expose its value.
+- PR #46 merged the Vercel install fix: `bun install --no-save` -> `pnpm install --frozen-lockfile`.
+- PR #47 merged the intentional free-prebuilt deployment retry trigger.
+
+## Latest production deploy attempt — definitive blocker
+
+GitHub Actions run `35435808696` proved all of the following on current main:
+
+- GitHub-hosted runner setup PASS
+- locked pnpm workspace install PASS
+- team-scoped Vercel token can read the configured Relyo project PASS
+- explicit local Vercel project link PASS
+- `vercel pull --environment=production` PASS
+- `vercel build --prod` on the free GitHub runner PASS
+- upload step reached `vercel deploy --prebuilt --prod`
+- upload failed only because Vercel Hobby returned:
+  - `Resource is limited - try again in 24 hours`
+  - code `api-deployments-free-per-day`
+
+Do **not** spend money, upgrade Vercel, start a trial, or create paid compute to bypass this. This is an external free-tier quota gate, not a code/config/token failure.
+
+## Already-verified production/provider facts
+
+- Vercel project: `relyo` / `prj_GdpW8gbUqsjZx84AtoHq2twAl7gi`
+- Vercel team: `team_BsJXXtOBNmww7MhlgiE7JzzO`
+- production URL: `https://relyo-two.vercel.app`
+- Supabase project: `relyo-prod` / `rlzkqgpouwdmwvltumob`
+- stored Vercel provider connection is bound to `relyo`
+- stored Supabase provider connection is bound to `relyo-prod`
+- Supabase Auth site URL has been corrected to the production origin
+- observed public/storage RLS baseline passes
+- current code correctly makes Supabase backup observability an R3/R4 requirement only, not an R1 blocker
+
+Historical combined runs are **not** current-release completion. The latest exact final proof must be generated only after the fresh production deployment.
+
+## Exact remaining 1% sequence
+
+When the free Vercel daily deployment quota is available again:
+
+1. Use the existing documented free prebuilt path; do not change architecture or buy capacity.
+2. Trigger one fresh production deployment through the normal branch -> PR -> CI -> merge path using `.vercel-prebuilt-deploy-trigger`.
+3. Require the prebuilt workflow to finish upload + stable URL verification successfully.
+4. Verify `https://relyo-two.vercel.app` is bound to the exact then-current main SHA.
+5. Run the combined Vercel + Supabase R1 for:
+   - URL `https://relyo-two.vercel.app`
+   - repo `Saidur-droid/Relyo`
+   - Vercel project `relyo`
+   - Supabase project `relyo-prod`
+6. Independently query production `proof_runs` and `evidence_envelopes` and require:
+   - state `VERIFIED`
+   - target `R1`
+   - achieved `R1`
+   - release SHA exactly equals deployed main
+   - environment/provider binding is Vercel + Supabase with the correct project IDs
+   - every referenced evidence ID exists and stored SHA-256 matches
+7. Do not inspect provider credential ciphertext/plaintext or secret values.
+8. Update the canonical docs + Issue #5 with the final run/release/evidence IDs.
+9. Close Issue #5 only after that exact-release combined proof is real.
+10. Keep Issue #39 open; its design-partner work will be done later.
+
+## Automation continuity
+
+A condition-watch named **Relyo Final Deploy Gate** is enabled to resume this free deployment/evidence sequence after the quota window. Its planned start is 2026-09-20 around 15:55 Asia/Dhaka, then hourly if necessary. A future session should still re-check current repository/provider state before acting and must not create wasteful probe deployments.
+
+## New-chat instruction
+
+If the founder deletes the current chat and later provides only this repository link, immediately read `AGENTS.md`, this file, `WORK_PROGRESS.md`, `CURRENT_STATE.md`, `NEXT_WORKFLOW.md`, Issue #5 and Issue #39. Do **not** ask them to restate completed work. Treat the repository as the durable project memory and continue only the remaining 1% sequence above.
+
+---
+
 # Relyo V2 — Chat Handoff — 2026-09-19
 
 This file is the durable handoff for a new ChatGPT session if the current chat is deleted.
