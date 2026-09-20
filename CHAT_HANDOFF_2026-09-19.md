@@ -1,3 +1,21 @@
+# FINAL VERIFIED COMPLETION — 2026-09-20
+
+- Technical completion: **100%** for the Issue #5 production R1 scope.
+- Exact deployed/repository release: `d4f14f77d7b10f56a0cf27b9b6383cbe97fa07c7`.
+- Final combined production run: `run_07538c11-c08d-473b-bb7e-859317129588`.
+- State / target / achieved: `VERIFIED / R1 / R1`.
+- Provider: `vercel+supabase`.
+- Blockers: `0`.
+- Signed Passport SHA-256: `9b4a6fb5ac736abdf03152bd5aa17f87a91b543829424d6bec6d2b61125305a5`.
+- Independently checked persisted evidence: **4/4 evidence IDs exist and all SHA-256 values match** (public HTTP, GitHub repository, Vercel production, Supabase production).
+- Vercel production status for the exact release is `success`.
+- Issue #5 can be closed as completed.
+- Root cause of the stale 99%/open-issue state: final proof required GitHub `main` to match the already deployed Vercel SHA exactly. The prior housekeeping commits advanced `main`, causing the release-identity contract to fail. `main` was intentionally restored to the deployed SHA to create the truthful exact-release R1 proof.
+- This completion record is stored on `archive/final-verified-r1-20260920` so the canonical deployed `main` SHA is not changed after proof generation. Do not merge documentation-only commits onto `main` until a future deployment/proof cycle is intentionally started.
+- Issue #39 remains separate external design-partner validation and does not invalidate this technical completion.
+
+---
+
 # FINAL CONTINUATION CHECKPOINT — 2026-09-19
 
 This section supersedes older continuation instructions below.
