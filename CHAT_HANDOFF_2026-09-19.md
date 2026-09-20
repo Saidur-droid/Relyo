@@ -1,3 +1,13 @@
+# SUPERSEDING CONTINUATION CHECKPOINT — 2026-09-20
+
+The prior Vercel Hobby quota blocker is resolved. PR #49 merged as main `d4f14f77d7b10f56a0cf27b9b6383cbe97fa07c7`; its Vercel deployment status is successful and the stable production URL is reachable.
+
+Only one proof gate remains: use an authenticated Relyo browser session with the existing Vercel/Supabase connection cookies to run the combined exact-release R1 proof, independently verify the resulting production `proof_runs` and `evidence_envelopes`, then close Issue #5. The API deliberately refuses launch proof without the Vercel connection cookie, so do not bypass the session boundary or fabricate database evidence.
+
+No paid resources are required. Issue #39 remains a separate external design-partner phase.
+
+---
+
 # FINAL CONTINUATION CHECKPOINT — 2026-09-19
 
 This section supersedes older continuation instructions below.
