@@ -7,8 +7,8 @@ import {
   type Passport,
   type ProofContract,
 } from "@relyo/kernel";
-import { buildLaunchCheckReport } from "./index";
-import { buildSupabaseR1Contracts } from "./supabase-r1";
+import { buildLaunchCheckReport } from "@relyo/contracts";
+import { buildSupabaseR1Contracts } from "@relyo/contracts/supabase-r1";
 
 export interface SupabaseAugmentedR1Report {
   targetAssurance: "R1";
