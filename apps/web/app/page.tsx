@@ -24,8 +24,8 @@ export default function Home() {
         <div className="eyebrow">AI builds it. Relyo proves it.</div>
         <h1>Build fast. Verify before customers depend on it.</h1>
         <p className="heroCopy">
-          Check the public surface for free, then connect Vercel securely to run provider-backed launch proof for the exact release.
-          Relyo keeps unknowns explicit and signs the evidence-backed Production Passport.
+          Start with your GitHub repository and production URL, then add only the providers your app actually uses.
+          Relyo keeps unsupported or unobserved facts explicit and signs the evidence-backed Production Passport.
         </p>
         <div className="heroActions">
           <a className="primaryLink" href="#verify-launch">Verify My Launch</a>
@@ -54,7 +54,7 @@ export default function Home() {
         <div className="principleGrid">
           <article>
             <strong>Observe</strong>
-            <p>Public runtime, repository release identity, and read-only Vercel deployment, domain and configuration metadata.</p>
+            <p>Public runtime and repository release identity first, then optional read-only provider metadata from the services your app actually uses.</p>
           </article>
           <article>
             <strong>Verify</strong>

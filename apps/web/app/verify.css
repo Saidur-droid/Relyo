@@ -66,6 +66,13 @@
   font-size: 9px;
 }
 .stepTop strong { font-size: 13px; }
+.stepTop em {
+  color: #728b7f;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 560;
+  margin-left: 4px;
+}
 .stepReady { color: #a7c5b6; font-size: 12px; line-height: 1.55; }
 .verifyStep small { color: #728b7f; line-height: 1.45; }
 .verifyStep select,
@@ -88,6 +95,18 @@
 .secondaryButton:disabled,
 .verifyForm button:disabled { opacity: .42; cursor: not-allowed; }
 .verifyForm { display: grid; gap: 8px; }
+.verifyRunStep {
+  grid-column: 1 / -1;
+  min-height: auto;
+}
+.verifyRunButton {
+  width: 100%;
+  font: inherit;
+}
+.verifyRunButton:disabled {
+  opacity: .42;
+  cursor: not-allowed;
+}
 .verifyMessage {
   margin-top: 16px;
   border: 1px solid rgba(170,185,255,.17);

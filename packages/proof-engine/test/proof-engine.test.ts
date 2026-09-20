@@ -4,7 +4,7 @@ import type { VercelProductionObservation } from "@relyo/adapter-vercel";
 import type { DiscoveryResult } from "@relyo/discovery";
 import { verifySignedPassport } from "@relyo/kernel/signing";
 import { MemoryProofStore } from "@relyo/store";
-import { executeVercelR1Proof } from "../src/index.js";
+import { executePublicR1Proof, executeVercelR1Proof } from "../src/index.js";
 
 function discovery(): DiscoveryResult {
   return {
@@ -121,6 +121,28 @@ function provider(): VercelProductionObservation {
 }
 
 describe("proof engine", () => {
+  it("creates and stores a signed provider-neutral proof without a deployment provider", async () => {
+    const keys = generateKeyPairSync("ed25519");
+    const store = new MemoryProofStore();
+
+    const executed = await executePublicR1Proof({
+      discovery: discovery(),
+      store,
+      signingPrivateKey: keys.privateKey,
+      runId: "run_public",
+      startedAt: "2026-09-15T00:00:00.000Z",
+      completedAt: "2026-09-15T00:00:01.000Z",
+    });
+
+    expect(executed.run.state).toBe("PARTIAL");
+    expect(executed.signedPassport.passport.assurance).toBe("R0");
+    expect(verifySignedPassport({ envelope: executed.signedPassport, publicKey: keys.publicKey })).toBe(true);
+    expect(executed.blockers.some((item) => /deployment-provider evidence/i.test(item))).toBe(true);
+
+    const stored = await store.get("run_public");
+    expect(stored?.evidence.map((item) => item.id).sort()).toEqual(["ev_repo", "ev_url"]);
+  });
+
   it("creates, signs and durably stores a VERIFIED R1 proof", async () => {
     const keys = generateKeyPairSync("ed25519");
     const store = new MemoryProofStore();
