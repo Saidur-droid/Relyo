@@ -1,3 +1,15 @@
+# FINAL CURRENT STATE — 2026-09-20
+
+**Deployment blocker cleared.** PR #49 is merged as main `d4f14f77d7b10f56a0cf27b9b6383cbe97fa07c7`, GitHub reports Vercel `success` for the exact commit, and `https://relyo-two.vercel.app` is publicly reachable.
+
+The remaining technical gate is now only authenticated evidence generation: run the existing combined Vercel + Supabase R1 flow in a browser session carrying the Relyo provider-connection cookies, require `VERIFIED/R1` for exact main, independently match all evidence IDs/SHA-256 values in production Postgres, then close Issue #5.
+
+The production database has not yet produced that new combined VERIFIED/R1 row, so a truthful 100% evidence-complete claim cannot be made until that authenticated run exists. No paid infrastructure is needed or permitted.
+
+Issue #39 remains a later external design-partner validation phase and does not block technical implementation completion.
+
+---
+
 # FINAL CURRENT STATE — 2026-09-19
 
 **Technical completion: ~99%.** Current main before this documentation checkpoint: `d8a7bc2203484e190c9e038387926a2c84aaf3e6`.
