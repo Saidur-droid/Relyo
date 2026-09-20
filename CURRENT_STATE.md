@@ -49,9 +49,18 @@ Engineering estimate: ~90% code implementation, ~65% live evidence, ~75% full V2
 
 > Durable handoff for the next session. Read after AGENTS.md. The repository is the project memory.
 
-Last updated: 2026-09-18
+Last updated: 2026-09-19
 
-## Fresh live verification — 2026-09-18
+## Fresh live verification — 2026-09-19
+
+- The authenticated production Vercel path is now evidence-backed complete for release `1cc7a07fe80ab4351c2e7ec4aeb1943e4f5a38fb`.
+- Production run `run_3d045c4a-161e-4c73-b58b-3ebf2ae68aee` is `VERIFIED`, achieved/target assurance `R1`, with Passport SHA-256 `cb00e81287cbcc06abd818d7dd92769240700effcaf9c25b74a283c557aa2054` and Ed25519 signature metadata persisted in Postgres.
+- All three evidence references in that run match persisted evidence rows by ID and SHA-256: public HTTP, GitHub release observation, and Vercel production observation.
+- The production UI showed **R1 — Launch Verified** with the `relyo` Vercel project bound. The previous Vercel authentication/project-binding gate is therefore resolved.
+- Supabase remains the only Issue #5 production gate: configure the real Supabase Management API OAuth application/production client credentials, connect and bind `relyo-prod`, then run and independently verify the combined Vercel + Supabase signed R1.
+- No credential values, credential envelopes, database password, encryption key, OAuth client secret, read token or signing private key were read during this verification.
+
+## Prior live verification — 2026-09-18
 
 See `WORK_PROGRESS.md` checkpoint 7. Baseline main `478fdf7bc2bfc92ca08796d7d82b7d0c4d5b9fa7` has successful CI run `35304846452` and Vercel deployment status `2Nyeh8EEzeTBHrfEZS5Dx4qgR1Rc`. The production UI is reachable. Vercel connection requires interactive sign-in in the current browser; Supabase connect still returns HTTP 503 (not configured). Read-only database inspection still finds only the historical PARTIAL/R0 run with 3 matching evidence records. No current-release R1 is proven. Application code and production configuration were not changed during this verification.
 

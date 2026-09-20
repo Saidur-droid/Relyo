@@ -52,9 +52,9 @@ Current main `57964864481f07db45deb52b68bda9b0769a68ba` has green main CI and gr
 
 # Relyo — Next Workflow
 
-Last updated: 2026-09-18
+Last updated: 2026-09-19
 
-Latest recheck: `WORK_PROGRESS.md` checkpoint 7 confirms the main CI/deployment baseline is green, Vercel requires interactive sign-in, Supabase connect still returns 503, and no new R1 run exists. Start with secure Vercel browser authentication; do not repeat completed implementation work. After any configuration redeploy, use the actual deployed SHA for proof and database verification.
+Latest recheck: `WORK_PROGRESS.md` checkpoint 8 confirms authenticated production Vercel R1 is complete and persisted for exact release `1cc7a07fe80ab4351c2e7ec4aeb1943e4f5a38fb` as run `run_3d045c4a-161e-4c73-b58b-3ebf2ae68aee`. Do not repeat the Vercel connection gate. The only remaining Issue #5 production gate is Supabase OAuth activation plus a combined Vercel + Supabase proof.
 
 Read `WORK_PROGRESS.md` first. The repository and deployment work that can be completed without human account authentication is now merged and green.
 
@@ -69,48 +69,24 @@ Read `WORK_PROGRESS.md` first. The repository and deployment work that can be co
 - Production database migration allows both `vercel` and `supabase` provider connections.
 - Stale PR #7 is closed as superseded.
 
-## Remaining human/account gates
+## Remaining human/account gate
 
-### 1. Current-release Vercel R1 proof
+### Production Supabase OAuth activation and combined R1
 
-In a browser session that is authenticated to the user's Vercel account:
+The Vercel-only production R1 gate is complete. Production Supabase OAuth still needs the real Management API OAuth application credentials.
 
-1. Open `https://relyo-two.vercel.app`.
-2. Connect Vercel if the Relyo session is not already connected.
-3. Bind the `relyo` project.
-4. Run **Verify My Launch** with:
-   - production URL: `https://relyo-two.vercel.app`
-   - GitHub repository: `Saidur-droid/Relyo`
-5. Require `R1 — Launch Verified`, zero blockers, exact deployed release binding and a signed Production Passport.
-6. Verify matching new `proof_runs` and `evidence_envelopes` rows in production Postgres without reading credential envelopes or secret values.
-
-### 2. Production Supabase OAuth activation
-
-The code and database migration are ready, but the live endpoint currently returns 503 because real OAuth credentials are not configured.
-
-The founder needs to create/configure a Supabase OAuth application with callback:
-
-`https://relyo-two.vercel.app/api/supabase/callback`
-
-Then add these to the Vercel `relyo` **Production** environment:
-
-- `SUPABASE_APP_CLIENT_ID`
-- `SUPABASE_APP_CLIENT_SECRET`
-
-Do not send either secret value in chat or commit it to GitHub.
-
-After that:
-
-1. Redeploy Production if Vercel does not automatically redeploy after env changes.
-2. Connect Supabase from Relyo.
-3. Bind `relyo-prod`.
-4. Run the combined Vercel + Supabase proof.
-5. Require evidence-backed R1 and matching persisted evidence for the exact deployed release.
-6. Update `WORK_PROGRESS.md` and `CURRENT_STATE.md` with the exact run/release/evidence IDs.
+1. Create/configure the Supabase OAuth application with callback `https://relyo-two.vercel.app/api/supabase/callback`.
+2. Add `SUPABASE_APP_CLIENT_ID` and `SUPABASE_APP_CLIENT_SECRET` to the Vercel `relyo` **Production** environment. Never place the secret in chat, GitHub, logs or browser-readable client code.
+3. Redeploy Production if the environment change does not automatically produce a fresh deployment.
+4. Confirm `/api/supabase/connect` no longer returns 503.
+5. Connect Supabase in Relyo and bind `relyo-prod`.
+6. Run **Verify My Launch** again for `https://relyo-two.vercel.app` + `Saidur-droid/Relyo`.
+7. Require a combined evidence-backed signed R1 for the exact deployed release and verify matching new `proof_runs` / `evidence_envelopes` rows read-only.
+8. Update the continuity docs and close Issue #5 only after that combined production evidence exists.
 
 ## Current evidence baseline
 
-Production Postgres currently contains only the historical signed R0 run for release `8ed6309739f0c31f24e115658eb087170f79e08b`. Passing CI or a Ready deployment is not a substitute for the new authenticated proof.
+Production Postgres now contains current-release Vercel R1 run `run_3d045c4a-161e-4c73-b58b-3ebf2ae68aee` for release `1cc7a07fe80ab4351c2e7ec4aeb1943e4f5a38fb`, state `VERIFIED`, achieved assurance `R1`, with three evidence rows whose IDs/hashes independently match the run references. This is Vercel-only launch proof; Supabase evidence is not yet part of this Passport.
 
 ## Continuity
 
