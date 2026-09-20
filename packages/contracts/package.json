@@ -19,6 +19,10 @@
     "./combined-r1": {
       "types": "./src/combined-r1.ts",
       "import": "./src/combined-r1.ts"
+    },
+    "./supabase-augmented-r1": {
+      "types": "./src/supabase-augmented-r1.ts",
+      "import": "./src/supabase-augmented-r1.ts"
     }
   },
   "scripts": {
