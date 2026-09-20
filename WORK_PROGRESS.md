@@ -1,3 +1,20 @@
+# Checkpoint 11 — provider-neutral onboarding fix, 2026-09-20
+
+- Product UX bug identified from live founder use: `Verify My Launch` treated Vercel as mandatory and visually positioned Vercel/Supabase as universal requirements even though Relyo's V2 strategy is provider-neutral.
+- Root cause: the production route required the `relyo_vercel_connection` cookie before proof execution, and the UI disabled launch verification unless a Vercel project was bound. This contradicted the platform constitution and blocked builders hosted elsewhere.
+- Implemented on branch `feat/provider-neutral-launch-onboarding`:
+  - app identity starts with GitHub repository + production URL;
+  - Vercel is optional deployment evidence, not a prerequisite;
+  - Supabase is optional backend/database evidence, not a prerequisite;
+  - a signed provider-neutral proof can be persisted with public/repository evidence only;
+  - Supabase-only evidence can augment the proof without falsely claiming deployment-provider facts;
+  - missing deployment-provider facts remain explicit UNKNOWN/R0 rather than being guessed;
+  - Vercel+Supabase deep R1 path remains unchanged when those providers are actually connected.
+- Added/updated route, proof-engine and contract tests to prevent provider-lock-in and trust inflation.
+- This checkpoint is **implemented on a review branch, not yet merged/deployed**. The previously verified production release remains the live truth until CI, review, merge, deployment and fresh production verification complete.
+
+---
+
 # Checkpoint 10 — final technical 1% isolated, 2026-09-19
 
 - Current main before this documentation checkpoint: `d8a7bc2203484e190c9e038387926a2c84aaf3e6`.
