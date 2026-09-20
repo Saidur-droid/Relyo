@@ -1,3 +1,16 @@
+# Checkpoint 11 — final zero-paid production deploy succeeded, 2026-09-20
+
+- PR #49 merged as main commit `d4f14f77d7b10f56a0cf27b9b6383cbe97fa07c7`.
+- GitHub Vercel status for that exact main commit is `success`; deployment target: `54UaefwtegVZHc7muqDMezoaxvo9`.
+- Public production URL `https://relyo-two.vercel.app` is reachable and serving the Relyo launch-verification UI.
+- Production provider bindings remain present for Vercel `relyo` and Supabase `relyo-prod`.
+- The deployment/quota blocker is therefore closed without any paid upgrade or paid compute.
+- The only remaining truth gate is to create a fresh exact-release combined Vercel+Supabase `VERIFIED/R1` proof using an authenticated browser session (the endpoint requires the existing provider-connection cookies), then independently verify `proof_runs` / `evidence_envelopes` and close Issue #5.
+- The current database still has no newer combined VERIFIED/R1 row; the latest combined run remains the historical FAILED/R0 run. Do not fabricate or manually insert proof.
+- Issue #39 remains intentionally open for real independent design partners and is outside the final technical proof gate.
+
+---
+
 # Checkpoint 10 — final technical 1% isolated, 2026-09-19
 
 - Current main before this documentation checkpoint: `d8a7bc2203484e190c9e038387926a2c84aaf3e6`.
