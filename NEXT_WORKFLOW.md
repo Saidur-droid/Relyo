@@ -1,3 +1,19 @@
+# FINAL NEXT WORKFLOW — authenticated proof only — 2026-09-20
+
+The zero-paid production deployment is now successful on main `d4f14f77d7b10f56a0cf27b9b6383cbe97fa07c7`. Do not trigger another deployment.
+
+1. Open `https://relyo-two.vercel.app` in the browser session that owns the existing Relyo Vercel and Supabase connections.
+2. Confirm Vercel `relyo` and Supabase `relyo-prod` are connected/bound.
+3. Run **Verify My Launch** with URL `https://relyo-two.vercel.app` and repo `Saidur-droid/Relyo`.
+4. Require a combined `VERIFIED/R1` result, exact release `d4f14f77d7b10f56a0cf27b9b6383cbe97fa07c7`, zero R1 blockers, and a signed Passport.
+5. Independently query `proof_runs` and `evidence_envelopes`; every referenced evidence ID must exist and every SHA-256 must match.
+6. Record the final run/release/evidence identifiers in canonical docs and Issue #5, then close Issue #5.
+7. Keep Issue #39 open for independent design-partner adoption evidence.
+
+The `/api/verify-launch` route intentionally requires the Relyo provider-connection cookies; do not bypass that security boundary and do not synthesize proof rows.
+
+---
+
 # FINAL NEXT WORKFLOW — remaining technical 1% — 2026-09-19
 
 No new coding or founder secret setup is currently required.
