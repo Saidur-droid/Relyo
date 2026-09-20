@@ -1,12 +1,35 @@
 import { randomUUID, type KeyObject } from "node:crypto";
 import type { SupabaseProductionObservation } from "@relyo/adapter-supabase";
 import type { VercelProductionObservation } from "@relyo/adapter-vercel";
+import { buildLaunchCheckReport } from "@relyo/contracts";
 import { buildCombinedR1Report } from "@relyo/contracts/combined-r1";
+import { buildSupabaseAugmentedR1Report } from "@relyo/contracts/supabase-augmented-r1";
 import { buildVercelR1Report } from "@relyo/contracts/vercel-r1";
 import type { DiscoveryResult } from "@relyo/discovery";
 import type { ProofRun, ProofRunState } from "@relyo/kernel";
 import { signPassport, type SignedPassport } from "@relyo/kernel/signing";
 import type { ProofStore, StoredProofRecord } from "@relyo/store";
+
+export interface ExecutePublicR1ProofInput {
+  discovery: DiscoveryResult;
+  store: ProofStore;
+  signingPrivateKey: KeyObject | string | Buffer;
+  signingKeyId?: string;
+  runId?: string;
+  startedAt?: string;
+  completedAt?: string;
+}
+
+export interface ExecuteSupabaseAugmentedR1ProofInput {
+  discovery: DiscoveryResult;
+  supabase: SupabaseProductionObservation;
+  store: ProofStore;
+  signingPrivateKey: KeyObject | string | Buffer;
+  signingKeyId?: string;
+  runId?: string;
+  startedAt?: string;
+  completedAt?: string;
+}
 
 export interface ExecuteVercelR1ProofInput {
   discovery: DiscoveryResult;
@@ -79,6 +102,35 @@ async function persistReport(input: {
   };
   await input.store.save(record);
   return { run, signedPassport, blockers: input.report.blockers };
+}
+
+export async function executePublicR1Proof(input: ExecutePublicR1ProofInput): Promise<ExecutedProof> {
+  const report = buildLaunchCheckReport(input.discovery);
+  return await persistReport({
+    report,
+    store: input.store,
+    signingPrivateKey: input.signingPrivateKey,
+    ...(input.signingKeyId ? { signingKeyId: input.signingKeyId } : {}),
+    ...(input.runId ? { runId: input.runId } : {}),
+    ...(input.startedAt ? { startedAt: input.startedAt } : {}),
+    ...(input.completedAt ? { completedAt: input.completedAt } : {}),
+  });
+}
+
+export async function executeSupabaseAugmentedR1Proof(input: ExecuteSupabaseAugmentedR1ProofInput): Promise<ExecutedProof> {
+  const report = buildSupabaseAugmentedR1Report({
+    discovery: input.discovery,
+    provider: input.supabase,
+  });
+  return await persistReport({
+    report,
+    store: input.store,
+    signingPrivateKey: input.signingPrivateKey,
+    ...(input.signingKeyId ? { signingKeyId: input.signingKeyId } : {}),
+    ...(input.runId ? { runId: input.runId } : {}),
+    ...(input.startedAt ? { startedAt: input.startedAt } : {}),
+    ...(input.completedAt ? { completedAt: input.completedAt } : {}),
+  });
 }
 
 export async function executeVercelR1Proof(input: ExecuteVercelR1ProofInput): Promise<ExecutedProof> {
