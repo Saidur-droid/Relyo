@@ -15,14 +15,15 @@ export async function reasonAboutProofResult(
   input: ReasonAboutProofInput,
 ): Promise<NebiusReasoningObservation> {
   const apiKey = process.env.NEBIUS_API_KEY?.trim();
-  const model = process.env.NEBIUS_MODEL?.trim();
-  if (!apiKey || !model) {
+  if (!apiKey) {
     throw new Error("Nebius competition reasoning is not configured.");
   }
 
   const client = new NebiusReasoningClient({
     apiKey,
-    model,
+    ...(process.env.NEBIUS_MODEL?.trim()
+      ? { model: process.env.NEBIUS_MODEL.trim() }
+      : {}),
     ...(process.env.NEBIUS_BASE_URL?.trim()
       ? { baseUrl: process.env.NEBIUS_BASE_URL.trim() }
       : {}),
