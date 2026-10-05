@@ -1,5 +1,6 @@
 import { ScanWorkspace } from "./scan-workspace";
 import { VerifyLaunchPanel } from "./verify-launch-panel";
+import { getCompetitionProfile } from "@/lib/competition/profile";
 
 const moments = [
   "Verify before launch",
@@ -10,6 +11,8 @@ const moments = [
 ];
 
 export default function Home() {
+  const competition = getCompetitionProfile();
+
   return (
     <main>
       <header className="shell nav">
@@ -37,6 +40,29 @@ export default function Home() {
           ))}
         </div>
       </section>
+
+      {competition ? (
+        <section className="shell proofPrinciples" aria-label="Competition mode">
+          <div>
+            <span className="sectionKicker">{competition.eyebrow}</span>
+            <h2>{competition.headline}</h2>
+          </div>
+          <div className="principleGrid">
+            <article>
+              <strong>Competition proof focus</strong>
+              <p>{competition.description}</p>
+            </article>
+            <article>
+              <strong>Judge path</strong>
+              <p>{competition.proofFocus}</p>
+            </article>
+            <article>
+              <strong>Trust boundary</strong>
+              <p>Competition integrations may reason and observe; deterministic Relyo evidence still decides the final proof state.</p>
+            </article>
+          </div>
+        </section>
+      ) : null}
 
       <section id="check-free" className="shell productStage">
         <ScanWorkspace />
