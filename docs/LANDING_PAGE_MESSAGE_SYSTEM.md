@@ -270,3 +270,19 @@ Step 5:
 > Choose the proof level you need.
 
 Do not lead with R0/R1/R2 jargon; show it as secondary technical detail.
+
+
+## ICP clarification — 2026-10-05
+
+Primary initial buyer:
+
+- founder/CTO or engineering lead;
+- founder-led SaaS company with roughly 1–10 people across product/engineering;
+- actively shipping on the focused stack, starting with Next.js + GitHub + Vercel + Supabase;
+- within 30 days of a launch, first revenue, investor demo, client handoff, or risky production release.
+
+Positioning rule:
+
+> **Relyo is not an automation platform. Execution happens upstream; Relyo independently proves whether the production outcome actually happened for the exact release.**
+
+The homepage must make this distinction explicit so tools such as n8n, builders, GitHub, Vercel, and payment providers are framed as upstream systems Relyo verifies rather than direct substitutes.
