@@ -143,3 +143,40 @@ h2 { margin: 8px 0 0; font-size: 29px; letter-spacing: -.035em; }
   .findingList article { grid-template-columns: 1fr; }
   .footer { gap: 12px; flex-direction: column; }
 }
+
+.heroActions { margin-top: 28px; display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+.primaryLink, .textLink { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; border-radius: 12px; padding: 0 16px; font-size: 13px; font-weight: 760; }
+.primaryLink { background: var(--accent); color: #062016; }
+.textLink { border: 1px solid var(--line); color: #c8d9d1; background: rgba(255,255,255,.02); }
+.positioningNote { margin-top: 24px; max-width: 760px; display: flex; gap: 10px; flex-wrap: wrap; align-items: baseline; padding: 13px 15px; border: 1px solid rgba(102,240,176,.2); border-radius: 12px; background: rgba(102,240,176,.045); }
+.positioningNote strong { color: var(--accent-strong); font-size: 12px; }
+.positioningNote span { color: #8fa69b; font-size: 12px; }
+.icpSection { padding: 22px 0 72px; display: grid; grid-template-columns: 1fr 1fr; gap: 26px 56px; align-items: start; }
+.icpSection p, .pricingExperiment p { color: var(--muted); line-height: 1.65; max-width: 680px; }
+.icpGrid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+.icpGrid span { border: 1px solid var(--line); border-radius: 12px; padding: 14px; background: rgba(255,255,255,.02); color: #cbdad3; font-size: 12px; line-height: 1.45; }
+.icpSecondary { grid-column: 1 / -1; border-top: 1px solid var(--line); padding-top: 16px; color: #81988d; font-size: 12px; }
+.icpSecondary strong { color: #cfe1d8; }
+.pricingExperiment { padding: 12px 0 92px; display: grid; grid-template-columns: .85fr 1.15fr; gap: 60px; align-items: start; }
+.intentCard { border: 1px solid var(--line); border-radius: 18px; padding: 24px; background: rgba(255,255,255,.02); display: grid; gap: 18px; }
+.intentCard fieldset { border: 0; padding: 0; margin: 0; display: grid; gap: 12px; }
+.intentCard legend { color: #d9e7e0; font-size: 13px; font-weight: 650; }
+.priceChoices { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.priceChoice { border: 1px solid var(--line); border-radius: 12px; padding: 14px; display: grid; gap: 2px; cursor: pointer; background: rgba(255,255,255,.015); }
+.priceChoice.selected { border-color: rgba(102,240,176,.55); background: rgba(102,240,176,.06); }
+.priceChoice input { position: absolute; opacity: 0; pointer-events: none; }
+.priceChoice strong { font-size: 22px; }
+.priceChoice span { color: #71877c; font-size: 10px; }
+.intentFields { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.intentCard label { display: grid; gap: 7px; color: #cbdad3; font-size: 12px; }
+.intentCard input[type="email"], .intentCard select { width: 100%; padding: 12px 13px; border-radius: 10px; border: 1px solid rgba(169,255,213,.16); background: #091510; color: var(--text); outline: none; }
+.intentCard button { border: 0; border-radius: 11px; padding: 13px 16px; background: var(--accent); color: #062016; font-weight: 780; cursor: pointer; }
+.intentCard button:disabled { opacity: .6; cursor: default; }
+.intentSuccess { margin: -4px 0 0; color: var(--accent); font-size: 11px; }
+.intentError { margin: -4px 0 0; color: var(--danger); font-size: 11px; }
+@media (max-width: 900px) {
+  .icpSection, .pricingExperiment { grid-template-columns: 1fr; gap: 26px; }
+}
+@media (max-width: 620px) {
+  .icpGrid, .priceChoices, .intentFields { grid-template-columns: 1fr; }
+}

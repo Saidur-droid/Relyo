@@ -206,3 +206,18 @@ Keep a pricing experiment log with:
 - refund rate;
 - gross margin;
 - retention.
+
+
+## Implemented WTP signal — 2026-10-05
+
+The homepage now includes a declared purchase-intent test for Launch Proof at $29 / $49 / $79 one-time. It records price choice, role, launch timing, and an email for beta access. It does not charge a card and must never be reported as revenue.
+
+Interpretation rules:
+
+- treat an intent as qualified only when the respondent is in the primary ICP and has a launch window of 30 days or less;
+- compare conversion by price cohort and launch urgency;
+- do not claim willingness-to-pay is validated from clicks alone;
+- graduate the hypothesis only after real checkout conversion is tested with the same offer and scope;
+- preserve the free-check funnel so price tests happen after meaningful app-specific value where possible.
+
+Decision target for the next stage: collect at least 20 qualified intent signals before changing the default price hypothesis, then run a real paid checkout test on a comparable cohort.
