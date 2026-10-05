@@ -26,6 +26,38 @@ Relyo wins when software-producing systems call Relyo before or after releases t
 
 Long-term, Relyo should become the neutral trust layer that sits between machine-generated software and the real world.
 
+## 0.1 RunProof consolidation decision
+
+Do **not** create RunProof as a separate company or product. Its strongest useful idea is absorbed into Relyo V2 without changing Relyo's category, company thesis, or provider-neutral proof strategy.
+
+The explicit addition is **Shadow Mode**:
+
+> **Observe first. Prove what is wrong before asking to change anything.**
+
+In Shadow Mode, Relyo connects with read-only or observation-scoped access wherever possible, discovers the production system, evaluates relevant Proof Contracts, and reports material blockers without mutating customer infrastructure.
+
+The desired first experience is:
+
+```text
+AI/builder says "done"
+        ↓
+Relyo Shadow Mode
+        ↓
+read-only discovery + independent proof
+        ↓
+"Relyo found 4 launch blockers"
+        ↓
+Fix & Verify
+        ↓
+safe remediation / approval where required
+        ↓
+independent re-verification
+        ↓
+Production Passport
+```
+
+Shadow Mode is a low-trust-friction adoption wedge, not a separate product category. It must preserve Relyo's existing principles: independent verification, deterministic evidence, least privilege, safe remediation, and provider neutrality.
+
 ---
 
 # 1. Why This Company Must Exist
@@ -523,6 +555,25 @@ This is the strategic WOW because Relyo becomes infrastructure, not merely a das
 ---
 
 # 9. Product Modes
+
+## Mode A0 — Shadow Verification
+
+Lowest-friction entry mode:
+
+```text
+connect app with read-only / observation-scoped access
+→ discover production reality
+→ evaluate relevant Proof Contracts
+→ surface material failures and unknowns
+→ make no infrastructure mutation
+→ offer Fix & Verify only after evidence exists
+```
+
+Primary promise:
+
+> **Your AI says it is done. Relyo independently checks what is actually true.**
+
+Shadow Mode should make the first Relyo value moment possible before the customer grants mutation authority. It is the preferred default when the user has not yet authorized remediation.
 
 ## Mode A — Founder Go-Live
 
