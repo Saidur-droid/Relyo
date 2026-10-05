@@ -1,6 +1,10 @@
 import { describe, expect, it, vi } from "vitest";
 import { NebiusReasoningClient } from "../lib/competition/nebius";
-import { PayPalSandboxClient, extractPayPalOrderId } from "../lib/competition/paypal";
+import {
+  ApplicationPaymentOutcomeClient,
+  PayPalSandboxClient,
+  extractPayPalOrderId,
+} from "../lib/competition/paypal";
 
 function json(value: unknown, status = 200) {
   return new Response(JSON.stringify(value), {
@@ -121,5 +125,30 @@ describe("competition provider clients", () => {
       event,
     });
     expect(verified.verificationStatus).toBe("SUCCESS");
+  });
+  it("observes application outcome independently from PayPal", async () => {
+    const fakeFetch = vi.fn<typeof fetch>(async (input, init) => {
+      expect(String(input)).toBe("https://fixture.test/payment/ORDER12345");
+      expect((init?.headers as Record<string, string>).authorization).toBe("Bearer fixture-secret");
+      return json({
+        orderId: "ORDER12345",
+        orderPersisted: true,
+        processedWebhookEventId: "WH-EVENT-1",
+        entitlementGranted: false,
+        customerVisibleOutcome: false,
+      });
+    });
+
+    const client = new ApplicationPaymentOutcomeClient({
+      baseUrl: "https://fixture.test/payment",
+      bearerToken: "fixture-secret",
+      fetchImpl: fakeFetch,
+    });
+    const outcome = await client.inspect("ORDER12345");
+
+    expect(outcome.orderPersisted).toBe(true);
+    expect(outcome.entitlementGranted).toBe(false);
+    expect(outcome.evidence[0]?.kind).toBe("application-payment-outcome");
+    expect(JSON.stringify(outcome)).not.toContain("fixture-secret");
   });
 });
