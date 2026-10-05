@@ -1,5 +1,5 @@
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import { spawn, type ChildProcessWithoutNullStreams } from "node:child_process";
+import { spawn, type ChildProcess } from "node:child_process";
 import { resolve } from "node:path";
 import { createEvidenceEnvelope } from "@relyo/kernel";
 import { buildPayPalPaymentIntegrityReport } from "@relyo/contracts/paypal-payment-integrity";
@@ -12,7 +12,7 @@ const READ_TOKEN = "fixture-read-token";
 const ORDER_ID = "ORDER12345";
 const EVENT_ID = "WH-EVENT-1";
 
-let fixture: ChildProcessWithoutNullStreams;
+let fixture: ChildProcess;
 
 async function waitForFixture(): Promise<void> {
   const deadline = Date.now() + 10_000;
