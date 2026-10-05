@@ -237,6 +237,42 @@ Exit criteria:
 
 ---
 
+# Milestone 6.5 — Shadow Mode
+
+Ship the first low-friction read-only verification experience before mutation-heavy remediation.
+
+Required behavior:
+
+- prefer read-only or observation-scoped provider access;
+- discover current production state without changing it;
+- run the relevant launch Proof Contracts;
+- clearly separate verified failures, unknowns, and exclusions;
+- show evidence for every material blocker;
+- make no infrastructure mutation in Shadow Mode;
+- present **Fix & Verify** only after Relyo has independently found a supported failure;
+- request the smallest additional capability or approval needed for remediation;
+- after any approved fix, independently re-run affected contracts.
+
+Core user story:
+
+```text
+AI/builder says "done"
+→ Relyo Shadow Mode checks reality
+→ "Relyo found N launch blockers"
+→ user chooses Fix & Verify
+→ supported safe remediation
+→ independent re-verification
+→ passport
+```
+
+Exit criteria:
+
+- a founder can connect an AI-built app and receive useful launch-blocker evidence without granting write access;
+- at least one detected supported failure can transition from Shadow Mode into Fix & Verify and then pass independent re-verification;
+- Shadow Mode never silently escalates privileges or mutates production.
+
+---
+
 # Milestone 7 — Safe remediation v0
 
 Support only a small reversible set.
