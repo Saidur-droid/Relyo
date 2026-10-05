@@ -1,0 +1,61 @@
+name: Competition Live Sponsor Smoke
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/competition-live-sponsor-smoke.yml"
+      - "apps/web/lib/competition/nebius.ts"
+      - "apps/web/test/nebius-live.test.ts"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  nebius-nemotron-live:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      NEBIUS_API_KEY: ${{ secrets.NEBIUS_API_KEY }}
+      NEBIUS_MODEL: ${{ secrets.NEBIUS_MODEL }}
+      NEBIUS_BASE_URL: ${{ secrets.NEBIUS_BASE_URL }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.15.1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+
+      - name: Check Nebius credential availability
+        id: readiness
+        shell: bash
+        run: |
+          if [ -z "${NEBIUS_API_KEY:-}" ]; then
+            echo "configured=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::NEBIUS_API_KEY is not configured; live Nemotron smoke is blocked, but normal CI remains independent."
+          else
+            echo "configured=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Run live Nemotron smoke
+        if: steps.readiness.outputs.configured == 'true'
+        run: pnpm --filter @relyo/web exec vitest run test/nebius-live.test.ts
+
+      - name: Record live status
+        shell: bash
+        run: |
+          {
+            echo "## Nebius / NVIDIA live sponsor smoke"
+            if [ "${{ steps.readiness.outputs.configured }}" = "true" ]; then
+              echo "- NEBIUS_API_KEY: configured"
+              echo "- Live NVIDIA Nemotron call through Nebius Token Factory: PASS"
+              echo "- Secret value: never printed"
+            else
+              echo "- NEBIUS_API_KEY: not configured"
+              echo "- Live NVIDIA Nemotron call: BLOCKED until the repository secret is added"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
