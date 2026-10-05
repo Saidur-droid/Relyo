@@ -17,7 +17,7 @@ function required(name: string): string {
   return value;
 }
 
-function databasePool(): Pool {
+export function databasePool(): Pool {
   if (!pool) {
     pool = new Pool({
       connectionString: required("DATABASE_URL"),
