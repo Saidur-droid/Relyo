@@ -19,6 +19,10 @@
     "./combined-r1": {
       "types": "./src/combined-r1.ts",
       "import": "./src/combined-r1.ts"
+    },
+    "./paypal-payment-integrity": {
+      "types": "./src/paypal-payment-integrity.ts",
+      "import": "./src/paypal-payment-integrity.ts"
     }
   },
   "scripts": {
