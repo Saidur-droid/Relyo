@@ -5,6 +5,7 @@ const port = Number(process.env.PORT || 3000);
 const usersByEmail = new Map();
 const sessions = new Map();
 const resilience = new Map();
+const paymentOutcomes = new Map();
 
 function html(body, status = 200, headers = {}) {
   return {
@@ -53,11 +54,30 @@ function sessionUser(req) {
   return usersByEmail.get(email) || null;
 }
 
-async function readForm(req) {
+async function readBody(req) {
   const chunks = [];
   for await (const chunk of req) chunks.push(chunk);
-  const body = Buffer.concat(chunks).toString("utf8");
-  return new URLSearchParams(body);
+  return Buffer.concat(chunks).toString("utf8");
+}
+
+async function readForm(req) {
+  return new URLSearchParams(await readBody(req));
+}
+
+async function readJson(req) {
+  const raw = await readBody(req);
+  return raw ? JSON.parse(raw) : {};
+}
+
+function fixtureControlAllowed(req) {
+  const expected = process.env.FIXTURE_CONTROL_TOKEN;
+  return Boolean(expected && req.headers["x-relyo-fixture-control"] === expected);
+}
+
+function paymentOutcomeReadAllowed(req) {
+  const expected = process.env.PAYMENT_OUTCOME_READ_TOKEN;
+  if (!expected) return true;
+  return req.headers.authorization === `Bearer ${expected}`;
 }
 
 function setSession(email) {
@@ -189,6 +209,44 @@ const server = createServer(async (req, res) => {
       const user = sessionUser(req);
       if (user) usersByEmail.delete(user.email);
       response = redirect("/signup", { "set-cookie": clearSession(req) });
+    } else if (method === "GET" && /^\/api\/payment-outcomes\/[^/]+$/.test(url.pathname)) {
+      if (!paymentOutcomeReadAllowed(req)) {
+        response = json({ error: "unauthorized" }, 401);
+      } else {
+        const orderId = decodeURIComponent(url.pathname.split("/")[3] || "");
+        const item = paymentOutcomes.get(orderId);
+        response = item ? json(item) : json({ error: "not found" }, 404);
+      }
+    } else if (method === "POST" && /^\/api\/payment-outcomes\/[^/]+\/seed$/.test(url.pathname)) {
+      if (!fixtureControlAllowed(req)) {
+        response = json({ error: "forbidden" }, 403);
+      } else {
+        const orderId = decodeURIComponent(url.pathname.split("/")[3] || "");
+        const body = await readJson(req);
+        const mode = body?.mode;
+        const eventId = typeof body?.eventId === "string" ? body.eventId : null;
+        if (!orderId || !eventId || !["broken", "verified"].includes(mode)) {
+          response = json({ error: "invalid payment outcome seed" }, 400);
+        } else {
+          const verified = mode === "verified";
+          const item = {
+            orderId,
+            orderPersisted: true,
+            processedWebhookEventId: eventId,
+            entitlementGranted: verified,
+            customerVisibleOutcome: verified,
+          };
+          paymentOutcomes.set(orderId, item);
+          response = json(item, 201);
+        }
+      }
+    } else if (method === "DELETE" && /^\/api\/payment-outcomes\/[^/]+$/.test(url.pathname)) {
+      if (!fixtureControlAllowed(req)) {
+        response = json({ error: "forbidden" }, 403);
+      } else {
+        const orderId = decodeURIComponent(url.pathname.split("/")[3] || "");
+        response = json({ orderId, deleted: paymentOutcomes.delete(orderId) });
+      }
     } else if (method === "POST" && url.pathname === "/api/resilience/start") {
       const id = `r3_${randomUUID()}`;
       resilience.set(id, { failed: false, recoveryCount: 0 });
