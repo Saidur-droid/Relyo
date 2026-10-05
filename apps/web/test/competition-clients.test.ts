@@ -151,4 +151,36 @@ describe("competition provider clients", () => {
     expect(outcome.evidence[0]?.kind).toBe("application-payment-outcome");
     expect(JSON.stringify(outcome)).not.toContain("fixture-secret");
   });
+  it("uses the current public Nebius Token Factory Nemotron endpoint by default", async () => {
+    const fakeFetch = vi.fn<typeof fetch>(async (input, init) => {
+      expect(String(input)).toBe("https://api.tokenfactory.nebius.com/chat/completions");
+      const body = JSON.parse(String(init?.body)) as { model?: string };
+      expect(body.model).toBe("nvidia/Nemotron-3_5-Lightning");
+      return json({
+        choices: [{
+          message: {
+            content: JSON.stringify({
+              selectedContractIds: ["paypal.payment_integrity"],
+              diagnosis: "Entitlement is missing after payment completion.",
+              remediationPlan: ["Repair the entitlement transition and re-run proof."],
+              riskNotes: [],
+              confidence: 0.9,
+            }),
+          },
+        }],
+      });
+    });
+
+    const client = new NebiusReasoningClient({
+      apiKey: "secret-nebius",
+      fetchImpl: fakeFetch,
+    });
+
+    await client.reasonAboutProof({
+      candidateContractIds: ["paypal.payment_integrity"],
+      evidenceSummaries: [],
+      question: "Diagnose the failed proof.",
+    });
+  });
+
 });
