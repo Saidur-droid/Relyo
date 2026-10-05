@@ -26,7 +26,7 @@ export interface NebiusReasoningInput {
 
 export interface NebiusReasoningObservation {
   provider: "nebius-token-factory";
-  model?: string;
+  model: string;
   selectedContractIds: string[];
   diagnosis: string;
   remediationPlan: string[];
@@ -43,7 +43,7 @@ export interface NebiusReasoningObservation {
 
 export interface NebiusReasoningClientOptions {
   apiKey: string;
-  model: string;
+  model?: string;
   baseUrl?: string;
   fetchImpl?: typeof fetch;
   timeoutMs?: number;
