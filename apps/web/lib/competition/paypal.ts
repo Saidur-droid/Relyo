@@ -322,3 +322,111 @@ export class PayPalSandboxClient {
     return payload.access_token;
   }
 }
+
+
+export interface ApplicationPaymentOutcomeObservation {
+  orderId: string;
+  orderPersisted: boolean;
+  processedWebhookEventId: string | null;
+  entitlementGranted: boolean;
+  customerVisibleOutcome: boolean;
+  evidence: EvidenceEnvelope[];
+}
+
+export interface ApplicationPaymentOutcomeClientOptions {
+  baseUrl: string;
+  bearerToken?: string;
+  fetchImpl?: typeof fetch;
+  timeoutMs?: number;
+}
+
+type ApplicationOutcomeResponse = {
+  orderId?: unknown;
+  orderPersisted?: unknown;
+  processedWebhookEventId?: unknown;
+  entitlementGranted?: unknown;
+  customerVisibleOutcome?: unknown;
+};
+
+export class ApplicationPaymentOutcomeClient {
+  private readonly fetchImpl: typeof fetch;
+  private readonly baseUrl: string;
+  private readonly timeoutMs: number;
+
+  constructor(private readonly options: ApplicationPaymentOutcomeClientOptions) {
+    const parsed = new URL(options.baseUrl);
+    if (!["https:", "http:"].includes(parsed.protocol)) {
+      throw new Error("Application payment outcome URL must use HTTP or HTTPS.");
+    }
+    this.baseUrl = options.baseUrl.replace(/\/+$/, "");
+    this.fetchImpl = options.fetchImpl ?? fetch;
+    this.timeoutMs = options.timeoutMs ?? 10_000;
+  }
+
+  async inspect(orderId: string): Promise<ApplicationPaymentOutcomeObservation> {
+    if (!validOrderId(orderId)) throw new Error("Application payment outcome order ID is invalid.");
+
+    const response = await this.fetchImpl(
+      `${this.baseUrl}/${encodeURIComponent(orderId)}`,
+      {
+        method: "GET",
+        headers: {
+          accept: "application/json",
+          ...(this.options.bearerToken
+            ? { authorization: `Bearer ${this.options.bearerToken}` }
+            : {}),
+        },
+        cache: "no-store",
+        signal: AbortSignal.timeout(this.timeoutMs),
+      },
+    );
+
+    if (response.status === 404) {
+      throw new Error("Application payment outcome was not found.");
+    }
+    if (!response.ok) {
+      throw new Error(`Application payment outcome endpoint returned HTTP ${response.status}.`);
+    }
+
+    const payload = (await response.json()) as ApplicationOutcomeResponse;
+    if (
+      payload.orderId !== orderId ||
+      typeof payload.orderPersisted !== "boolean" ||
+      typeof payload.entitlementGranted !== "boolean" ||
+      typeof payload.customerVisibleOutcome !== "boolean"
+    ) {
+      throw new Error("Application payment outcome response was incomplete or mismatched.");
+    }
+
+    const processedWebhookEventId =
+      typeof payload.processedWebhookEventId === "string"
+        ? payload.processedWebhookEventId
+        : null;
+    const normalized = {
+      orderId,
+      orderPersisted: payload.orderPersisted,
+      processedWebhookEventId,
+      entitlementGranted: payload.entitlementGranted,
+      customerVisibleOutcome: payload.customerVisibleOutcome,
+    };
+
+    return {
+      ...normalized,
+      evidence: [
+        createEvidenceEnvelope({
+          kind: "application-payment-outcome",
+          source: `application:payment-outcome:${orderId}`,
+          payload: normalized,
+          redacted: true,
+          summary: {
+            orderId,
+            orderPersisted: normalized.orderPersisted,
+            entitlementGranted: normalized.entitlementGranted,
+            customerVisibleOutcome: normalized.customerVisibleOutcome,
+            processedWebhookBound: Boolean(normalized.processedWebhookEventId),
+          },
+        }),
+      ],
+    };
+  }
+}
