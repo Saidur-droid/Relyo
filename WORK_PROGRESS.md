@@ -1,3 +1,22 @@
+# Checkpoint 11 — ICP/WTP merged; production deploy blocked by stale Vercel access, 2026-10-05
+
+- PR #54 merged the IdeaProof follow-up work into main.
+- PR CI and post-merge main CI are green: install, typecheck, tests, and production build all pass.
+- Implemented:
+  - sharper primary ICP for founder/CTO/engineering leads at small SaaS teams near high-intent launch moments;
+  - explicit positioning that Relyo is the independent proof layer after upstream execution, not another automation platform;
+  - homepage willingness-to-pay intent experiment at $29 / $49 / $79 with role, launch timing, and beta email capture;
+  - pricing/landing-page documentation updates.
+- Production deployment was intentionally retried through the free prebuilt Vercel workflow after merge.
+- Latest deploy workflow failed at provider-project validation before build/upload.
+- Exact blocker: stored GitHub Actions `VERCEL_TOKEN` receives HTTP 403 when reading configured project `prj_GdpW8gbUqsjZx84AtoHq2twAl7gi` in team `team_BsJXXtOBNmww7MhlgiE7JzzO`.
+- The connected Vercel account also returns `Project not found` for that project ID, so current evidence points to stale/revoked project access or stale project mapping, not a code/CI failure.
+- **NEXT TASK:** repair the Vercel project/token mapping using only free/Hobby-compatible access, then run the existing prebuilt production deploy, verify `https://relyo-two.vercel.app`, and confirm the new ICP/WTP surfaces are live.
+- Do not recreate product work already merged. Do not pay, upgrade, or start a Vercel trial.
+- Do not claim production deployment complete until provider access is repaired and the live URL is independently verified.
+
+---
+
 # Checkpoint 10 — final technical 1% isolated, 2026-09-19
 
 - Current main before this documentation checkpoint: `d8a7bc2203484e190c9e038387926a2c84aaf3e6`.
