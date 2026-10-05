@@ -4,6 +4,7 @@ import {
   PayPalSandboxClient,
   extractPayPalOrderId,
 } from "@/lib/competition/paypal";
+import { reasonAboutProofResult } from "@/lib/competition/reason-about-proof";
 
 export const runtime = "nodejs";
 
@@ -109,10 +110,18 @@ export async function POST(request: Request) {
       application: applicationOutcome,
     });
 
+    const reasoning = await reasonAboutProofResult({
+      result: report.result,
+      evidence: report.evidence,
+    });
+
     return json({
       result: report.result,
       blockers: report.blockers,
       evidence: report.evidence,
+      reasoning,
+      trustBoundary:
+        "Nemotron reasons about the deterministic result; Relyo evidence decides the final status.",
     });
   } catch {
     console.error(JSON.stringify({
