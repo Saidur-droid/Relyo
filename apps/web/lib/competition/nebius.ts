@@ -4,7 +4,9 @@ import {
 } from "@relyo/kernel";
 
 export const DEFAULT_NEBIUS_TOKEN_FACTORY_BASE_URL =
-  "https://api.tokenfactory.nebius.com/v1";
+  "https://api.tokenfactory.nebius.com";
+export const DEFAULT_NVIDIA_NEMOTRON_MODEL =
+  "nvidia/Nemotron-3_5-Lightning";
 export interface NebiusEvidenceSummary {
   kind: string;
   source: string;
@@ -24,7 +26,7 @@ export interface NebiusReasoningInput {
 
 export interface NebiusReasoningObservation {
   provider: "nebius-token-factory";
-  model: string;
+  model?: string;
   selectedContractIds: string[];
   diagnosis: string;
   remediationPlan: string[];
@@ -153,10 +155,7 @@ export class NebiusReasoningClient {
     this.baseUrl = normalizeBaseUrl(
       options.baseUrl?.trim() || DEFAULT_NEBIUS_TOKEN_FACTORY_BASE_URL,
     );
-    if (!options.model.trim()) {
-      throw new Error("An NVIDIA Nemotron model ID is required.");
-    }
-    this.model = options.model.trim();
+    this.model = options.model?.trim() || DEFAULT_NVIDIA_NEMOTRON_MODEL;
     this.timeoutMs = options.timeoutMs ?? 20_000;
   }
 
