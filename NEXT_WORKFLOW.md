@@ -1,3 +1,27 @@
+# NEXT TASK — Vercel production access repair — 2026-10-05
+
+This is the immediate continuation task. PR #54 is merged and CI is green; do not redo the ICP/positioning/WTP implementation.
+
+1. Inspect current Vercel account/project mapping for the production Relyo deployment.
+2. Resolve the stale access mismatch for configured project `prj_GdpW8gbUqsjZx84AtoHq2twAl7gi` under team `team_BsJXXtOBNmww7MhlgiE7JzzO`.
+3. Current hard evidence:
+   - GitHub Actions secret `VERCEL_TOKEN` exists but project-read validation returns HTTP 403;
+   - the connected Vercel account reports that configured project ID as not found;
+   - repository CI is green, so this is a provider-access/project-mapping blocker.
+4. Preserve zero-paid policy: Hobby/free path only; no upgrade, no trial, no paid compute.
+5. Once project/token access is repaired, run the existing `.github/workflows/vercel-free-prebuilt-deploy.yml` path.
+6. Require all of these to pass: project-read validation -> production pull -> prebuilt build -> upload -> stable URL verification.
+7. Verify `https://relyo-two.vercel.app` is serving the latest main release and confirm the new ICP positioning and $29/$49/$79 WTP surface.
+8. Only then update `WORK_PROGRESS.md` / `CURRENT_STATE.md` and mark production deployment complete.
+
+Latest successful product state before this task:
+- PR #54 merged;
+- PR CI green;
+- post-merge main CI green;
+- production deploy not yet complete.
+
+---
+
 # FINAL NEXT WORKFLOW — remaining technical 1% — 2026-09-19
 
 No new coding or founder secret setup is currently required.
