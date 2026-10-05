@@ -53,7 +53,9 @@ export async function POST(request: Request) {
   try {
     const client = new NebiusReasoningClient({
       apiKey: required("NEBIUS_API_KEY"),
-      model: required("NEBIUS_MODEL"),
+      ...(process.env.NEBIUS_MODEL?.trim()
+        ? { model: process.env.NEBIUS_MODEL.trim() }
+        : {}),
       ...(process.env.NEBIUS_BASE_URL?.trim()
         ? { baseUrl: process.env.NEBIUS_BASE_URL.trim() }
         : {}),
