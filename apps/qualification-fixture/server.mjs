@@ -240,6 +240,25 @@ const server = createServer(async (req, res) => {
           response = json(item, 201);
         }
       }
+    } else if (method === "POST" && /^\/api\/payment-outcomes\/[^/]+\/remediate$/.test(url.pathname)) {
+      if (!fixtureControlAllowed(req)) {
+        response = json({ error: "forbidden" }, 403);
+      } else {
+        const orderId = decodeURIComponent(url.pathname.split("/")[3] || "");
+        const item = paymentOutcomes.get(orderId);
+        if (!item) {
+          response = json({ error: "not found" }, 404);
+        } else {
+          item.entitlementGranted = true;
+          item.customerVisibleOutcome = true;
+          response = json({
+            orderId,
+            remediated: true,
+            entitlementGranted: item.entitlementGranted,
+            customerVisibleOutcome: item.customerVisibleOutcome,
+          });
+        }
+      }
     } else if (method === "DELETE" && /^\/api\/payment-outcomes\/[^/]+$/.test(url.pathname)) {
       if (!fixtureControlAllowed(req)) {
         response = json({ error: "forbidden" }, 403);
