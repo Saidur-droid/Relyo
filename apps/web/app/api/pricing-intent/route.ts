@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { databasePool } from "../../lib/server-services";
+import { databasePool } from "../../../lib/server-services";
 
 const allowedPrices = new Set([29, 49, 79]);
 const allowedRoles = new Set(["Founder / CTO", "Engineering lead", "Agency / studio", "Developer", "Other"]);
