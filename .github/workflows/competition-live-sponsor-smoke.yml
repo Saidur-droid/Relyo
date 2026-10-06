@@ -1,6 +1,14 @@
 name: Competition Live Sponsor Smoke
 
 on:
+  push:
+    branches:
+      - "competition/relyo-2026"
+    paths:
+      - ".github/workflows/competition-live-sponsor-smoke.yml"
+      - "apps/web/lib/competition/nebius.ts"
+      - "apps/web/test/nebius-live.test.ts"
+      - "competition/NEBIUS_ACCESS_DECISION_BANGLADESH.md"
   pull_request:
     paths:
       - ".github/workflows/competition-live-sponsor-smoke.yml"
