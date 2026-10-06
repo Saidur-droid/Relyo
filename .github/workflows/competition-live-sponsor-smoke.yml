@@ -1,4 +1,5 @@
 name: Competition Live Sponsor Smoke
+# Trigger marker: Nebius secret configured
 
 on:
   push:
