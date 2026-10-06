@@ -20,13 +20,20 @@ Do not create separate product forks for the three competitions.
 
 ## Execution status
 
-**In progress on `competition/relyo-2026`:**
+**Implemented on `competition/relyo-2026`:**
 
-- Nebius/NVIDIA reasoning client and evidence envelope.
+- Nebius Token Factory / NVIDIA Nemotron reasoning client.
+- Real live Nemotron inference through Nebius Token Factory.
+- Structured reasoning output with deterministic trust boundary.
+- GitHub Actions live sponsor smoke workflow.
 - PayPal sandbox order + webhook verification client.
 - Deterministic `paypal.payment_integrity` Proof Contract.
 - Competition profile layer.
 - Focused tests for sponsor clients and payment outcome semantics.
+
+**Nebius live proof:** [NEBIUS_LIVE_RUNTIME_PROOF_2026-10-06.md](./NEBIUS_LIVE_RUNTIME_PROOF_2026-10-06.md)
+
+**Nebius access status:** [NEBIUS_ACCESS_DECISION_BANGLADESH.md](./NEBIUS_ACCESS_DECISION_BANGLADESH.md)
 
 **Deferred:** Life After Code / GitLab implementation until the official rules are published and re-checked.
 
