@@ -6,6 +6,40 @@ Relyo is the **independent proof layer for machine-built software**.
 
 It discovers how a software product actually works across code, infrastructure, identity, data, payments, communications, domains, third-party APIs, cost, recovery, and real user journeys; evaluates versioned Proof Contracts; safely remediates selected failures; independently verifies outcomes; and issues portable evidence-backed Production Passports.
 
+## Nebius x NVIDIA Competition Edition
+
+Relyo's 2026 competition branch adds a real NVIDIA Nemotron reasoning layer through **Nebius Token Factory** while preserving Relyo's deterministic verification boundary.
+
+Competition runtime:
+
+```text
+production evidence
+-> Nebius Token Factory
+-> NVIDIA Nemotron-3.5-Lightning
+-> contract prioritization / diagnosis / remediation plan
+-> deterministic Relyo Proof Contracts
+-> evidence-backed result
+```
+
+Current live configuration:
+
+- provider: Nebius Token Factory;
+- NVIDIA model: `nvidia/Nemotron-3_5-Lightning`;
+- API base: `https://api.tokenfactory.nebius.com/v1`;
+- secret: `NEBIUS_API_KEY` (server-side only);
+- live runtime proof: GitHub Actions run `37445344928` - PASS.
+
+The model does **not** decide PASS or VERIFIED. Nemotron supplies reasoning; Relyo's deterministic proof engine remains authoritative.
+
+To run the live sponsor smoke from a trusted environment with `NEBIUS_API_KEY` configured:
+
+```bash
+pnpm install --frozen-lockfile
+pnpm --filter @relyo/web exec vitest run test/nebius-live.test.ts
+```
+
+Competition evidence and execution notes are in [`competition/`](./competition/).
+
 ## ACTIVE VERSION
 
 **Relyo V2 is the only executable company/product plan. V1 is historical and must not be implemented.**
