@@ -4,7 +4,7 @@ import {
 } from "@relyo/kernel";
 
 export const DEFAULT_NEBIUS_TOKEN_FACTORY_BASE_URL =
-  "https://api.tokenfactory.nebius.com";
+  "https://api.tokenfactory.nebius.com/v1";
 export const DEFAULT_NVIDIA_NEMOTRON_MODEL =
   "nvidia/Nemotron-3_5-Lightning";
 export interface NebiusEvidenceSummary {
