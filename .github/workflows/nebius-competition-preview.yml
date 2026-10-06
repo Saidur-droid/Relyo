@@ -41,6 +41,16 @@ jobs:
           test -n "${VERCEL_TOKEN:-}" || { echo "::error::Missing VERCEL_TOKEN"; exit 1; }
           test -n "${NEBIUS_API_KEY:-}" || { echo "::error::Missing NEBIUS_API_KEY"; exit 1; }
       - run: pnpm install --frozen-lockfile
+      - name: Validate Vercel project access
+        shell: bash
+        run: |
+          set -euo pipefail
+          STATUS="$(curl --silent --show-error --output /tmp/vercel-project.json --write-out "%{http_code}" --header "Authorization: Bearer $VERCEL_TOKEN" "https://api.vercel.com/v9/projects/$VERCEL_PROJECT_ID?teamId=$VERCEL_ORG_ID")"
+          if [ "$STATUS" != "200" ]; then
+            echo "::error::VERCEL_TOKEN cannot read project $VERCEL_PROJECT_ID in $VERCEL_ORG_ID (HTTP $STATUS)."
+            exit 1
+          fi
+          echo "Vercel project access validated."
       - name: Link Vercel project
         shell: bash
         run: |
