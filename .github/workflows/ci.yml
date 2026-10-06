@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [main, competition/relyo-2026]
   pull_request:
 
 jobs:
