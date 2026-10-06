@@ -28,7 +28,7 @@ Relyo is a practical agentic production-proof workflow: Nemotron reasons about p
 ## Submission items still requiring founder/output work
 
 - [x] **Open-source license file** at repository root: Apache-2.0.
-- [ ] **Working judge demo URL / immutable competition deployment** that remains available through judging. Automated preview workflow is ready, but current `VERCEL_TOKEN` is blocked from project access with HTTP 403.
+- [x] **Working judge demo URL** verified by CI: `https://relyo-ffatdzh33-saidur-droids-projects.vercel.app` (deployment source commit `d7326288763151d66e03a8c588c9da1ce09adf34`).
 - [ ] **Public YouTube demo video under 3 minutes** showing the actual project functioning and clearly naming Nebius Token Factory and NVIDIA Nemotron.
 - [ ] **Devpost project description**.
 - [ ] **Nebius/NVIDIA feedback section** covering what was used, onboarding, what worked, what could improve, and whether we would use it again.
@@ -65,3 +65,14 @@ Do not freeze or submit until the exact judge build has:
 - an immutable tag/deployment identity.
 
 Do not claim any requirement is complete unless evidence exists.
+## Judge preview deployment evidence
+
+- Workflow: `Nebius Competition Judge Preview`
+- GitHub Actions run: `37447873070` (attempt 2) — PASS
+- Source commit: `d7326288763151d66e03a8c588c9da1ce09adf34`
+- Preview URL: `https://relyo-ffatdzh33-saidur-droids-projects.vercel.app`
+- Vercel project access validation: PASS
+- Preview environment pull: PASS
+- Build: PASS
+- Deploy with server-side `NEBIUS_API_KEY`: PASS
+- Public URL health check: PASS
