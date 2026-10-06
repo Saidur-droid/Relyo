@@ -1,55 +1,38 @@
-# Nebius Access Decision — Bangladesh
+# Nebius Access Status — 2026-10-06
 
-**Date:** 2026-10-05  
-**Status:** Personal Token Factory onboarding blocked by country availability. Do not use false billing information.
+**Status:** RESOLVED — live Nebius Token Factory access is now working.
 
-## Verified situation
+The earlier 2026-10-05 country-onboarding concern is superseded by a successful live runtime test using the founder-controlled Nebius Token Factory account and a repository-scoped `NEBIUS_API_KEY` secret.
 
-The hackathon rules allow team entries and require the project, as a working system, to make a runtime call to Nebius Token Factory or run on Nebius AI Cloud. The public Token Factory onboarding UI currently does not offer Bangladesh in the Country of residence field for this account.
+## Verified live state
 
-Public hackathon discussions show the same class of country-onboarding block for other countries. A participant relayed Nebius Support guidance that unsupported-country self-service billing registration has no individual/manual bypass, Builder Program approval does not bypass it, promotional credits cannot be redeemed while registration is blocked, and Nebius AI Cloud is not a separate registration workaround.
+On 2026-10-06, GitHub Actions workflow `Competition Live Sponsor Smoke` completed successfully and executed a real NVIDIA Nemotron inference through Nebius Token Factory.
 
-## Decision
+Evidence:
 
-Do not spend more project time trying to bypass the country selector.
+- branch: `competition/relyo-2026`
+- successful workflow run: `37445344928`
+- provider: Nebius Token Factory
+- model: `nvidia/Nemotron-3_5-Lightning`
+- live smoke test: `apps/web/test/nebius-live.test.ts`
+- adapter: `apps/web/lib/competition/nebius.ts`
+- evidence note: `competition/NEBIUS_LIVE_RUNTIME_PROOF_2026-10-06.md`
 
-Do not:
-- select a false country;
-- use a fake address;
-- misrepresent billing residence;
-- commit or share another person's Nebius API key.
+Run URL:
 
-### Competition fallback
+https://github.com/Saidur-droid/Relyo/actions/runs/37445344928
 
-Keep the Nebius/NVIDIA code path implemented and tested, but treat live Nebius access as a **team-level credential dependency**.
+## Security boundary
 
-If Relyo enters the Nebius x NVIDIA hackathon, the clean fallback is:
+- The API key remains server-side in GitHub Actions repository secrets.
+- The value is not committed to Git.
+- Workflow logs mask the secret.
+- Nemotron remains reasoning-only and cannot decide PASS or VERIFIED.
 
-1. Add a genuine eligible teammate who can legitimately access Nebius Token Factory in their own supported jurisdiction.
-2. The teammate joins the actual Devpost team and contributes to the project.
-3. The team uses that legitimate Nebius account to provide the runtime Token Factory access for the shared Relyo project.
-4. The API key remains server-side only; it is never committed.
-5. The final submission clearly discloses the team-operated Nebius runtime path.
-6. Relyo still uses deterministic evidence for truth; Nemotron remains reasoning only.
+> **AI reasons. Evidence decides.**
 
-The hackathon rules allow teams of eligible individuals, and organizers have stated there is no maximum team size.
+## Current decision
 
-## Current engineering state
+No teammate-credential fallback is needed for the current Nebius submission path.
 
-The Relyo competition branch already contains:
-
-- Nebius Token Factory / NVIDIA Nemotron reasoning client;
-- deterministic trust boundary;
-- gated live Nemotron smoke test;
-- PayPal payment-integrity proof;
-- PayPal FAIL -> VERIFIED E2E.
-
-Therefore personal Nebius onboarding is **not a blocker for continuing Relyo development**.
-
-## Execution priority
-
-1. Continue PayPal AI work and competition hardening now.
-2. Keep Nebius integration code ready.
-3. Do not ask the founder to repeat Token Factory billing/onboarding attempts.
-4. Activate the live Nebius smoke only when a legitimate team-level Nebius credential becomes available.
-5. If no legitimate Nebius access exists before submission freeze, do not submit Relyo to Nebius rather than faking access.
+Continue Nebius competition hardening using the verified live Token Factory integration.
