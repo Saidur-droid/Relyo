@@ -27,8 +27,8 @@ Relyo is a practical agentic production-proof workflow: Nemotron reasons about p
 
 ## Submission items still requiring founder/output work
 
-- [ ] **Open-source license file** at repository root. This is a hard submission requirement. License choice is intentionally not made automatically because it changes code reuse rights and requires founder approval.
-- [ ] **Working judge demo URL / immutable competition deployment** that remains available through judging.
+- [x] **Open-source license file** at repository root: Apache-2.0.
+- [ ] **Working judge demo URL / immutable competition deployment** that remains available through judging. Automated preview workflow is ready, but current `VERCEL_TOKEN` is blocked from project access with HTTP 403.
 - [ ] **Public YouTube demo video under 3 minutes** showing the actual project functioning and clearly naming Nebius Token Factory and NVIDIA Nemotron.
 - [ ] **Devpost project description**.
 - [ ] **Nebius/NVIDIA feedback section** covering what was used, onboarding, what worked, what could improve, and whether we would use it again.
