@@ -153,7 +153,7 @@ describe("competition provider clients", () => {
   });
   it("uses the current public Nebius Token Factory Nemotron endpoint by default", async () => {
     const fakeFetch = vi.fn<typeof fetch>(async (input, init) => {
-      expect(String(input)).toBe("https://api.tokenfactory.nebius.com/chat/completions");
+      expect(String(input)).toBe("https://api.tokenfactory.nebius.com/v1/chat/completions");
       const body = JSON.parse(String(init?.body)) as { model?: string };
       expect(body.model).toBe("nvidia/Nemotron-3_5-Lightning");
       return json({
