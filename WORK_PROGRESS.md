@@ -1,3 +1,19 @@
+# Competition checkpoint — Nebius live runtime verified, 2026-10-06
+
+- Branch: `competition/relyo-2026`.
+- Live Nebius Token Factory / NVIDIA Nemotron smoke is now PASS.
+- Successful Actions run: `37445344928`.
+- Model: `nvidia/Nemotron-3_5-Lightning`.
+- Correct live API base: `https://api.tokenfactory.nebius.com/v1`.
+- First live attempt exposed a real integration bug (missing `/v1`), then the adapter was fixed and the next run passed.
+- Runtime proof recorded in `competition/NEBIUS_LIVE_RUNTIME_PROOF_2026-10-06.md`.
+- Submission-readiness checklist and draft copy recorded in `competition/NEBIUS_SUBMISSION_READINESS_2026-10-06.md`.
+- Root README now highlights the Nebius/Nemotron integration and live smoke command.
+- `.env.example` now documents the correct `/v1` default.
+- Remaining Nebius submission hard gates are external/release artifacts: founder-approved open-source license, immutable working judge URL, public <=3-minute YouTube demo, final Devpost copy/feedback/testing instructions, and final frozen snapshot.
+- Do not silently choose a license. License choice changes reuse rights and requires founder approval.
+
+---
 # Checkpoint 10 — final technical 1% isolated, 2026-09-19
 
 - Current main before this documentation checkpoint: `d8a7bc2203484e190c9e038387926a2c84aaf3e6`.
