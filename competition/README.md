@@ -38,3 +38,5 @@ Do not create separate product forks for the three competitions.
 **Deferred:** Life After Code / GitLab implementation until the official rules are published and re-checked.
 
 Baseline: [EXECUTION_BASELINE_NEBIUS_PAYPAL_2026-10-05.md](./EXECUTION_BASELINE_NEBIUS_PAYPAL_2026-10-05.md)
+
+Submission readiness: [NEBIUS_SUBMISSION_READINESS_2026-10-06.md](./NEBIUS_SUBMISSION_READINESS_2026-10-06.md)
